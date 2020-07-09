@@ -23,12 +23,17 @@ export class AddStudentComponent implements OnInit {
   isRequired: boolean = false;
   addStudentForm: FormGroup;
   formSubmitAttempt: boolean = false;
+  branches: SelectItem[] = [];
   gender: SelectItem[] = [];
   classes: SelectItem[] = [];
   sections: SelectItem[] = [];
   maxDate= new Date();
   constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute,private location:Location) {
-    this.maxDate.setDate(this.maxDate.getDate());    
+    this.maxDate.setDate(this.maxDate.getDate()); 
+    this.branches = [
+      { label: 'branch1', value: '1' },
+      { label: 'branch2', value: '2' }
+    ];   
     this.gender = [
       { label: 'Male', value: 'M' },
       { label: 'Female', value: 'F' }
@@ -72,6 +77,7 @@ export class AddStudentComponent implements OnInit {
       'firstName': new FormControl('', { validators: [Validators.required] }),
       'middleName': new FormControl(''),
       'lastName': new FormControl('', { validators: [Validators.required] }),
+      'branch': new FormControl('', { validators: [Validators.required] }),
       'dateofbirth': new FormControl('', { validators: [Validators.required] }),
       'gender': new FormControl('', { validators: [Validators.required] }),
       'joineddate': new FormControl('', { validators: [Validators.required] }),
@@ -125,6 +131,7 @@ export class AddStudentComponent implements OnInit {
       'firstName': "Sindhuja",
       'middleName': "",
       'lastName': "Chinchilam",
+      'branch': '1',
       'dateofbirth': "07/25/1995",
       'gender': "F",
       'joineddate': "01/01/2020",
@@ -165,6 +172,7 @@ export class AddStudentComponent implements OnInit {
       'firstName': this.editData.firstName,
       'middleName': this.editData.middleName,
       'lastName': this.editData.lastName,
+      'branch': this.editData.branch,
       'dateofbirth': this.editData.dateofbirth,
       'gender': this.editData.gender,
       'joineddate': this.editData.joineddate,

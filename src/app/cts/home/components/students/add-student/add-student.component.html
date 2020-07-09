@@ -46,6 +46,12 @@
                                     Enter "Last Name"
                                 </span>
                             </div>
+                            <div class="col-md-3 error-div"
+                            *ngIf="((!addStudentForm.controls['branch'].valid && addStudentForm.controls['branch'].touched)|| (!addStudentForm.controls['branch'].valid && addStudentForm.controls['branch'].untouched && formSubmitAttempt))">
+                            <i class="fa fa-circle"></i>
+                            <span *ngIf="(addStudentForm.controls['branch'].errors?.required)">Enter "Branch
+                                Id"</span>
+                        </div>
                             <div class="col-md-3 error-div" *ngIf="((!addStudentForm.controls['dateofbirth'].valid && 
                                 addStudentForm.controls['dateofbirth'].touched)||
                                  (!addStudentForm.controls['dateofbirth'].valid && addStudentForm.controls['dateofbirth'].untouched &&
@@ -240,6 +246,13 @@
                     [ngClass]="{'error':((!addStudentForm.controls['lastName'].valid && 
                             addStudentForm.controls['lastName'].touched) || (!addStudentForm.controls['lastName'].valid && 
                             addStudentForm.controls['lastName'].untouched && formSubmitAttempt)),'required':(isRequired == true )}">
+            </div>
+            <div class="col-md-4">
+                <span>Branch Id</span><br>
+                <p-dropdown [options]="branches" filter="true" formControlName="branch" [disabled]="isDisabled"
+                    placeholder="Select Branch"
+                    [ngClass]="{'error':((!addStudentForm.controls['branch'].valid && addStudentForm.controls['branch'].touched) || (!addStudentForm.controls['branch'].valid && addStudentForm.controls['branch'].untouched && formSubmitAttempt)),'required':(isRequired == true )}">
+                </p-dropdown>
             </div>
             <div class="col-md-4">
                 <span>Date Of Birth</span><br>

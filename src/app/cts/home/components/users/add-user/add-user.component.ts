@@ -32,9 +32,9 @@ export class AddUserComponent implements OnInit {
   formSubmitAttempt: boolean = false;
   constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private location: Location) {
     this.usertypes = [
-      { label: 'Admin', value: 'A' },
-      { label: 'DataEntryOperator', value: 'D' },
-      { label: 'Teacher', value: 'T' }
+      { label: 'Admin', value: 'ADMN' },
+      { label: 'DataEntryOperator', value: 'DEOR' },
+      { label: 'Teacher', value: 'TCHR' }
     ];
     this.status = [
       { label: 'Active', value: 'AC' },
@@ -98,7 +98,7 @@ export class AddUserComponent implements OnInit {
   }
   bindEditUserDetails() {
     this.editData = {
-      'usertype': 'A',
+      'usertype': 'ADMN',
       'userName': 'teja',
       'dispName': 'Teja',
       'password': 'Optum234$',

@@ -1,0 +1,75 @@
+<div class="container-fluid">
+    <div class="col-md-12 component-header">
+        <div class="row">
+            <div class="col-md-4">
+                <span class="table-header-items">Users</span>
+            </div>
+            <div class="col-md-8 text-right">
+                <button pButton type="button" icon="pi pi-filter" label="Filters"
+                    class="ui-button-secondary table-header-items" (click)="toggleClass($event)"></button>&nbsp;
+                <button pButton type="button" icon="pi pi-plus" label="Users" (click)="addNew($event)"
+                    class="ui-button-secondary table-header-items" ></button>
+            </div>
+        </div>
+    </div>
+
+    <div #myFiltersDiv class="col-md-12 box transform">
+        <div class="row search-box">
+            
+            <div class="col-md-3">
+                <span>User Name</span><br>
+                <input id="input" class="w-100" type="text" placeholder="User Name" size="30" pInputText>
+            </div>
+            <div class="col-md-3">
+                <span>User Type</span><br>
+                <p-dropdown [options]="usertype" class="w-100" placeholder="Select User Type" optionLabel="name" [showClear]="true"></p-dropdown>
+            </div>
+            <div class="col-md-3">
+                <span>User Status</span><br>
+                <p-dropdown [options]="userstatus" class="w-100" placeholder="Select Status" optionLabel="name" [showClear]="true"></p-dropdown>
+            </div>
+            <div class="col-md-9 text-right search-buttons">
+                <button pButton type="button" icon="pi pi-search" label="Search"
+                    class="ui-button-secondary table-header-items"></button>&nbsp;
+                <button pButton type="button" icon="pi pi-refresh" label="Clear"
+                    class="ui-button-secondary table-header-items"></button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-12 search-box">
+        <p-table #dt [columns]="cols" [value]="users" [lazy]="true" (onLazyLoad)="loadCarsLazy($event)"
+            [paginator]="true" [rows]="10" [totalRecords]="totalRecords" [loading]="loading" [responsive]="true"
+            [reorderableColumns]="true" dataKey="firstname">               
+            <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.field" pReorderableColumn
+                        style="width: 20% !important;">
+                        <div class="">
+                            {{col.header}}
+                            <p-sortIcon [field]="col.field" style="float:right"></p-sortIcon>
+                        </div>   
+                    </th>
+                    <th style="width:5em"></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-columns="columns" let-expanded="expanded">
+                <tr>
+                    <td *ngFor="let col of columns">
+                        <a class="bold" href="admin/users/add-user?type=view&id=1">{{rowData[col.field]}}</a>                        
+                    </td>
+                    <td class="d-flex">
+                        <i class="pi pi-pencil" (click)="editUser()"></i>&nbsp;
+                        <i class="pi pi-trash" (click)="deleteUser()"></i>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+    <p-dialog header="Delete Confirmation" [transitionOptions]="'500ms'" [baseZIndex]="20000" [(visible)]="display" [style]="{width: '30vw'}" [responsive]="true" [draggable]="true" [position]="position">
+        <p>Are you sure you want to delete User?</p>
+        <p-footer class="btm-buttons">
+            <button type="button" pButton icon="pi pi-check" label="Yes" (click)="userRevoke()" ></button>
+            <button type="button" pButton icon="pi pi-times" (click)="display=false" label="No"></button>
+        </p-footer>
+    </p-dialog>  

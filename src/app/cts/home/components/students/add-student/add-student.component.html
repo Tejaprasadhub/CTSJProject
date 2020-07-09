@@ -78,8 +78,8 @@
                                 (!addStudentForm.controls['email'].valid && addStudentForm.controls['email'].untouched && 
                                 formSubmitAttempt))">
                                 <i class="fa fa-circle"></i>
-                                <span *ngIf="(addStudentForm.controls['class'].errors?.required)">
-                                    Enter "Email"
+                                <span *ngIf="(addStudentForm.controls['email'].errors?.pattern)">
+                                    Enter " Valid Email"
                                 </span>
                             </div>
                             <div class="col-md-3 error-div" *ngIf="((!addStudentForm.controls['class'].valid && 
@@ -106,6 +106,8 @@
                                 <i class="fa fa-circle"></i>
                                 <span *ngIf="(addStudentForm.controls['mblno'].errors?.required)">
                                     Enter "Mobile Number"</span>
+                                <span *ngIf="(addStudentForm.controls['mblno'].errors?.pattern)">
+                                    Enter "Valid mobile number"</span>
                             </div>
                             <div class="col-md-3 error-div" *ngIf="((!addStudentForm.controls['statec'].valid && addStudentForm.controls['statec'].touched)||
                             (!addStudentForm.controls['statec'].valid && addStudentForm.controls['statec'].untouched &&
@@ -120,6 +122,20 @@
                                 <i class="fa fa-circle"></i>
                                 <span *ngIf="(addStudentForm.controls['cityc'].errors?.required)">
                                     Enter "Current City"</span>
+                            </div>
+                            <div class="col-md-3 error-div" *ngIf="((!addStudentForm.controls['pincodec'].valid && addStudentForm.controls['pincodec'].touched)||
+                            (!addStudentForm.controls['pincodec'].valid && addStudentForm.controls['pincodec'].untouched &&
+                             formSubmitAttempt))">
+                                <i class="fa fa-circle"></i>
+                                <span *ngIf="(addStudentForm.controls['pincodec'].errors?.pattern)">
+                                    Enter "Valid Pincode-1"</span>
+                            </div>
+                            <div class="col-md-3 error-div" *ngIf="((!addStudentForm.controls['pincodep'].valid && addStudentForm.controls['pincodep'].touched)||
+                            (!addStudentForm.controls['pincodep'].valid && addStudentForm.controls['pincodep'].untouched &&
+                             formSubmitAttempt))">
+                                <i class="fa fa-circle"></i>
+                                <span *ngIf="(addStudentForm.controls['pincodep'].errors?.pattern)">
+                                    Enter "Valid Pincode-2"</span>
                             </div>
                             <div class="col-md-3 error-div" *ngIf="((!addStudentForm.controls['statep'].valid && addStudentForm.controls['statep'].touched)||
                             (!addStudentForm.controls['statep'].valid && addStudentForm.controls['statep'].untouched &&
@@ -155,6 +171,43 @@
                                 <i class="fa fa-circle"></i>
                                 <span *ngIf="(addStudentForm.controls['pmobile'].errors?.required)">
                                     Enter "Parent mobile number"</span>
+                                <span *ngIf="(addStudentForm.controls['pmobile'].errors?.pattern)">
+                                    Enter " Valid Parent mobile number"</span>
+                            </div>
+                            <div class="col-md-3 error-div" *ngIf="((!addStudentForm.controls['pemail'].valid && addStudentForm.controls['pemail'].touched)||
+                            (!addStudentForm.controls['pemail'].valid && addStudentForm.controls['pemail'].untouched &&
+                             formSubmitAttempt))">
+                                <i class="fa fa-circle"></i>
+                                <span *ngIf="(addStudentForm.controls['pemail'].errors?.pattern)">
+                                    Enter " Valid Parents email"</span>
+                            </div>
+                            <div class="col-md-3 error-div" *ngIf="((!addStudentForm.controls['e1email'].valid && addStudentForm.controls['e1email'].touched)||
+                            (!addStudentForm.controls['e1email'].valid && addStudentForm.controls['e1email'].untouched &&
+                             formSubmitAttempt))">
+                                <i class="fa fa-circle"></i>
+                                <span *ngIf="(addStudentForm.controls['e1email'].errors?.pattern)">
+                                    Enter " Valid Emergency email-1"</span>
+                            </div>
+                            <div class="col-md-3 error-div" *ngIf="((!addStudentForm.controls['e2email'].valid && addStudentForm.controls['e2email'].touched)||
+                            (!addStudentForm.controls['e2email'].valid && addStudentForm.controls['e2email'].untouched &&
+                             formSubmitAttempt))">
+                                <i class="fa fa-circle"></i>
+                                <span *ngIf="(addStudentForm.controls['e2email'].errors?.pattern)">
+                                    Enter " Valid Emergency email-2"</span>
+                            </div>
+                            <div class="col-md-3 error-div" *ngIf="((!addStudentForm.controls['e1mobile'].valid && addStudentForm.controls['e1mobile'].touched)||
+                            (!addStudentForm.controls['e1mobile'].valid && addStudentForm.controls['e1mobile'].untouched &&
+                             formSubmitAttempt))">
+                                <i class="fa fa-circle"></i>
+                                <span *ngIf="(addStudentForm.controls['e1mobile'].errors?.pattern)">
+                                    Enter " Valid Emergency Mobile number-1"</span>
+                            </div>
+                            <div class="col-md-3 error-div" *ngIf="((!addStudentForm.controls['e2mobile'].valid && addStudentForm.controls['e2mobile'].touched)||
+                            (!addStudentForm.controls['e2mobile'].valid && addStudentForm.controls['e2mobile'].untouched &&
+                             formSubmitAttempt))">
+                                <i class="fa fa-circle"></i>
+                                <span *ngIf="(addStudentForm.controls['e2mobile'].errors?.pattern)">
+                                    Enter " Valid Emergency Mobile number-2"</span>
                             </div>
                         </div>
                     </div>
@@ -167,7 +220,7 @@
             </div>
             <div class="col-md-4">
                 <span>First Name</span><br>
-                <input id="input" class="w-100" [attr.disabled]="isDisabled ? 'disabled': null"
+                <input id="input" class="w-100" maxlength="45" [attr.disabled]="isDisabled ? 'disabled': null"
                     formControlName="firstName" type="text" placeholder="First Name" size="30" pInputText
                     [ngClass]="{'error':((!addStudentForm.controls['firstName'].valid && 
                     addStudentForm.controls['firstName'].touched) || (!addStudentForm.controls['firstName'].valid && 
@@ -175,14 +228,14 @@
             </div>
             <div class="col-md-4">
                 <span>Middle Name</span><br>
-                <input id="input" class="w-100" [attr.disabled]="isDisabled ? 'disabled': null"
+                <input id="input" class="w-100" maxlength="45" [attr.disabled]="isDisabled ? 'disabled': null"
                     formControlName="middleName" type="text" placeholder="Middle Name" size="30" pInputText [ngClass]="{'error':((!addStudentForm.controls['middleName'].valid && 
                         addStudentForm.controls['middleName'].touched) || (!addStudentForm.controls['middleName'].valid && 
                         addStudentForm.controls['middleName'].untouched && formSubmitAttempt))}">
             </div>
             <div class="col-md-4">
                 <span>Last Name</span><br>
-                <input id="input" class="w-100" [attr.disabled]="isDisabled ? 'disabled': null"
+                <input id="input" class="w-100" maxlength="45" [attr.disabled]="isDisabled ? 'disabled': null"
                     formControlName="lastName" type="text" placeholder="Last Name" size="30" pInputText
                     [ngClass]="{'error':((!addStudentForm.controls['lastName'].valid && 
                             addStudentForm.controls['lastName'].touched) || (!addStudentForm.controls['lastName'].valid && 
@@ -190,8 +243,8 @@
             </div>
             <div class="col-md-4">
                 <span>Date Of Birth</span><br>
-                <p-calendar placeholder="Select Date" [disabled]="isDisabled" formControlName="dateofbirth"
-                    [inputStyle]="{'width':'100% !important'}" [showIcon]="true"
+                <p-calendar placeholder="Select Date" [disabled]="isDisabled" [maxDate]="maxDate" [readonlyInput]="true"
+                    formControlName="dateofbirth" [inputStyle]="{'width':'100% !important'}" [showIcon]="true"
                     [ngClass]="{'error':((!addStudentForm.controls['dateofbirth'].valid && 
                     addStudentForm.controls['dateofbirth'].touched) || (!addStudentForm.controls['dateofbirth'].valid && 
                     addStudentForm.controls['dateofbirth'].untouched && formSubmitAttempt)),'required':(isRequired == true )}">
@@ -219,27 +272,29 @@
             </div>
             <div class="col-md-4">
                 <span>Email</span><br>
-                <input id="input" class="w-100" [attr.disabled]="isDisabled ? 'disabled': null" formControlName="email"
-                    type="text" placeholder="Enter Email" size="30" pInputText [ngClass]="{'error':((!addStudentForm.controls['email'].valid && 
+                <input id="input" class="w-100" maxlength="45" [attr.disabled]="isDisabled ? 'disabled': null"
+                    formControlName="email" type="text" placeholder="Enter Email" size="30" pInputText [ngClass]="{'error':((!addStudentForm.controls['email'].valid && 
                     addStudentForm.controls['email'].touched) || (!addStudentForm.controls['email'].valid && 
                     addStudentForm.controls['email'].untouched && formSubmitAttempt))}">
             </div>
 
             <div class="col-md-4">
                 <span>Class</span><br>
-                <input id="input" class="w-100" [attr.disabled]="isDisabled ? 'disabled': null" formControlName="class"
-                    type="text" placeholder="Class" size="30" pInputText
-                    [ngClass]="{'error':((!addStudentForm.controls['class'].valid && 
-                            addStudentForm.controls['class'].touched) || (!addStudentForm.controls['class'].valid && 
-                            addStudentForm.controls['class'].untouched && formSubmitAttempt)),'required':(isRequired == true )}">
+                <p-dropdown [options]="classes" filter="true" formControlName="class" [disabled]="isDisabled"
+                    placeholder="Select class" [ngClass]="{'error':((!addStudentForm.controls['class'].valid &&
+                     addStudentForm.controls['class'].touched) || 
+                    (!addStudentForm.controls['class'].valid && addStudentForm.controls['class'].untouched && formSubmitAttempt)),
+                    'required':(isRequired == true )}">
+                </p-dropdown>
             </div>
             <div class="col-md-4">
                 <span>Section</span><br>
-                <input id="input" class="w-100" [attr.disabled]="isDisabled ? 'disabled': null"
-                    formControlName="section" type="text" placeholder="Section" size="30" pInputText
-                    [ngClass]="{'error':((!addStudentForm.controls['section'].valid && 
-                            addStudentForm.controls['section'].touched) || (!addStudentForm.controls['section'].valid && 
-                            addStudentForm.controls['section'].untouched && formSubmitAttempt)),'required':(isRequired == true )}">
+                <p-dropdown [options]="sections" filter="true" formControlName="section" [disabled]="isDisabled"
+                    placeholder="Select section" [ngClass]="{'error':((!addStudentForm.controls['section'].valid &&
+                     addStudentForm.controls['section'].touched) || 
+                    (!addStudentForm.controls['section'].valid && addStudentForm.controls['section'].untouched && formSubmitAttempt)),
+                    'required':(isRequired == true )}">
+                </p-dropdown>
             </div>
             <div class="col-md-12 header">
                 Address Details
@@ -251,59 +306,60 @@
             </div>
             <div class="col-md-4">
                 <span>D.No</span><br>
-                <input id="input" class="w-100" [attr.disabled]="isDisabled ? 'disabled': null" formControlName="d_noc"
-                    type="text" placeholder="D.No" size="30" pInputText [ngClass]="{'error':((!addStudentForm.controls['d_noc'].valid && 
+                <input id="input" maxlength="10" class="w-100" [attr.disabled]="isDisabled ? 'disabled': null"
+                    formControlName="d_noc" type="text" placeholder="D.No" size="30" pInputText [ngClass]="{'error':((!addStudentForm.controls['d_noc'].valid && 
                             addStudentForm.controls['d_noc'].touched) || (!addStudentForm.controls['d_noc'].valid && 
                             addStudentForm.controls['d_noc'].untouched && formSubmitAttempt))}">
             </div>
 
             <div class="col-md-4">
                 <span>Street</span><br>
-                <input id="input" class="w-100" [attr.disabled]="isDisabled ? 'disabled': null"
+                <input id="input" class="w-100" maxlength="45" [attr.disabled]="isDisabled ? 'disabled': null"
                     formControlName="streetc" type="text" placeholder="Street" size="30" pInputText [ngClass]="{'error':((!addStudentForm.controls['streetc'].valid && 
                             addStudentForm.controls['streetc'].touched) || (!addStudentForm.controls['streetc'].valid && 
                             addStudentForm.controls['streetc'].untouched && formSubmitAttempt))}">
             </div>
             <div class="col-md-4">
                 <span>Country</span><br>
-                <input id="input" class="w-100" [attr.disabled]="isDisabled ? 'disabled': null"
+                <input id="input" maxlength="100" class="w-100" [attr.disabled]="isDisabled ? 'disabled': null"
                     formControlName="countryc" type="text" placeholder="Country" size="30" pInputText [ngClass]="{'error':((!addStudentForm.controls['countryc'].valid && 
                             addStudentForm.controls['countryc'].touched) || (!addStudentForm.controls['countryc'].valid && 
                             addStudentForm.controls['countryc'].untouched && formSubmitAttempt))}">
             </div>
             <div class="col-md-4">
                 <span>State</span><br>
-                <input id="input" class="w-100" [attr.disabled]="isDisabled ? 'disabled': null" formControlName="statec"
-                    type="text" placeholder="State" size="30" pInputText
+                <input id="input" maxlength="100" class="w-100" [attr.disabled]="isDisabled ? 'disabled': null"
+                    formControlName="statec" type="text" placeholder="State" size="30" pInputText
                     [ngClass]="{'error':((!addStudentForm.controls['statec'].valid && 
                             addStudentForm.controls['statec'].touched) || (!addStudentForm.controls['statec'].valid && 
                             addStudentForm.controls['statec'].untouched && formSubmitAttempt)),'required':(isRequired == true )}">
             </div>
             <div class="col-md-4">
                 <span>District</span><br>
-                <input id="input" class="w-100" [attr.disabled]="isDisabled ? 'disabled': null"
+                <input id="input" maxlength="100" class="w-100" [attr.disabled]="isDisabled ? 'disabled': null"
                     formControlName="districtc" type="text" placeholder="District" size="30" pInputText [ngClass]="{'error':((!addStudentForm.controls['districtc'].valid && 
                             addStudentForm.controls['districtc'].touched) || (!addStudentForm.controls['districtc'].valid && 
                             addStudentForm.controls['districtc'].untouched && formSubmitAttempt))}">
             </div>
             <div class="col-md-4">
                 <span>City</span><br>
-                <input id="input" class="w-100" [attr.disabled]="isDisabled ? 'disabled': null" formControlName="cityc"
-                    type="text" placeholder="City" size="30" pInputText
+                <input id="input" class="w-100" maxlength="100" [attr.disabled]="isDisabled ? 'disabled': null"
+                    formControlName="cityc" type="text" placeholder="City" size="30" pInputText
                     [ngClass]="{'error':((!addStudentForm.controls['cityc'].valid && 
                             addStudentForm.controls['cityc'].touched) || (!addStudentForm.controls['cityc'].valid && 
                             addStudentForm.controls['cityc'].untouched && formSubmitAttempt)),'required':(isRequired == true )}">
             </div>
             <div class="col-md-4">
                 <span>Pincode</span><br>
-                <input id="input" class="w-100" [attr.disabled]="isDisabled ? 'disabled': null"
-                    formControlName="pincodec" type="text" placeholder="Pincode" size="30" pInputText [ngClass]="{'error':((!addStudentForm.controls['pincodec'].valid && 
+                <input id="input" class="w-100" maxlength="6" (keypress)=_keyPress($event)
+                    [attr.disabled]="isDisabled ? 'disabled': null" formControlName="pincodec" type="text"
+                    placeholder="Pincode" size="30" pInputText [ngClass]="{'error':((!addStudentForm.controls['pincodec'].valid && 
                             addStudentForm.controls['pincodec'].touched) || (!addStudentForm.controls['pincodec'].valid && 
                             addStudentForm.controls['pincodec'].untouched && formSubmitAttempt))}">
             </div>
             <div class="col-md-4">
                 <span>Home Phone Number</span><br>
-                <input id="input" class="w-100" [attr.disabled]="isDisabled ? 'disabled': null"
+                <input id="input" class="w-100" maxlength="15" [attr.disabled]="isDisabled ? 'disabled': null"
                     formControlName="homephn" type="text" placeholder="Home Phone Number" size="30" pInputText
                     [ngClass]="{'error':((!addStudentForm.controls['homephn'].valid && 
                             addStudentForm.controls['homephn'].touched) || (!addStudentForm.controls['homephn'].valid && 
@@ -311,8 +367,9 @@
             </div>
             <div class="col-md-4">
                 <span>Mobile Number</span><br>
-                <input id="input" class="w-100" [attr.disabled]="isDisabled ? 'disabled': null" formControlName="mblno"
-                    type="text" placeholder="Mobile Number" size="30" pInputText
+                <input id="input" maxlength="10" class="w-100" (keypress)=_keyPress($event)
+                    [attr.disabled]="isDisabled ? 'disabled': null" formControlName="mblno" type="text"
+                    placeholder="Mobile Number" size="30" pInputText
                     [ngClass]="{'error':((!addStudentForm.controls['mblno'].valid && 
                             addStudentForm.controls['mblno'].touched) || (!addStudentForm.controls['mblno'].valid && 
                             addStudentForm.controls['mblno'].untouched && formSubmitAttempt)),'required':(isRequired == true )}">
@@ -326,53 +383,54 @@
             </div>
             <div class="col-md-4">
                 <span>D.No</span><br>
-                <input id="input" class="w-100" [attr.disabled]="isDisabled ? 'disabled': null" formControlName="d_nop"
-                    type="text" placeholder="D.No" size="30" pInputText [ngClass]="{'error':((!addStudentForm.controls['d_nop'].valid && 
+                <input id="input" class="w-100" maxlength="10" [attr.disabled]="isDisabled ? 'disabled': null"
+                    formControlName="d_nop" type="text" placeholder="D.No" size="30" pInputText [ngClass]="{'error':((!addStudentForm.controls['d_nop'].valid && 
                             addStudentForm.controls['d_nop'].touched) || (!addStudentForm.controls['d_nop'].valid && 
                             addStudentForm.controls['d_nop'].untouched && formSubmitAttempt))}">
             </div>
 
             <div class="col-md-4">
                 <span>Street</span><br>
-                <input id="input" class="w-100" [attr.disabled]="isDisabled ? 'disabled': null"
+                <input id="input" class="w-100" maxlength="45" [attr.disabled]="isDisabled ? 'disabled': null"
                     formControlName="streetp" type="text" placeholder="Street" size="30" pInputText [ngClass]="{'error':((!addStudentForm.controls['streetp'].valid && 
                             addStudentForm.controls['streetp'].touched) || (!addStudentForm.controls['streetp'].valid && 
                             addStudentForm.controls['streetp'].untouched && formSubmitAttempt))}">
             </div>
             <div class="col-md-4">
                 <span>Country</span><br>
-                <input id="input" class="w-100" [attr.disabled]="isDisabled ? 'disabled': null"
+                <input id="input" class="w-100" maxlength="100" [attr.disabled]="isDisabled ? 'disabled': null"
                     formControlName="countryp" type="text" placeholder="Country" size="30" pInputText [ngClass]="{'error':((!addStudentForm.controls['countryp'].valid && 
                             addStudentForm.controls['countryp'].touched) || (!addStudentForm.controls['countryp'].valid && 
                             addStudentForm.controls['countryp'].untouched && formSubmitAttempt))}">
             </div>
             <div class="col-md-4">
                 <span>State</span><br>
-                <input id="input" class="w-100" [attr.disabled]="isDisabled ? 'disabled': null" formControlName="statep"
-                    type="text" placeholder="State" size="30" pInputText
+                <input id="input" class="w-100" maxlength="100" [attr.disabled]="isDisabled ? 'disabled': null"
+                    formControlName="statep" type="text" placeholder="State" size="30" pInputText
                     [ngClass]="{'error':((!addStudentForm.controls['statep'].valid && 
                             addStudentForm.controls['statep'].touched) || (!addStudentForm.controls['statep'].valid && 
                             addStudentForm.controls['statep'].untouched && formSubmitAttempt)),'required':(isRequired == true )}">
             </div>
             <div class="col-md-4">
                 <span>District</span><br>
-                <input id="input" class="w-100" [attr.disabled]="isDisabled ? 'disabled': null"
+                <input id="input" class="w-100" maxlength="100" [attr.disabled]="isDisabled ? 'disabled': null"
                     formControlName="districtp" type="text" placeholder="District" size="30" pInputText [ngClass]="{'error':((!addStudentForm.controls['districtp'].valid && 
                             addStudentForm.controls['districtp'].touched) || (!addStudentForm.controls['districtp'].valid && 
                             addStudentForm.controls['districtp'].untouched && formSubmitAttempt))}">
             </div>
             <div class="col-md-4">
                 <span>City</span><br>
-                <input id="input" class="w-100" [attr.disabled]="isDisabled ? 'disabled': null" formControlName="cityp"
-                    type="text" placeholder="City" size="30" pInputText
+                <input id="input" class="w-100" maxlength="100" [attr.disabled]="isDisabled ? 'disabled': null"
+                    formControlName="cityp" type="text" placeholder="City" size="30" pInputText
                     [ngClass]="{'error':((!addStudentForm.controls['cityp'].valid && 
                             addStudentForm.controls['cityp'].touched) || (!addStudentForm.controls['cityp'].valid && 
                             addStudentForm.controls['cityp'].untouched && formSubmitAttempt)),'required':(isRequired == true )}">
             </div>
             <div class="col-md-4">
                 <span>Pincode</span><br>
-                <input id="input" class="w-100" [attr.disabled]="isDisabled ? 'disabled': null"
-                    formControlName="pincodep" type="text" placeholder="Pincode" size="30" pInputText [ngClass]="{'error':((!addStudentForm.controls['pincodep'].valid && 
+                <input id="input" class="w-100" maxlength="6" (keypress)=_keyPress($event)
+                    [attr.disabled]="isDisabled ? 'disabled': null" formControlName="pincodep" type="text"
+                    placeholder="Pincode" size="30" pInputText [ngClass]="{'error':((!addStudentForm.controls['pincodep'].valid && 
                             addStudentForm.controls['pincodep'].touched) || (!addStudentForm.controls['pincodep'].valid && 
                             addStudentForm.controls['pincodep'].untouched && formSubmitAttempt))}">
             </div>
@@ -381,32 +439,33 @@
             </div>
             <div class="col-md-4">
                 <span>First Name</span><br>
-                <input id="input" class="w-100" [attr.disabled]="isDisabled ? 'disabled': null" formControlName="pfname"
-                    type="text" placeholder="First Name" size="30" pInputText
+                <input id="input" class="w-100" maxlength="45" [attr.disabled]="isDisabled ? 'disabled': null"
+                    formControlName="pfname" type="text" placeholder="First Name" size="30" pInputText
                     [ngClass]="{'error':((!addStudentForm.controls['pfname'].valid && 
                     addStudentForm.controls['pfname'].touched) || (!addStudentForm.controls['pfname'].valid && 
                     addStudentForm.controls['pfname'].untouched && formSubmitAttempt)),'required':(isRequired == true )}">
             </div>
             <div class="col-md-4">
                 <span>Last Name</span><br>
-                <input id="input" class="w-100" [attr.disabled]="isDisabled ? 'disabled': null" formControlName="plname"
-                    type="text" placeholder="Last Name" size="30" pInputText
+                <input id="input" class="w-100" maxlength="45" [attr.disabled]="isDisabled ? 'disabled': null"
+                    formControlName="plname" type="text" placeholder="Last Name" size="30" pInputText
                     [ngClass]="{'error':((!addStudentForm.controls['plname'].valid && 
                             addStudentForm.controls['plname'].touched) || (!addStudentForm.controls['plname'].valid && 
                             addStudentForm.controls['plname'].untouched && formSubmitAttempt)),'required':(isRequired == true )}">
             </div>
             <div class="col-md-4">
                 <span>Mobile</span><br>
-                <input id="input" class="w-100" [attr.disabled]="isDisabled ? 'disabled': null"
-                    formControlName="pmobile" type="text" placeholder="Enter Mobile" size="30" pInputText
+                <input id="input" class="w-100" maxlength="10" (keypress)=_keyPress($event)
+                    [attr.disabled]="isDisabled ? 'disabled': null" formControlName="pmobile" type="text"
+                    placeholder="Enter Mobile" size="30" pInputText
                     [ngClass]="{'error':((!addStudentForm.controls['pmobile'].valid && 
                     addStudentForm.controls['pmobile'].touched) || (!addStudentForm.controls['pmobile'].valid && 
                     addStudentForm.controls['pmobile'].untouched && formSubmitAttempt)),'required':(isRequired == true )}">
             </div>
             <div class="col-md-4">
                 <span>Email</span><br>
-                <input id="input" class="w-100" [attr.disabled]="isDisabled ? 'disabled': null" formControlName="pemail"
-                    type="text" placeholder="Enter Email" size="30" pInputText [ngClass]="{'error':((!addStudentForm.controls['pemail'].valid && 
+                <input id="input" class="w-100" maxlength="45" [attr.disabled]="isDisabled ? 'disabled': null"
+                    formControlName="pemail" type="text" placeholder="Enter Email" size="30" pInputText [ngClass]="{'error':((!addStudentForm.controls['pemail'].valid && 
                     addStudentForm.controls['pemail'].touched) || (!addStudentForm.controls['pemail'].valid && 
                     addStudentForm.controls['pemail'].untouched && formSubmitAttempt))}">
             </div>
@@ -414,7 +473,6 @@
             <div class="col-md-12 header">
                 Emergency Contact Details
             </div>
-            <!-- <p>Contact1 Details</p> -->
             <div class="col-md-12 sub-details-div">
                 <div class="col-md-12">
                     <i class="fa fa-phone" aria-hidden="true"></i> Contact1 Details
@@ -422,28 +480,29 @@
             </div>
             <div class="col-md-4">
                 <span>First Name</span><br>
-                <input id="input" class="w-100" [attr.disabled]="isDisabled ? 'disabled': null"
+                <input id="input" class="w-100" maxlength="45" [attr.disabled]="isDisabled ? 'disabled': null"
                     formControlName="e1fname" type="text" placeholder="First Name" size="30" pInputText [ngClass]="{'error':((!addStudentForm.controls['e1fname'].valid && 
                     addStudentForm.controls['e1fname'].touched) || (!addStudentForm.controls['e1fname'].valid && 
                     addStudentForm.controls['e1fname'].untouched && formSubmitAttempt))}">
             </div>
             <div class="col-md-4">
                 <span>Last Name</span><br>
-                <input id="input" class="w-100" [attr.disabled]="isDisabled ? 'disabled': null"
+                <input id="input" class="w-100" maxlength="45" [attr.disabled]="isDisabled ? 'disabled': null"
                     formControlName="e1lname" type="text" placeholder="Last Name" size="30" pInputText [ngClass]="{'error':((!addStudentForm.controls['e1lname'].valid && 
                             addStudentForm.controls['e1lname'].touched) || (!addStudentForm.controls['e1lname'].valid && 
                             addStudentForm.controls['e1lname'].untouched && formSubmitAttempt))}">
             </div>
             <div class="col-md-4">
                 <span>Mobile</span><br>
-                <input id="input" class="w-100" [attr.disabled]="isDisabled ? 'disabled': null"
-                    formControlName="e1mobile" type="text" placeholder="Enter Mobile" size="30" pInputText [ngClass]="{'error':((!addStudentForm.controls['e1mobile'].valid && 
+                <input id="input" class="w-100" maxlength="10" (keypress)=_keyPress($event)
+                    [attr.disabled]="isDisabled ? 'disabled': null" formControlName="e1mobile" type="text"
+                    placeholder="Enter Mobile" size="30" pInputText [ngClass]="{'error':((!addStudentForm.controls['e1mobile'].valid && 
                     addStudentForm.controls['e1mobile'].touched) || (!addStudentForm.controls['e1mobile'].valid && 
                     addStudentForm.controls['e1mobile'].untouched && formSubmitAttempt))}">
             </div>
             <div class="col-md-4">
                 <span>Email</span><br>
-                <input id="input" class="w-100" [attr.disabled]="isDisabled ? 'disabled': null"
+                <input id="input" class="w-100" maxlength="45" [attr.disabled]="isDisabled ? 'disabled': null"
                     formControlName="e1email" type="text" placeholder="Enter Email" size="30" pInputText [ngClass]="{'error':((!addStudentForm.controls['e1email'].valid && 
                     addStudentForm.controls['e1email'].touched) || (!addStudentForm.controls['e1email'].valid && 
                     addStudentForm.controls['e1email'].untouched && formSubmitAttempt))}">
@@ -456,28 +515,29 @@
             </div>
             <div class="col-md-4">
                 <span>First Name</span><br>
-                <input id="input" class="w-100" [attr.disabled]="isDisabled ? 'disabled': null"
+                <input id="input" class="w-100" maxlength="45" [attr.disabled]="isDisabled ? 'disabled': null"
                     formControlName="e2fname" type="text" placeholder="First Name" size="30" pInputText [ngClass]="{'error':((!addStudentForm.controls['e2fname'].valid && 
                     addStudentForm.controls['e2fname'].touched) || (!addStudentForm.controls['e2fname'].valid && 
                     addStudentForm.controls['e2fname'].untouched && formSubmitAttempt))}">
             </div>
             <div class="col-md-4">
                 <span>Last Name</span><br>
-                <input id="input" class="w-100" [attr.disabled]="isDisabled ? 'disabled': null"
+                <input id="input" class="w-100" maxlength="45" [attr.disabled]="isDisabled ? 'disabled': null"
                     formControlName="e2lname" type="text" placeholder="Last Name" size="30" pInputText [ngClass]="{'error':((!addStudentForm.controls['e2lname'].valid && 
                             addStudentForm.controls['e2lname'].touched) || (!addStudentForm.controls['e2lname'].valid && 
                             addStudentForm.controls['e2lname'].untouched && formSubmitAttempt))}">
             </div>
             <div class="col-md-4">
                 <span>Mobile</span><br>
-                <input id="input" class="w-100" [attr.disabled]="isDisabled ? 'disabled': null"
-                    formControlName="e2mobile" type="text" placeholder="Enter Mobile" size="30" pInputText [ngClass]="{'error':((!addStudentForm.controls['e2mobile'].valid && 
+                <input id="input" class="w-100" maxlength="10" (keypress)=_keyPress($event)
+                    [attr.disabled]="isDisabled ? 'disabled': null" formControlName="e2mobile" type="text"
+                    placeholder="Enter Mobile" size="30" pInputText [ngClass]="{'error':((!addStudentForm.controls['e2mobile'].valid && 
                     addStudentForm.controls['e2mobile'].touched) || (!addStudentForm.controls['e2mobile'].valid && 
                     addStudentForm.controls['e2mobile'].untouched && formSubmitAttempt))}">
             </div>
             <div class="col-md-4">
                 <span>Email</span><br>
-                <input id="input" class="w-100" [attr.disabled]="isDisabled ? 'disabled': null"
+                <input id="input" class="w-100" maxlength="45" [attr.disabled]="isDisabled ? 'disabled': null"
                     formControlName="e2email" type="text" placeholder="Enter Email" size="30" pInputText [ngClass]="{'error':((!addStudentForm.controls['e2email'].valid && 
                     addStudentForm.controls['e2email'].touched) || (!addStudentForm.controls['e2email'].valid && 
                     addStudentForm.controls['e2email'].untouched && formSubmitAttempt))}">

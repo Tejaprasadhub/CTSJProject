@@ -16,16 +16,17 @@ import { Location } from '@angular/common';
   styleUrls: ['./add-teacher.component.scss']
 })
 export class AddTeacherComponent implements OnInit {
-  gender: SelectItem[]=[];
+  branches: SelectItem[] = [];
+  gender: SelectItem[] = [];
   qualification: SelectItem[];
   experience: SelectItem[];
-  teacherId:string;
-  formType:string;
-  pageTitle:string;
-  editData:any;
-  isDisabled:boolean=false;
-  isRequired:boolean=false;
-  display:boolean=false;
+  teacherId: string;
+  formType: string;
+  pageTitle: string;
+  editData: any;
+  isDisabled: boolean = false;
+  isRequired: boolean = false;
+  display: boolean = false;
   expertiseIn: SelectItem[];
   associatedClasses: SelectItem[];
   associatedSections: SelectItem[];
@@ -33,15 +34,19 @@ export class AddTeacherComponent implements OnInit {
   //to create Teacher From 
   addTeacherForm: FormGroup;
   formSubmitAttempt: boolean = false;
-  errorMessage:string="";
-  successMessage:string="";
-  
-  constructor(private fb: FormBuilder, private router: Router,private route:ActivatedRoute,private location:Location) {
+  errorMessage: string = "";
+  successMessage: string = "";
+
+  constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private location: Location) {
+    this.branches = [
+      { label: 'branch1', value: '1' },
+      { label: 'branch2', value: '2' }
+    ];
     this.gender = [
       { label: 'Male', value: 'M' },
       { label: 'Female', value: 'F' }
     ];
-    
+
     this.qualification = [
       { label: 'B.Ed', value: 'B.Ed' },
       { label: 'M.Ed', value: 'M.Ed' },
@@ -77,46 +82,47 @@ export class AddTeacherComponent implements OnInit {
 
   ngOnInit(): void {// On page load
     //to get the query parameter values
-    this.route.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params =>{
+    this.route.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params => {
       this.teacherId = params['id'];
       this.formType = params['type'];
-    });     
+    });
     //to create form with validations
     this.createForm();
     //to check whether the form to be created or updated
-    if(this.formType == "create"){
-      this.pageTitle="Add Teacher";
-      this.isDisabled=false;
-      this.isRequired=true;
-    }else if(this.formType == "edit"){
-      this.pageTitle="Edit Teacher";
+    if (this.formType == "create") {
+      this.pageTitle = "Add Teacher";
+      this.isDisabled = false;
+      this.isRequired = true;
+    } else if (this.formType == "edit") {
+      this.pageTitle = "Edit Teacher";
       this.editControls();
       this.fetchData();
-    }else{
-      this.pageTitle="View Details";
-      this.isDisabled=true;
-      this.isRequired=false;
+    } else {
+      this.pageTitle = "View Details";
+      this.isDisabled = true;
+      this.isRequired = false;
       this.fetchData();
     }
 
   }
   //Create form method to constuct a form with validations
-  createForm(){
+  createForm() {
     this.addTeacherForm = this.fb.group({
-      'teacherName': new FormControl('', { validators: [Validators.required,Validators.pattern('^([A-Za-z0-9 _\'-])*$')]}),
+      'teacherName': new FormControl('', { validators: [Validators.required, Validators.pattern('^([A-Za-z0-9 _\'-])*$')] }),
+      'branch': new FormControl('', { validators: [Validators.required] }),
       'dateofbirth': new FormControl('', { validators: [Validators.required] }),
       'gender': new FormControl('', { validators: [Validators.required] }),
       'qualification': new FormControl('', { validators: [Validators.required] }),
       'experience': new FormControl(''),
-      'mobile': new FormControl('', { validators: [Validators.required,Validators.pattern('[0-9]\\d{9}')] }),
-      'email': new FormControl('',{ validators: [Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")] }),
+      'mobile': new FormControl('', { validators: [Validators.required, Validators.pattern('[0-9]\\d{9}')] }),
+      'email': new FormControl('', { validators: [Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")] }),
       'expertiseIn': new FormControl('', { validators: [Validators.required] }),
       'associatedClasses': new FormControl('', { validators: [Validators.required] }),
       'associatedSections': new FormControl('', { validators: [Validators.required] })
     });
   }
   //to fetch data when edit teacher
-  private fetchData(){
+  private fetchData() {
     // this.loadGender(this.gender);
     this.bindEditTeacherDetails();
   }
@@ -138,23 +144,25 @@ export class AddTeacherComponent implements OnInit {
   //   return outputList;
   // }
   //to bind data to controllers
-  bindEditTeacherDetails(){
-    this.editData={
-      'teacherName':'Teja prasad',
+  bindEditTeacherDetails() {
+    this.editData = {
+      'teacherName': 'Teja prasad',
+      'branch': '1',
       'dateofbirth': '4/5/2020',
       'gender': 'F',
       'qualification': 'OTH',
       'experience': '0-1',
       'mobile': '9640938361',
       'email': 'tejaprasadbehara@gmail.com',
-      'expertiseIn':['T','M'],
-      'associatedClasses': ['1','2'],
-      'associatedSections': ['A','B']
+      'expertiseIn': ['T', 'M'],
+      'associatedClasses': ['1', '2'],
+      'associatedSections': ['A', 'B']
     }
 
     console.log(this.editData.gender)
     this.addTeacherForm.setValue({
       'teacherName': this.editData.teacherName,
+      'branch': this.editData.branch,
       'dateofbirth': this.editData.dateofbirth,
       'gender': this.editData.gender,
       'qualification': this.editData.qualification,
@@ -168,37 +176,37 @@ export class AddTeacherComponent implements OnInit {
   }
   // Add Teacher method
   addTeacherSubmit(): void {
-    this.errorMessage="";
-    this.successMessage="";
+    this.errorMessage = "";
+    this.successMessage = "";
     this.formSubmitAttempt = true;
-    if(this.addTeacherForm.valid){
-      this.formSubmitAttempt=false;
+    if (this.addTeacherForm.valid) {
+      this.formSubmitAttempt = false;
       console.log(this.addTeacherForm.value);
-      this.addTeacherForm.reset();     
-      this.successMessage="Your changes have been successfully saved";
+      this.addTeacherForm.reset();
+      this.successMessage = "Your changes have been successfully saved";
     }
   }
   //Reset form method
-  resetForm():void{
+  resetForm(): void {
     this.addTeacherForm.reset();
-    this.successMessage="";
+    this.successMessage = "";
   }
   //to make controllers from disable to edit mode
-  editControls():void{
-    this.isRequired=true;
-    this.isDisabled=false;
-    this.pageTitle="Edit Teacher";
+  editControls(): void {
+    this.isRequired = true;
+    this.isDisabled = false;
+    this.pageTitle = "Edit Teacher";
   }
   //navigating to Teachers list page
-  list():void{
+  list(): void {
     // this.router.navigateByUrl("Teachers");
     this.location.back();
     // this.router.navigate(['/Teachers'], {relativeTo: this.route});
   }
 
   //This is the method to clear all the form controllers
-  private reset(){
-    this.addTeacherForm=this.fb.group({
+  private reset() {
+    this.addTeacherForm = this.fb.group({
       'teacherName': new FormControl(''),
       'dateofbirth': new FormControl(''),
       'gender': new FormControl(''),
@@ -215,8 +223,8 @@ export class AddTeacherComponent implements OnInit {
     const pattern = /[0-9]/;
     let inputChar = String.fromCharCode(event.charCode);
     if (!pattern.test(inputChar)) {
-        event.preventDefault();
+      event.preventDefault();
 
     }
-}
+  }
 }

@@ -24,15 +24,26 @@ export class AddStudentComponent implements OnInit {
   addStudentForm: FormGroup;
   formSubmitAttempt: boolean = false;
   gender: SelectItem[] = [];
-
+  classes: SelectItem[] = [];
+  sections: SelectItem[] = [];
+  maxDate= new Date();
   constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute,private location:Location) {
+    this.maxDate.setDate(this.maxDate.getDate());    
     this.gender = [
       { label: 'Male', value: 'M' },
       { label: 'Female', value: 'F' }
     ];
+    this.classes = [
+      { label: 'first', value: '1' },
+      { label: 'second', value: '2' }
+    ];
+    this.sections = [
+      { label: 'A-section', value: '1' },
+      { label: 'B-section', value: '2' }
+    ];
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void {    
     this.route.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params => {
       this.studentId = params['id'];
       this.formType = params['type'];
@@ -64,7 +75,7 @@ export class AddStudentComponent implements OnInit {
       'dateofbirth': new FormControl('', { validators: [Validators.required] }),
       'gender': new FormControl('', { validators: [Validators.required] }),
       'joineddate': new FormControl('', { validators: [Validators.required] }),
-      'email': new FormControl('', { validators: [Validators.pattern('')] }),
+      'email': new FormControl('',{ validators: [Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")] }),
       'class': new FormControl('', { validators: [Validators.required] }),
       'section': new FormControl('', { validators: [Validators.required] }),
       'd_noc': new FormControl(''),
@@ -73,28 +84,28 @@ export class AddStudentComponent implements OnInit {
       'statec': new FormControl('',{ validators: [Validators.required] }),
       'districtc': new FormControl(''),
       'cityc': new FormControl('',{ validators: [Validators.required] }),
-      'pincodec': new FormControl(''),
+      'pincodec': new FormControl('',{ validators: [Validators.pattern('[0-9]\\d{9}')] }),
       'homephn': new FormControl(''),
-      'mblno': new FormControl('', { validators: [Validators.required] }),
+      'mblno':  new FormControl('', { validators: [Validators.required,Validators.pattern('[0-9]\\d{9}')] }),
       'd_nop': new FormControl(''),
       'streetp': new FormControl(''),
       'countryp': new FormControl(''),
       'statep': new FormControl('',{ validators: [Validators.required] }),
       'districtp': new FormControl(''),
       'cityp': new FormControl('',{ validators: [Validators.required] }),
-      'pincodep': new FormControl(''),
+      'pincodep': new FormControl('',{ validators: [Validators.pattern('[0-9]\\d{9}')] }),
       'pfname': new FormControl('',{ validators: [Validators.required] }),
       'plname': new FormControl('',{ validators: [Validators.required] }),
-      'pmobile': new FormControl('',{ validators: [Validators.required] }),
-      'pemail': new FormControl(''),
+      'pmobile':  new FormControl('', { validators: [Validators.required,Validators.pattern('[0-9]\\d{9}')] }),
+      'pemail': new FormControl('',{ validators: [Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")] }),
       'e1fname': new FormControl(''),
       'e1lname': new FormControl(''),
-      'e1mobile': new FormControl(''),
-      'e1email': new FormControl(''),
+      'e1mobile': new FormControl('', { validators: [Validators.pattern('[0-9]\\d{9}')] }),
+      'e1email':new FormControl('',{ validators: [Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")] }),
       'e2fname': new FormControl(''),
       'e2lname': new FormControl(''),
-      'e2mobile': new FormControl(''),
-      'e2email': new FormControl('')
+      'e2mobile': new FormControl('', { validators: [Validators.pattern('[0-9]\\d{9}')] }),
+      'e2email': new FormControl('',{ validators: [Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")] }),
     });
   }
 
@@ -118,8 +129,8 @@ export class AddStudentComponent implements OnInit {
       'gender': "F",
       'joineddate': "01/01/2020",
       'email': "chinchilam@gmail.com",
-      'class': "6",
-      'section': "A",
+      'class': "1",
+      'section': "1",
       'd_noc': "24/7",
       'streetc': "padmavathi nagar",
       'countryc': "india",
@@ -209,4 +220,12 @@ export class AddStudentComponent implements OnInit {
     this.addStudentForm.reset();
     this.successMessage = "";
   }
+  _keyPress(event: any) {
+    const pattern = /[0-9]/;
+    let inputChar = String.fromCharCode(event.charCode);
+    if (!pattern.test(inputChar)) {
+        event.preventDefault();
+
+    }
+}
 }

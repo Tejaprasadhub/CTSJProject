@@ -1,0 +1,267 @@
+<div class="row student-marks-container info-container">
+    <div class="col-md-12 profile-title">
+        <div class="row">
+            <div class="col-md-9">
+                <h4><i class="fa fa-user" aria-hidden="true"></i> Student Marks</h4>
+            </div>
+            <div class="col-md-3">
+                <p-dropdown [options]="years" class="w-100" placeholder="Select a Academic Year" optionLabel="name"
+                    [showClear]="true"></p-dropdown>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <p-tabView>
+            <p-tabPanel header="Exam 1" leftIcon="pi pi-inbox">     
+               <div class="col-md-12">
+                <div class="col-md-12 div-common-styles">
+                    <div class="col-md-12 text-right">
+                        <p-radioButton name="MarksType" value="P" label="Percentage" [(ngModel)]="radioButtonValue"
+                            inputId="preopt1"></p-radioButton>&nbsp;
+                        <p-radioButton name="MarksType" value="G" label="Grade" [(ngModel)]="radioButtonValue"
+                            inputId="preopt1"></p-radioButton>
+                    </div>
+                </div>
+                <div class="div-common-styles">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <input id="input" class="w-100" type="text" placeholder="Telugu Marks" size="3"
+                                    [disabled]='disabled' pInputText>
+                            </div>
+                            <div class="col-md-4">
+                                <input id="input" class="w-100" type="text" placeholder="Hindi Marks" size="3"
+                                    [disabled]='disabled' pInputText>
+                            </div>
+                            <div class="col-md-4">
+                                <input id="input" class="w-100" type="text" placeholder="English Marks" size="3"
+                                    [disabled]='disabled' pInputText>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <input id="input" class="w-100" type="text" placeholder="Mathematics Marks" size="3"
+                                    [disabled]='disabled' pInputText>
+                            </div>
+                            <div class="col-md-4">
+                                <input id="input" class="w-100" type="text" placeholder="Science Marks" size="3"
+                                    [disabled]='disabled' pInputText>
+                            </div>
+                            <div class="col-md-4">
+                                <input id="input" class="w-100" type="text" placeholder="Social Marks" size="3"
+                                    [disabled]='disabled' pInputText>
+                            </div>   
+                        </div>
+                    </div>
+                    <br>
+                    <div class="col-md-12"> 
+                        <textarea placeholder="Enter Comments" rows="3" [disabled]='disabled' cols="30" class="w-100" pInputTextarea></textarea>
+                    </div>
+                </div>
+                <div class="row col-md-12">
+                    <div class="col-md-9"></div>
+                    <div class="col-md-3 d-flex">
+                        <button pButton type="button" icon="pi pi-pencil" label="Edit" (click)="enable()" [disabled]="!disabled"
+                            class="ui-button-secondary"></button>&nbsp;
+                        <button pButton type="button" icon="pi pi-check" label="Submit" [disabled]="disabled"
+                            class="ui-button-secondary "></button>&nbsp;
+                        <button pButton type="button" icon="pi pi-times" label="Cancel" (click)="disable()"
+                            class="ui-button-secondary"></button>&nbsp;
+                    </div>
+                </div>
+               </div>
+            </p-tabPanel>
+            <p-tabPanel header="Exam 2" leftIcon="pi pi-inbox">     
+                <div class="col-md-12">
+                 <div class="col-md-12 div-common-styles">
+                     <div class="col-md-12 text-right">
+                         <p-radioButton name="MarksType" value="P" label="Percentage" [(ngModel)]="radioButtonValue"
+                             inputId="preopt1"></p-radioButton>&nbsp;
+                         <p-radioButton name="MarksType" value="G" label="Grade" [(ngModel)]="radioButtonValue"
+                             inputId="preopt1"></p-radioButton>
+                     </div>
+                 </div>
+                 <div class="div-common-styles">
+                     <div class="col-md-12">
+                         <div class="row">
+                             <div class="col-md-4">
+                                 <input id="input" class="w-100" type="text" placeholder="Telugu Marks" size="3"
+                                     [disabled]='disabled' pInputText>
+                             </div>
+                             <div class="col-md-4">
+                                 <input id="input" class="w-100" type="text" placeholder="Hindi Marks" size="3"
+                                     [disabled]='disabled' pInputText>
+                             </div>
+                             <div class="col-md-4">
+                                 <input id="input" class="w-100" type="text" placeholder="English Marks" size="3"
+                                     [disabled]='disabled' pInputText>
+                             </div>
+                         </div>
+                     </div>
+                     <br>
+                     <div class="col-md-12">
+                         <div class="row">
+                             <div class="col-md-4">
+                                 <input id="input" class="w-100" type="text" placeholder="Mathematics Marks" size="3"
+                                     [disabled]='disabled' pInputText>
+                             </div>
+                             <div class="col-md-4">
+                                 <input id="input" class="w-100" type="text" placeholder="Science Marks" size="3"
+                                     [disabled]='disabled' pInputText>
+                             </div>
+                             <div class="col-md-4">
+                                 <input id="input" class="w-100" type="text" placeholder="Social Marks" size="3"
+                                     [disabled]='disabled' pInputText>
+                             </div>   
+                         </div>
+                     </div>
+                     <br>
+                     <div class="col-md-12"> 
+                         <textarea placeholder="Enter Comments" rows="3" [disabled]='disabled' cols="30" class="w-100" pInputTextarea></textarea>
+                     </div>
+                 </div>
+                 <div class="row col-md-12">
+                     <div class="col-md-9"></div>
+                     <div class="col-md-3 d-flex">
+                         <button pButton type="button" icon="pi pi-pencil" label="Edit" (click)="enable()" [disabled]="!disabled"
+                             class="ui-button-secondary"></button>&nbsp;
+                         <button pButton type="button" icon="pi pi-check" label="Submit" [disabled]="disabled"
+                             class="ui-button-secondary "></button>&nbsp;
+                         <button pButton type="button" icon="pi pi-times" label="Cancel" (click)="disable()"
+                             class="ui-button-secondary"></button>&nbsp;
+                     </div>
+                 </div>
+                </div>
+             </p-tabPanel>
+             <p-tabPanel header="Exam 3" leftIcon="pi pi-inbox">     
+                <div class="col-md-12">
+                 <div class="col-md-12 div-common-styles">
+                     <div class="col-md-12 text-right">
+                         <p-radioButton name="MarksType" value="P" label="Percentage" [(ngModel)]="radioButtonValue"
+                             inputId="preopt1"></p-radioButton>&nbsp;
+                         <p-radioButton name="MarksType" value="G" label="Grade" [(ngModel)]="radioButtonValue"
+                             inputId="preopt1"></p-radioButton>
+                     </div>
+                 </div>
+                 <div class="div-common-styles">
+                     <div class="col-md-12">
+                         <div class="row">
+                             <div class="col-md-4">
+                                 <input id="input" class="w-100" type="text" placeholder="Telugu Marks" size="3"
+                                     [disabled]='disabled' pInputText>
+                             </div>
+                             <div class="col-md-4">
+                                 <input id="input" class="w-100" type="text" placeholder="Hindi Marks" size="3"
+                                     [disabled]='disabled' pInputText>
+                             </div>
+                             <div class="col-md-4">
+                                 <input id="input" class="w-100" type="text" placeholder="English Marks" size="3"
+                                     [disabled]='disabled' pInputText>
+                             </div>
+                         </div>
+                     </div>
+                     <br>
+                     <div class="col-md-12">
+                         <div class="row">
+                             <div class="col-md-4">
+                                 <input id="input" class="w-100" type="text" placeholder="Mathematics Marks" size="3"
+                                     [disabled]='disabled' pInputText>
+                             </div>
+                             <div class="col-md-4">
+                                 <input id="input" class="w-100" type="text" placeholder="Science Marks" size="3"
+                                     [disabled]='disabled' pInputText>
+                             </div>
+                             <div class="col-md-4">
+                                 <input id="input" class="w-100" type="text" placeholder="Social Marks" size="3"
+                                     [disabled]='disabled' pInputText>
+                             </div>   
+                         </div>
+                     </div>
+                     <br>
+                     <div class="col-md-12"> 
+                         <textarea placeholder="Enter Comments" rows="3" [disabled]='disabled' cols="30" class="w-100" pInputTextarea></textarea>
+                     </div>
+                 </div>
+                 <div class="row col-md-12">
+                     <div class="col-md-9"></div>
+                     <div class="col-md-3 d-flex">
+                         <button pButton type="button" icon="pi pi-pencil" label="Edit" (click)="enable()" [disabled]="!disabled"
+                             class="ui-button-secondary"></button>&nbsp;
+                         <button pButton type="button" icon="pi pi-check" label="Submit" [disabled]="disabled"
+                             class="ui-button-secondary "></button>&nbsp;
+                         <button pButton type="button" icon="pi pi-times" label="Cancel" (click)="disable()"
+                             class="ui-button-secondary"></button>&nbsp;
+                     </div>
+                 </div>
+                </div>
+             </p-tabPanel>
+             <p-tabPanel header="Exam 4" leftIcon="pi pi-inbox">     
+                <div class="col-md-12">
+                 <div class="col-md-12 div-common-styles">
+                     <div class="col-md-12 text-right">
+                         <p-radioButton name="MarksType" value="P" label="Percentage" [(ngModel)]="radioButtonValue"
+                             inputId="preopt1"></p-radioButton>&nbsp;
+                         <p-radioButton name="MarksType" value="G" label="Grade" [(ngModel)]="radioButtonValue"
+                             inputId="preopt1"></p-radioButton>
+                     </div>
+                 </div>
+                 <div class="div-common-styles">
+                     <div class="col-md-12">
+                         <div class="row">
+                             <div class="col-md-4">
+                                 <input id="input" class="w-100" type="text" placeholder="Telugu Marks" size="3"
+                                     [disabled]='disabled' pInputText>
+                             </div>
+                             <div class="col-md-4">
+                                 <input id="input" class="w-100" type="text" placeholder="Hindi Marks" size="3"
+                                     [disabled]='disabled' pInputText>
+                             </div>
+                             <div class="col-md-4">
+                                 <input id="input" class="w-100" type="text" placeholder="English Marks" size="3"
+                                     [disabled]='disabled' pInputText>
+                             </div>
+                         </div>
+                     </div>
+                     <br>
+                     <div class="col-md-12">
+                         <div class="row">
+                             <div class="col-md-4">
+                                 <input id="input" class="w-100" type="text" placeholder="Mathematics Marks" size="3"
+                                     [disabled]='disabled' pInputText>
+                             </div>
+                             <div class="col-md-4">
+                                 <input id="input" class="w-100" type="text" placeholder="Science Marks" size="3"
+                                     [disabled]='disabled' pInputText>
+                             </div>
+                             <div class="col-md-4">
+                                 <input id="input" class="w-100" type="text" placeholder="Social Marks" size="3"
+                                     [disabled]='disabled' pInputText>
+                             </div>   
+                         </div>
+                     </div>
+                     <br>
+                     <div class="col-md-12"> 
+                         <textarea placeholder="Enter Comments" rows="3" [disabled]='disabled' cols="30" class="w-100" pInputTextarea></textarea>
+                     </div>
+                 </div>
+                 <div class="row col-md-12">
+                     <div class="col-md-9"></div>
+                     <div class="col-md-3 d-flex">
+                         <button pButton type="button" icon="pi pi-pencil" label="Edit" (click)="enable()" [disabled]="!disabled"
+                             class="ui-button-secondary"></button>&nbsp;
+                         <button pButton type="button" icon="pi pi-check" label="Submit" [disabled]="disabled"
+                             class="ui-button-secondary "></button>&nbsp;
+                         <button pButton type="button" icon="pi pi-times" label="Cancel" (click)="disable()"
+                             class="ui-button-secondary"></button>&nbsp;
+                     </div>
+                 </div>
+                </div>
+             </p-tabPanel>
+          
+        </p-tabView>
+       
+    </div>
+</div>

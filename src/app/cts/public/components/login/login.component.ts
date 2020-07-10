@@ -11,6 +11,7 @@ import { Subject } from 'rxjs';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
+  errorMessage:string = "";
   addLoginForm: FormGroup;
   formSubmitAttempt: boolean = false;
   private ngUnsubscribe = new Subject();
@@ -18,24 +19,28 @@ export class LoginComponent implements OnInit {
   }
   ngOnInit(): void {
     this.addLoginForm = this.fb.group({
-      // 'userName': new FormControl('', { validators: [Validators.required, Validators.pattern('^([A-Za-z0-9 _\'-])*$')] }),
-      // 'password': new FormControl('', {
-      //   validators: [Validators.required, Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}')
-      //   ]
-      // }),    
-      'userName': new FormControl(''),
-      'password': new FormControl(''),
+      'userName': new FormControl('', { validators: [Validators.required, Validators.pattern('^([A-Za-z0-9 _\'-])*$')] }),
+      'password': new FormControl('', {
+        validators: [Validators.required, Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}')
+        ]
+      }),    
+      // 'userName': new FormControl(''),
+      // 'password': new FormControl(''),
     });
   }
   addLoginSubmit(): void {
+    this.errorMessage = "";
      this.formSubmitAttempt = true;
       if (this.addLoginForm.valid){     
         this.formSubmitAttempt=false;
         console.log(this.addLoginForm.value);
         this.loginService.submitUserAccessDetails(this.addLoginForm.value)
-        .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{          
-          // console.log(this.addLoginForm.value)
-      this.router.navigate(['/admin/dashboard'], {relativeTo: this.route});
+        .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{  
+          if(result.token){
+            this.router.navigate(['/admin/dashboard'], {relativeTo: this.route});
+          }else{
+            this.errorMessage="The login information you entered does not match our records. Please try again.";
+          }
         })
         
     }

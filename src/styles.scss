@@ -110,8 +110,9 @@ width: 100% !important;
     font-size: 20px;
     cursor: pointer;
  }
- .ui-dialog-top{
-background-color: #635f5f59 !important;
+ .ui-dialog-top,.ui-dialog-wrapper{
+    background: rgba(0,0,0,.55);  
+    pointer-events: auto !important;
  }
  
 .blue:hover:not(.fa),.blue:focus:not(.fa){

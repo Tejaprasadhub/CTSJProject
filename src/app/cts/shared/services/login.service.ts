@@ -1,13 +1,17 @@
 import{HttpClient, HttpHeaders} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, catchError } from 'rxjs/operators';
+import { SessionTimeoutService } from 'src/app/core/security/session-timeout.service';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
 
-  constructor(private httpClient : HttpClient) { }
+  public static Token:string;
+
+  constructor(private httpClient : HttpClient,private sessionTimeOutService : SessionTimeoutService) { }
 
   submitUserAccessDetails(loginUserData){
     const headers = new HttpHeaders().set("Content-Type","application/json");
@@ -19,7 +23,25 @@ export class LoginService {
 
     return this.httpClient.post
     (loginUrl,data,{headers:headers,withCredentials:true}).pipe(
-    map((response:any)=> response),
+    map((response:any)=> {
+      //login successful if there's a jwt token in the response
+      var token =  response.token;
+      if(token){
+        //set token property
+        LoginService.Token = token;
+        var userInformationString = JSON.stringify({UserName:loginUserData.userName,token:token});
+
+        //store username and jwt token in local storage to keep user logged in between page refreshes
+        sessionStorage.setItem('currentUser',userInformationString);
+        // sessionStorage.setItem('redirectUrl',response.redirectUrl);
+
+        this.sessionTimeOutService.startTimer(response.timeoutMinutes,response.warningMinutes);
+
+        return response;
+      }else{
+        return response;
+      }
+    }),
     catchError(e => {
       if(e.status === 401){
         return "Invalid Credintials";

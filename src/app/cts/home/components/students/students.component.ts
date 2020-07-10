@@ -114,9 +114,7 @@ export class StudentsComponent implements OnInit {
   }
 
   rowExpand(event, data) {
-    let naviagateURL = "";
-    naviagateURL = "/admin/students/student";
-    this.router.navigate([naviagateURL, { outlets: { detail: ['student-profile'] } }]);
+    this.router.navigate(['student',{ outlets: { detail: ['student-profile'] } }], {relativeTo: this.route});
   }
 
   addNew($event: any) {

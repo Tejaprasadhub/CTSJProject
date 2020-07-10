@@ -17,9 +17,12 @@ export class StudentlayoutComponent implements OnInit {
 
   routing(studentInfoURL){
     this.urlPath = (studentInfoURL.split(':')[1]).slice(0,-1);
-    // console.log(this.urlPath)
-    // this.router.navigate([studentInfoURL], {relativeTo: this.route});
-    // this.router.navigateByUrl(studentInfoURL).then(e => {
+     console.log(this.urlPath)
+
+     this.router.navigate([{ outlets: { detail: [this.urlPath] } }], {relativeTo: this.route});
+
+    // this.router.navigate([this.urlPath], {relativeTo: this.route});
+    // this.router.navigateByUrl(this.urlPath).then(e => {
     //   if (e) {
     //     console.log("Navigation is successful!");
     //   } else {

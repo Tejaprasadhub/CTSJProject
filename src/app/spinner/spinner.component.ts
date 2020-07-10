@@ -28,7 +28,7 @@ export class SpinnerComponent implements OnDestroy {
   }
 
   ngOnInit(): void {
-    console.log(this.visible);
+    // console.log(this.visible);
   }
 
   ngOnDestroy(): void {

@@ -4,7 +4,7 @@ import { Classes } from 'src/app/cts/shared/models/classes';
 import { ClassesService } from 'src/app/cts/shared/services/classes.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-classes',
@@ -20,7 +20,7 @@ export class ClassesComponent implements OnInit {
   @ViewChild('myFiltersDiv') myFiltersDiv: ElementRef;
   loading: boolean;
 
-  constructor(private classesService: ClassesService, private router: Router) {
+  constructor(private classesService: ClassesService, private router: Router, private route: ActivatedRoute) {
     this.classes = [];
   }
 
@@ -54,5 +54,8 @@ export class ClassesComponent implements OnInit {
       this.myFiltersDiv.nativeElement.classList.remove('transform-active')
     else
       this.myFiltersDiv.nativeElement.classList.add('transform-active')
+  }
+  addNew($event: any) {
+    this.router.navigate(['add-class'], { relativeTo: this.route, queryParams: { type: 'create' } });
   }
 }

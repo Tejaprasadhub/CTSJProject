@@ -18,6 +18,7 @@ import { from } from 'rxjs';
 import { AddEventComponent } from '../../home/components/events/add-event/add-event.component';
 import { LayoutComponent } from '../components/layout/layout.component';
 import { AddStudentComponent } from '../components/students/add-student/add-student.component';
+import { AddClassComponent } from '../components/classes/add-class/add-class.component';
 
 
 
@@ -84,7 +85,11 @@ const homeRoutes: Routes = [
         component: ClassesComponent,
         data: { title: 'Classes List' }
       },
-    
+      {
+        path: 'classes/add-class',
+        component: AddClassComponent,
+        data: { title: 'Exams List' }
+      },
       {
         path: 'sections',
         component: SectionsComponent,

@@ -54,14 +54,26 @@
                             <p-sortIcon [field]="col.field" style="float:right"></p-sortIcon>
                         </div>
                     </th>
+                    <th style="width:5em"></th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-rowData let-columns="columns" let-expanded="expanded">
                 <tr>
                     <td *ngFor="let col of columns">
-                        {{rowData[col.field]}}
+                        <a class="bold" href="admin/classes/add-class?type=view&id=1">{{rowData[col.field]}}</a>                        
+                    </td>
+                    <td class="d-flex">
+                        <i class="pi pi-pencil" (click)="editClass()"></i>&nbsp;
+                        <i class="pi pi-trash" (click)="deleteClass()"></i>
                     </td>
                 </tr>
             </ng-template>
         </p-table>
     </div>
+    <p-dialog header="Delete Confirmation" [transitionOptions]="'500ms'" [baseZIndex]="20000" [(visible)]="display" [style]="{width: '30vw'}" [responsive]="true" [draggable]="true" [position]="position">
+        <p>Are you sure you want to delete Class?</p>
+        <p-footer class="btm-buttons">
+            <button type="button" pButton icon="pi pi-check" label="Yes" (click)="classRevoke()" ></button>
+            <button type="button" pButton icon="pi pi-times" (click)="display=false" label="No"></button>
+        </p-footer>
+    </p-dialog>  

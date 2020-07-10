@@ -19,6 +19,8 @@ export class ClassesComponent implements OnInit {
   cols: any[];
   @ViewChild('myFiltersDiv') myFiltersDiv: ElementRef;
   loading: boolean;
+  display:boolean=false;
+  position: string;
 
   constructor(private classesService: ClassesService, private router: Router, private route: ActivatedRoute) {
     this.classes = [];
@@ -58,4 +60,18 @@ export class ClassesComponent implements OnInit {
   addNew($event: any) {
     this.router.navigate(['add-class'], { relativeTo: this.route, queryParams: { type: 'create' } });
   }
+  editClass():void{
+    // this.router.navigateByUrl("Users/add-teacher?type=edit&id=1");
+    this.router.navigate(['add-class'],{relativeTo: this.route,queryParams: { type: 'edit', id: '1' }});
+  }
+  deleteClass():void{
+    this.position="top";
+    this.display=true;
+  }
+  classRevoke():void{
+    this.display=false;
+  }
+  
+
 }
+

@@ -19,6 +19,7 @@ import { AddEventComponent } from '../../home/components/events/add-event/add-ev
 import { LayoutComponent } from '../components/layout/layout.component';
 import { AddStudentComponent } from '../components/students/add-student/add-student.component';
 import { AddClassComponent } from '../components/classes/add-class/add-class.component';
+import { AuthenticationGuardService } from 'src/app/core/security/authentication-guard.service';
 
 
 
@@ -30,6 +31,7 @@ const homeRoutes: Routes = [
       {
         path: 'students',
         component: StudentsComponent,
+        canActivate:[AuthenticationGuardService],
         data: { title: 'Students List' },
         children: [
           {
@@ -48,61 +50,73 @@ const homeRoutes: Routes = [
       {
         path: 'students/add-student',
         component: AddStudentComponent,
+        canActivate:[AuthenticationGuardService],
         data: { title: 'Add Student' }
       },
       {
         path: 'events',
         component: EventsComponent,
+        canActivate:[AuthenticationGuardService],
         data: { title: 'Events List' }
       },
       {
         path: 'events/add-event',
         component: AddEventComponent,
+        canActivate:[AuthenticationGuardService],
         data: { title: 'Add Event' }
       }, 
       {
         path: 'users',
         component: UsersComponent,
+        canActivate:[AuthenticationGuardService],
         data: { title: 'Users List' }
       },
       {
         path: 'users/add-user',
         component: AddUserComponent,
+        canActivate:[AuthenticationGuardService],
         data: { title: 'Users List' }
       },
       {
         path: 'exams',
         component: ExamsComponent,
+        canActivate:[AuthenticationGuardService],
         data: { title: 'Exams List' }
       },
       {
         path: 'exams/add-exam',
         component: AddExamComponent,
+        canActivate:[AuthenticationGuardService],
         data: { title: 'Exams List' }
       },
       {
         path: 'classes',
         component: ClassesComponent,
+        canActivate:[AuthenticationGuardService],
         data: { title: 'Classes List' }
       },
       {
         path: 'classes/add-class',
         component: AddClassComponent,
+        canActivate:[AuthenticationGuardService],
         data: { title: 'Exams List' }
       },
       {
         path: 'sections',
         component: SectionsComponent,
+        canActivate:[AuthenticationGuardService],
         data: { title: 'Sections List' }
       },
       {
         path: 'changePassword',
         component: ChangePasswordComponent,
+        canActivate:[AuthenticationGuardService],
         data: { title: 'Change Password' }
       },
       {
         path: 'dashboard',
         component: DashboardComponent,
+        canActivate:[AuthenticationGuardService],
         data: { title: 'Change Password' }
       }
     ]

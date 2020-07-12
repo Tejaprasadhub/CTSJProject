@@ -14,6 +14,8 @@ import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
 import { SharedroutingModule } from './cts/shared/sharedrouting/sharedrouting.module';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { LoadingHttpInterceptor, LoadingHttpInterceptorFactoryProvider } from './core/loading-http-interceptor/loading-http-interceptor.component';
+import { BranchesComponent } from './cts/home/components/branches/branches.component';
+import { AddBranchComponent } from './cts/home/components/branches/add-branch/add-branch.component';
 
 const LoadingHttpInterceptorProvider = {
   provide: HTTP_INTERCEPTORS,
@@ -25,7 +27,9 @@ const LoadingHttpInterceptorProvider = {
   declarations: [
     AppComponent,
     PagenotfoundComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    BranchesComponent,
+    AddBranchComponent
 
   ],
   imports: [

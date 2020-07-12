@@ -33,7 +33,6 @@ export class LoginComponent implements OnInit {
      this.formSubmitAttempt = true;
       if (this.addLoginForm.valid){     
         this.formSubmitAttempt=false;
-        console.log(this.addLoginForm.value);
         this.loginService.submitUserAccessDetails(this.addLoginForm.value)
         .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{  
           if(result.token){

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Tiles } from 'src/app/cts/shared/models/tiles';
 import { Router, ActivatedRoute } from "@angular/router";
 
@@ -13,16 +13,17 @@ export class TilesComponent implements OnInit {
   tilesUrl:any;
   tiles: any[];
   responsiveOptions;
+  @ViewChild('cardBackGround') cardBackGround: ElementRef;
   constructor(private router: Router,private route:ActivatedRoute) { }
 
   ngOnInit(): void {
     this.MyTilesArray = [
-      new Tiles(565, 'students','blue'),
-      new Tiles(56, 'teachers','green'),
-      new Tiles(40, 'users','lightblue'),
-      new Tiles(6, 'exams','yellow'),
-      new Tiles(10, 'classes','pink'),
-      new Tiles(24, 'sections','blue')
+      new Tiles(565, 'students','blue','fa-child'),
+      new Tiles(56, 'teachers','green','fa-graduation-cap'),
+      new Tiles(40, 'users','lightblue','fa-users'),
+      new Tiles(6, 'exams','yellow','fa-pencil'),
+      new Tiles(10, 'classes','pink','fa-home'),
+      new Tiles(24, 'sections','blue','fa-puzzle-piece')
     ];    
 
     this.responsiveOptions = [
@@ -105,9 +106,12 @@ export class TilesComponent implements OnInit {
     }
   ]
   }
+
+  selectedTileName:string;
   routing(tileObject){
-    // this.router.navigate(tileObject.name)
-    this.router.navigate([tileObject.name], {relativeTo: this.route});
+    // this.router.navigate(tileObject.name)   
+    this.router.navigate([tileObject.name], {relativeTo: this.route});   
+    this.selectedTileName = tileObject.name;
   }
 
 

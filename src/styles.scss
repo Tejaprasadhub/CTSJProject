@@ -31,7 +31,7 @@ body{
      color:green;
  }
  .lightblue{
-     color:#448fab;
+     color:#351681 ;
  }
 p-dropdown.required,p-calendar.required,p-multiSelect.required{
     border-left: none !important;
@@ -135,9 +135,43 @@ width: 100% !important;
  }
  .lightblue:hover:not(.fa),.lightblue:focus:not(.fa)
  {
-     border: 2px solid #448fab;
+     border: 2px solid #351681;
      cursor: pointer;
  }
+
+ .tiles-section .card:hover,.bg{
+    background: url(./assets/images/cardbg.png) no-repeat center;
+    box-shadow: 0px 10px 30px rgba(108, 39, 255, 0.3);
+    background-size: 100% 100%;
+    color: #fff !important;
+    border:2px solid #fff !important;
+    .fa{
+        color:#fff !important
+    }
+ }
+
+ .student-layout-div .card{
+    background: url(./assets/images/cardbg.png) no-repeat center;
+    box-shadow: 0px 10px 30px rgba(108, 39, 255, 0.3);
+    background-size: 100% 100%;
+    color: #fff !important;
+    border:2px solid #fff !important;
+    .fa{
+        color:#fff !important
+    }
+ }
+ .ui-menuitem-text{
+    color: #351681 !important;
+}
+
+//  .card:hover::before{
+//     background: url(./assets/images/cardbg2.png) no-repeat center;
+//     top:8px;
+//  }
+//  .card:hover::after{
+//     background: url(./assets/images/cardbg3.png) no-repeat center;
+//     top:16px;
+//  }
  
 
 // table common styles starts from here
@@ -162,27 +196,22 @@ width: 100% !important;
 .ui-multiselect{
     width: 100% !important;
 }
-.ui-multiselect-panel .ui-multiselect-items .ui-multiselect-item.ui-state-highlight {
-    color: #ffffff;
-    background-color: #448fab !important;
-}
-.ui-chkbox .ui-chkbox-box.ui-state-active {
-    border-color: #448fab !important;
-    background-color: #448fab !important;
-    color: #ffffff;
+
+.ui-chkbox .ui-chkbox-box.ui-state-active,.ui-calendar .ui-button,.ui-button.ui-state-default.ui-button-secondary:hover,
+.ui-multiselect-panel .ui-multiselect-items .ui-multiselect-item.ui-state-highlight,body .ui-radiobutton .ui-radiobutton-box.ui-state-active:not(.ui-state-disabled):hover,
+body .ui-radiobutton .ui-radiobutton-box.ui-state-active,body .ui-accordion .ui-accordion-header:not(.ui-state-disabled).ui-state-active a{
+    border-color: #351681 !important;
+    background-color: #351681 !important;
+    color: #ffffff !important;
 }
 
 .ui-button.ui-state-default.ui-button-secondary{
-    color: #4282b4 !important;
+    color: #351681 !important;
     background-color: #fff !important;
     border: 1px solid #ccc !important;
     border-radius:50px;
 }
- .ui-button.ui-state-default.ui-button-secondary:hover{
-    border-color: #448fab !important;
-    background: #448fab !important;
-    color: #fff !important;
-}
+ 
 .info-container{
     border-left: 1px solid #ccc;
 }
@@ -198,7 +227,7 @@ width: 100% !important;
     background: #f8f9fa;
     padding: 10px;
     margin-top: 10px;
-    border-top: 3px solid #448fab;
+    border-top: 3px solid #351681;
     background-color: white;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
@@ -263,21 +292,17 @@ width: 100% !important;
     overflow-y: hidden;
 }
 body .ui-tabview.ui-tabview-top .ui-tabview-nav li.ui-state-active, body .ui-tabview.ui-tabview-bottom .ui-tabview-nav li.ui-state-active, body .ui-tabview.ui-tabview-left .ui-tabview-nav li.ui-state-active, body .ui-tabview.ui-tabview-right .ui-tabview-nav li.ui-state-active {
-    background-color: #448fab !important;
-    border: 1px solid #448fab !important;
+    background-color: #351681 !important;
+    border: 1px solid #351681 !important;
 }
 body .ui-dropdown-panel .ui-dropdown-items .ui-dropdown-item.ui-state-highlight, body .ui-dropdown-panel .ui-dropdown-items .ui-dropdown-item-group.ui-state-highlight {
     color: #ffffff;
-    background-color: #448fab !important;
+    background-color: #351681 !important;
 }
-body .ui-accordion .ui-accordion-header:not(.ui-state-disabled).ui-state-active a {
-    background-color: #448fab !important;
-    border: 1px solid #448fab !important;
-    color: #ffffff;
-}
+
 body .ui-dialog .ui-dialog-titlebar {
-    border: 1px solid #448fab !important;
-    background-color: #448fab !important;
+    border: 1px solid #351681 !important;
+    background-color: #351681 !important;
     color: #fff !important;
     padding: 1em;
     font-weight: 700;
@@ -287,39 +312,31 @@ body .ui-dialog .ui-dialog-titlebar .ui-dialog-titlebar-icon {
     color: #fff !important;
 }
 .ui-dialog-footer .ui-button {
-    background-color: #448fab !important;
-    border: 1px solid #448fab !important;
+    background-color: #351681 !important;
+    border: 1px solid #351681 !important;
 }
-body .ui-radiobutton .ui-radiobutton-box.ui-state-active:not(.ui-state-disabled):hover {
-    border-color: #448fab !important;
-    background-color: #448fab !important;
-    color: #ffffff;
-}
+ 
 
-body .ui-radiobutton .ui-radiobutton-box.ui-state-active {
-    border-color: #448fab;
-    background-color: #448fab;
-    color: #ffffff;
-}
+ 
 body .ui-table .ui-table-thead > tr > th {
     padding: 0.5em 0.5em !important;
     border: 1px solid #c8c8c8 !important;
     font-weight: 700;
     color: #fff !important;
-    background-color: #448fab !important;
+    background-color: #351681 !important;
 }
 body .ui-table .ui-sortable-column .ui-sortable-column-icon {
     color: #fff !important;
     font-size: 0.8em !important;
 }
 body .ui-paginator .ui-paginator-pages .ui-paginator-page.ui-state-active {
-    background-color: #448fab !important;
+    background-color: #351681 !important;
     color: #ffffff !important;
 }
 
 body .fc .fc-toolbar .fc-button {
-    background-color: #448fab !important;
-    border: 1px solid #448fab !important;
+    background-color: #351681 !important;
+    border: 1px solid #351681 !important;
 }
 body .fc .fc-event {
     // background-color: #008000 !important;

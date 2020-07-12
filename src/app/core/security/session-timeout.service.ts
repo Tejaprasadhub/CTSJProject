@@ -20,9 +20,6 @@ export class SessionTimeoutService {
   timeLeft: number;
 
   get showWarning(): boolean {
-    console.log(this.started);
-    console.log(this.timeLeft);
-    console.log(this.sessionWarning);
     return this.started && this.timeLeft < this.sessionWarning;
   }
 
@@ -99,6 +96,7 @@ export class SessionTimeoutService {
     sessionStorage.removeItem('sessionTime');
     sessionStorage.removeItem('sessionWarning');
     sessionStorage.removeItem('currentUser');
+    this.router.navigate(['/login']);      
   }
 
 }

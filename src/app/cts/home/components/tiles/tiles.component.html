@@ -3,10 +3,10 @@
         <p-carousel [value]="MyTilesArray" [numVisible]="5" [numScroll]="1" [circular]="true" [autoplayInterval]="20000"
             [responsiveOptions]="responsiveOptions">
             <ng-template let-tile pTemplate="item">
-                <div class="card {{tile.color}}" (click)="routing(tile)">
+                <div class="card {{tile.color}}" (click)="routing(tile)" [ngClass]="tile.name == selectedTileName ? 'bg' : 'nobg'">
                     <div class="card-body">
                         <div style="display: inline-flex;">
-                            <i class="fa fa-user {{tile.color}}" aria-hidden="true"></i>
+                            <i class="fa {{tile.icon}} {{tile.color}}" aria-hidden="true"></i>
                             <div>
                                 <h5 class="card-title">{{tile.name}}</h5>
                                 <p class="card-text">{{tile.count}}</p>

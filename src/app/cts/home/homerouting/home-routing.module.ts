@@ -20,6 +20,8 @@ import { LayoutComponent } from '../components/layout/layout.component';
 import { AddStudentComponent } from '../components/students/add-student/add-student.component';
 import { AddClassComponent } from '../components/classes/add-class/add-class.component';
 import { AuthenticationGuardService } from 'src/app/core/security/authentication-guard.service';
+import { BranchesComponent } from '../components/branches/branches.component';
+import { AddBranchComponent } from '../components/branches/add-branch/add-branch.component';
 
 
 
@@ -74,6 +76,18 @@ const homeRoutes: Routes = [
       {
         path: 'users/add-user',
         component: AddUserComponent,
+        canActivate:[AuthenticationGuardService],
+        data: { title: 'Users List' }
+      },
+      {
+        path: 'branches',
+        component: BranchesComponent,
+        canActivate:[AuthenticationGuardService],
+        data: { title: 'Users List' }
+      },
+      {
+        path: 'branches/add-branch',
+        component: AddBranchComponent,
         canActivate:[AuthenticationGuardService],
         data: { title: 'Users List' }
       },

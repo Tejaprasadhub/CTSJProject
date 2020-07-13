@@ -1,1 +1,94 @@
-<p>achievements works!</p>
+<div class="container-fluid">
+    <div class="col-md-12 component-header">
+        <div class="row">
+            <div class="col-md-4">
+                <span class="table-header-items">Achievements</span>
+            </div>
+            <div class="col-md-8 text-right">
+                <button pButton type="button" icon="pi pi-filter" label="Filters"
+                    class="ui-button-secondary table-header-items" (click)="toggleClass($event)"></button>&nbsp;
+                <button pButton type="button" icon="pi pi-plus" label="Achievement"
+                    class="ui-button-secondary table-header-items" (click)="addNew($event)"></button>
+            </div>
+        </div>
+    </div>
+
+    <div #myFiltersDiv class="col-md-12 box transform">
+        <div class="row search-box">
+            <div class="col-md-3">
+                <span>Title</span><br>
+                <input id="title" class="w-100" type="text" placeholder="Title" size="30" pInputText>
+            </div>
+            <div class="col-md-3">
+                <span>Year</span><br>
+                <input id="year" class="w-100" type="text" placeholder="Year" size="30" pInputText>
+            </div>
+            <div class="col-md-3">
+                <span>Created Date</span><br>
+                <p-calendar placeholder="Select Date" [inputStyle]="{'width':'100% !important'}" [showIcon]="true">
+                </p-calendar>
+            </div>
+            <div class="col-md-3">
+                <span>Created By</span><br>
+                <input id="createdBy" class="w-100" type="text" placeholder="Created By" size="30" pInputText>
+            </div>
+            <div class="col-md-12 text-right search-buttons">
+                <button pButton type="button" icon="pi pi-search" label="Search"
+                    class="ui-button-secondary table-header-items"></button>&nbsp;
+                <button pButton type="button" icon="pi pi-refresh" label="Clear"
+                    class="ui-button-secondary table-header-items"></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12 error-block animated fadeIn" *ngIf="errorMessage">
+        <div class="col-md-12">
+            <i class="fa fa-exclamation-circle"></i>
+            <b>{{errorMessage}}</b>
+        </div>
+    </div>
+    <div class="col-md-12 success-block animated fadeIn" *ngIf="successMessage">
+        <div class="col-md-12">
+            <i class="fa fa-check"></i>
+            <b>{{successMessage}}</b>
+        </div>
+    </div>
+
+    <div class="col-md-12 search-box">
+        <p-table #dt [columns]="cols" [value]="achievements" [lazy]="true" (onLazyLoad)="loadCarsLazy($event)"
+            [paginator]="true" [rows]="10" [totalRecords]="totalRecords" [loading]="loading" [responsive]="true"
+            [reorderableColumns]="true" dataKey="firstname">
+            <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.field" pReorderableColumn
+                        style="width: 20% !important;">
+                        <div class="">
+                            {{col.header}}
+                            <p-sortIcon [field]="col.field" style="float:right"></p-sortIcon>
+                        </div>
+                    </th>
+                    <th style="width:5em"></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-columns="columns" let-expanded="expanded">
+                <tr>
+                    <td *ngFor="let col of columns" >
+                        <a class="bold" href="admin/achivements/add-achievement?type=view&id=1">{{rowData[col.field]}}</a>
+                    </td>
+                    <td >
+                        <i class="pi pi-pencil" (click)="editAchievement()"></i>&nbsp;
+                        <i class="pi pi-trash" (click)="deleteAchievement()"></i>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+
+    <p-dialog header="Delete Confirmation" [transitionOptions]="'500ms'" [baseZIndex]="20000" [(visible)]="display" 
+    [style]="{width: '30vw'}" [responsive]="true" [draggable]="true" [position]="position">
+            <p>Are you sure you want to delete Achievement?</p>
+            <p-footer class="btm-buttons">
+                <button type="button" pButton icon="pi pi-check" label="Yes" (click)="achievementRevoke()" ></button>
+                <button type="button" pButton icon="pi pi-times" (click)="display=false" label="No"></button>
+            </p-footer>
+        </p-dialog>  

@@ -22,6 +22,10 @@ import { AddClassComponent } from '../components/classes/add-class/add-class.com
 import { AuthenticationGuardService } from 'src/app/core/security/authentication-guard.service';
 import { BranchesComponent } from '../components/branches/branches.component';
 import { AddBranchComponent } from '../components/branches/add-branch/add-branch.component';
+import { NewsComponent } from '../components/news/news.component';
+import { AddNewsComponent } from '../components/news/add-news/add-news.component';
+import { AddAchievementComponent } from '../components/achievements/add-achievement/add-achievement.component';
+import { AchievementsComponent } from '../components/achievements/achievements.component';
 
 
 
@@ -88,6 +92,30 @@ const homeRoutes: Routes = [
       {
         path: 'branches/add-branch',
         component: AddBranchComponent,
+        canActivate:[AuthenticationGuardService],
+        data: { title: 'Users List' }
+      },
+      {
+        path: 'news',
+        component: NewsComponent,
+        canActivate:[AuthenticationGuardService],
+        data: { title: 'Users List' }
+      },
+      {
+        path: 'news/add-news',
+        component: AddNewsComponent,
+        canActivate:[AuthenticationGuardService],
+        data: { title: 'Users List' }
+      },
+      {
+        path: 'achivements',
+        component: AchievementsComponent,
+        canActivate:[AuthenticationGuardService],
+        data: { title: 'Users List' }
+      },
+      {
+        path: 'achivements/add-achievement',
+        component: AddAchievementComponent,
         canActivate:[AuthenticationGuardService],
         data: { title: 'Users List' }
       },

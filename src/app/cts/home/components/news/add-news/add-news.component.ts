@@ -118,6 +118,6 @@ export class AddNewsComponent implements OnInit {
     this.location.back();
   }
 
-}
+} 
 
 

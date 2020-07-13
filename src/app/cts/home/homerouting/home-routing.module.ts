@@ -26,6 +26,7 @@ import { NewsComponent } from '../components/news/news.component';
 import { AddNewsComponent } from '../components/news/add-news/add-news.component';
 import { AddAchievementComponent } from '../components/achievements/add-achievement/add-achievement.component';
 import { AchievementsComponent } from '../components/achievements/achievements.component';
+import { RoleAccessComponent } from '../components/role-access/role-access.component';
 
 
 
@@ -143,6 +144,13 @@ const homeRoutes: Routes = [
         canActivate:[AuthenticationGuardService],
         data: { title: 'Exams List' }
       },
+      {
+        path: 'roleaccess',
+        component: RoleAccessComponent,
+        canActivate:[AuthenticationGuardService],
+        data: { title: 'Classes List' }
+      },
+     
       {
         path: 'sections',
         component: SectionsComponent,

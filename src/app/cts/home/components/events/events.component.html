@@ -28,8 +28,8 @@
                     <div class="card eventCard">
                         <div class="card-body">                            
                             <h6> {{event.title}} </h6>
-                            <p><a><i class="fa fa-edit"></i></a>
-                                <a><i class="fa fa-trash-o"></i></a>
+                            <p><a><i class="fa fa-edit" (click)="editEvent()"></i></a>&nbsp;
+                                <a><i class="fa fa-trash-o" (click)="deleteEvent()"></i></a>
                                 2nd Jan, 2020
                             </p>
                         </div>
@@ -43,3 +43,11 @@
             </div>
         </div>
     </div>
+    <p-dialog header="Delete Confirmation" [transitionOptions]="'500ms'" [baseZIndex]="20000" [(visible)]="display" 
+    [style]="{width: '30vw'}" [responsive]="true" [draggable]="true" [position]="position">
+            <p>Are you sure you want to delete Event?</p>
+            <p-footer class="btm-buttons">
+                <button type="button" pButton icon="pi pi-check" label="Yes" (click)="eventRevoke()" ></button>
+                <button type="button" pButton icon="pi pi-times" (click)="display=false" label="No"></button>
+            </p-footer>
+        </p-dialog>  

@@ -13,6 +13,9 @@ import { FullCalendar } from 'primeng/fullcalendar/primeng-fullcalendar';
 export class EventsComponent implements OnInit {
 eventsData :any;
 eventOptions:any;
+position: string;
+display:boolean=false;
+successMessage:string="";
   constructor(private router: Router,private route:ActivatedRoute) { }
 
   ngOnInit(): void {
@@ -99,6 +102,19 @@ eventOptions:any;
   addNew($event:any){
     // this.router.navigateByUrl("Events/add-event?type=create");
     this.router.navigate(['add-event'], {relativeTo: this.route,queryParams: { type: 'create'}});
+  }
+  editEvent():void{
+    // this.router.navigateByUrl("Exams/add-exam?type=edit&id=1");
+    this.router.navigate(['add-event'], {relativeTo: this.route,queryParams: { type: 'edit',id:'1'}});
+  }
+  deleteEvent():void{
+    this.position="top";
+    this.display=true;
+    this.successMessage="";
+  }
+  eventRevoke():void{
+    this.display=false;
+    this.successMessage="Event deleted successfully"
   }
 
 }

@@ -5,6 +5,7 @@ import { TeachersService } from 'src/app/cts/shared/services/teachers.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
+import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-teachers',
@@ -25,32 +26,52 @@ export class TeachersComponent implements OnInit {
   @ViewChild('myFiltersDiv') myFiltersDiv: ElementRef;
   qualification: any[];
   experience: any[];
-  loading: boolean;
+  expertise: any[];
+  classes: any[];
+  sections: any[];
+  
 
-  constructor(private teachersService: TeachersService, private router: Router,private route:ActivatedRoute) {
-    this.qualification = [
-      { name: 'B.Tech' },
-      { name: 'B.Ed' },
-      { name: 'B.sc' }
-    ];
-    this.experience = [
-      { name: '0-1(yrs)' },
-      { name: '1-2(yrs)' },
-      { name: '2-3(yrs)' },
-      { name: '3-4(yrs)' },
-      { name: '4-5(yrs)' },
-      { name: '5-6(yrs)' },
-      { name: '6-7(yrs)' },
-      { name: '7-8(yrs)' },
-      { name: '8-9(yrs)' },
-      { name: '9-10(yrs)' },
-      { name: '10-12(yrs)' },
-      { name: '12-15(yrs)' },
-      { name: '15-20(yrs)' },
-      { name: '>20(yrs)' }
-    ];
+  loading: boolean;
+  //to create Teacher From 
+  filtersForm: FormGroup;
+
+  constructor(private teachersService: TeachersService, private router: Router,private route:ActivatedRoute,
+    private fb: FormBuilder) {
+      this.qualification = [
+        { label: 'B.Ed', value: 'B.Ed' },
+        { label: 'M.Ed', value: 'M.Ed' },
+        { label: 'Other', value: 'OTH' }
+      ];
+      this.experience = [
+        { label: '0-1(yrs)', value: '0-1' },
+        { label: '15-20(yrs)', value: '15-20' },
+        { label: '>20(yrs)', value: '>20' }
+      ];
+      this.expertise = [
+        { label: 'Telugu', value: 'T' },
+        { label: 'Hindi', value: 'H' },
+        { label: 'English', value: 'E' },
+        { label: 'Mathmatics', value: 'M' },
+        { label: 'Science', value: 'S' }
+      ];
+      this.classes = [
+        { label: '1st Class', value: '1' },
+        { label: '2nd Class', value: '2' },
+        { label: '3rd Class', value: '3' },
+        { label: '4th Class', value: '4' },
+        { label: '5th Class', value: '5' }
+      ];
+      this.sections = [
+        { label: 'A Section', value: 'A' },
+        { label: 'B Section', value: 'B' },
+        { label: 'C Section', value: 'C' },
+        { label: 'D Section', value: 'D' },
+        { label: 'E Section', value: 'E' }
+      ];
     this.teachers = []
   }
+
+ 
 
   toggleClass($event: any) {
     if (this.myFiltersDiv.nativeElement.classList.contains('transform-active'))
@@ -94,6 +115,9 @@ export class TeachersComponent implements OnInit {
       { field: 'sections', header: 'Sections' }
     ];
     this.loading = true;
+
+    //to create form with validations
+    this.createFilterForm();
   }
 
   loadCarsLazy(event: LazyLoadEvent) {
@@ -104,5 +128,31 @@ export class TeachersComponent implements OnInit {
         this.loading = false;
       }
     }, 1000);
+  }
+
+  //Filters code starts from here
+   //Create form method to constuct a form with validations
+   createFilterForm() {
+    this.filtersForm = this.fb.group({
+      'tName': new FormControl(''),
+      'tQualification': new FormControl(''),
+      'tDateOfBirth': new FormControl(''),
+      'tEmail': new FormControl(''),
+      'tExperience': new FormControl(''),
+      'tMobile': new FormControl(''),
+      'tExpertise': new FormControl(''),
+      'tClasses': new FormControl(''),
+      'tSections': new FormControl('')
+    });
+  }
+
+  // Add Teacher method
+  filterSubmit(): void {
+    console.log(this.filtersForm.value);
+  }
+  //Reset form method
+  resetFilterForm(): void {
+    this.filtersForm.reset();
+    console.log(this.filtersForm.value);
   }
 }

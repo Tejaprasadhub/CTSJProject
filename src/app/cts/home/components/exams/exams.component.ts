@@ -5,6 +5,8 @@ import { ExamsService } from 'src/app/cts/shared/services/exams.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
+import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
+
 
 @Component({
   selector: 'app-exams',
@@ -23,8 +25,9 @@ export class ExamsComponent implements OnInit {
   successMessage:string="";
   display:boolean=false;
   position: string;
+  filtersForm: FormGroup;
 
-  constructor(private examsService: ExamsService, private router: Router,private route:ActivatedRoute) {
+  constructor(private examsService: ExamsService, private router: Router,private route:ActivatedRoute,private fb: FormBuilder) {
     this.exams = [];
   }
 
@@ -41,6 +44,7 @@ export class ExamsComponent implements OnInit {
       { field: 'createdby', header: 'Created By' }
     ];
     this.loading = true;
+    this.createFilterForm();
   }
 
   loadCarsLazy(event: LazyLoadEvent) {
@@ -52,7 +56,7 @@ export class ExamsComponent implements OnInit {
       }
     }, 1000);
   }
-
+ 
   toggleClass($event: any) {
     if (this.myFiltersDiv.nativeElement.classList.contains('transform-active'))
       this.myFiltersDiv.nativeElement.classList.remove('transform-active')
@@ -78,4 +82,21 @@ export class ExamsComponent implements OnInit {
     this.successMessage="Exam deleted successfully"
   }
 
+  
+  createFilterForm() {
+    this.filtersForm = this.fb.group({
+      'ttitle': new FormControl(''),
+      'tyear': new FormControl(''),
+      'tcreateddate': new FormControl(''),
+      'tcreatedby': new FormControl('')
+    });
+  }
+  filterSubmit(): void {
+    console.log(this.filtersForm.value);
+  }
+  //Reset form method
+  resetFilterForm(): void {
+    this.filtersForm.reset();
+    console.log(this.filtersForm.value);
+  }
 }

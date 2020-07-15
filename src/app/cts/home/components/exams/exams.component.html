@@ -12,35 +12,41 @@
             </div>
         </div>
     </div>
-
-    <div #myFiltersDiv class="col-md-12 box transform">
-        <div class="row search-box">
-            <div class="col-md-3">
-                <span>Title</span><br>
-                <input id="title" class="w-100" type="text" placeholder="Title" size="30" pInputText>
-            </div>
-            <div class="col-md-3">
-                <span>Year</span><br>
-                <input id="year" class="w-100" type="text" placeholder="Year" size="30" pInputText>
-            </div>
-            <div class="col-md-3">
-                <span>Created Date</span><br>
-                <p-calendar placeholder="Select Date" [inputStyle]="{'width':'100% !important'}" [showIcon]="true">
-                </p-calendar>
-            </div>
-            <div class="col-md-3">
-                <span>Created By</span><br>
-                <input id="createdBy" class="w-100" type="text" placeholder="Created By" size="30" pInputText>
-            </div>
-            <div class="col-md-12 text-right search-buttons">
-                <button pButton type="button" icon="pi pi-search" label="Search"
-                    class="ui-button-secondary table-header-items"></button>&nbsp;
-                <button pButton type="button" icon="pi pi-refresh" label="Clear"
-                    class="ui-button-secondary table-header-items"></button>
+    <form [formGroup]="filtersForm" class="col-md-12" (ngSubmit)="filterSubmit()">
+        <div #myFiltersDiv class="col-md-12 box transform">
+            <div class="row search-box">
+                <div class="col-md-3">
+                    <span>Title</span><br>
+                    <input id="title" class="w-100" type="text" formControlName="ttitle" placeholder="Title" size="30"
+                        pInputText>
+                </div>
+                <div class="col-md-3">
+                    <span>Year</span><br>
+                    <p-calendar placeholder="Select Year" view="month" dateFormat="mm/yy" [yearNavigator]="true"
+                        yearRange="2000:2030" formControlName="tyear" [inputStyle]="{'width':'100% !important'}"
+                        [showIcon]="true">
+                    </p-calendar>
+                </div>
+                <div class="col-md-3">
+                    <span>Created Date</span><br>
+                    <p-calendar placeholder="Select Date" formControlName="tcreateddate"
+                        [inputStyle]="{'width':'100% !important'}" [showIcon]="true">
+                    </p-calendar>
+                </div>
+                <div class="col-md-3">
+                    <span>Created By</span><br>
+                    <input id="createdBy" class="w-100" type="text" formControlName="tcreatedby"
+                        placeholder="Created By" size="30" pInputText>
+                </div>
+                <div class="col-md-12 text-right search-buttons">
+                    <button pButton type="submit" icon="pi pi-search" label="Search"
+                        class="ui-button-secondary table-header-items"></button>&nbsp;
+                    <button pButton type="button" icon="pi pi-refresh" label="Clear" (click)="resetFilterForm()"
+                        class="ui-button-secondary table-header-items"></button>
+                </div>
             </div>
         </div>
-    </div>
-
+    </form>
     <div class="col-md-12 error-block animated fadeIn" *ngIf="errorMessage">
         <div class="col-md-12">
             <i class="fa fa-exclamation-circle"></i>
@@ -72,10 +78,10 @@
             </ng-template>
             <ng-template pTemplate="body" let-rowData let-columns="columns" let-expanded="expanded">
                 <tr>
-                    <td *ngFor="let col of columns" >
+                    <td *ngFor="let col of columns">
                         <a class="bold" href="admin/exams/add-exam?type=view&id=1">{{rowData[col.field]}}</a>
                     </td>
-                    <td >
+                    <td>
                         <i class="pi pi-pencil" (click)="editExam()"></i>&nbsp;
                         <i class="pi pi-trash" (click)="deleteExam()"></i>
                     </td>
@@ -84,11 +90,11 @@
         </p-table>
     </div>
 
-    <p-dialog header="Delete Confirmation" [transitionOptions]="'500ms'" [baseZIndex]="20000" [(visible)]="display" 
-    [style]="{width: '30vw'}" [responsive]="true" [draggable]="true" [position]="position">
-            <p>Are you sure you want to delete Exam?</p>
-            <p-footer class="btm-buttons">
-                <button type="button" pButton icon="pi pi-check" label="Yes" (click)="examRevoke()" ></button>
-                <button type="button" pButton icon="pi pi-times" (click)="display=false" label="No"></button>
-            </p-footer>
-        </p-dialog>  
+    <p-dialog header="Delete Confirmation" [transitionOptions]="'500ms'" [baseZIndex]="20000" [(visible)]="display"
+        [style]="{width: '30vw'}" [responsive]="true" [draggable]="true" [position]="position">
+        <p>Are you sure you want to delete Exam?</p>
+        <p-footer class="btm-buttons">
+            <button type="button" pButton icon="pi pi-check" label="Yes" (click)="examRevoke()"></button>
+            <button type="button" pButton icon="pi pi-times" (click)="display=false" label="No"></button>
+        </p-footer>
+    </p-dialog>

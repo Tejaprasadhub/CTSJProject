@@ -88,6 +88,7 @@ export class UsersComponent implements OnInit {
       { field: 'userstatus', header: 'User Status' }
     ];
     this.loading = true;
+     //to create form with validations
     this.createFilterForm();
   } 
   loadCarsLazy(event: LazyLoadEvent) {

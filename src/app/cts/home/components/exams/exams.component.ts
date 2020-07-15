@@ -44,6 +44,7 @@ export class ExamsComponent implements OnInit {
       { field: 'createdby', header: 'Created By' }
     ];
     this.loading = true;
+    //to create form with validations
     this.createFilterForm();
   }
 
@@ -82,7 +83,8 @@ export class ExamsComponent implements OnInit {
     this.successMessage="Exam deleted successfully"
   }
 
-  
+  //Filters code starts from here
+   //Create form method to constuct a form with validations
   createFilterForm() {
     this.filtersForm = this.fb.group({
       'ttitle': new FormControl(''),

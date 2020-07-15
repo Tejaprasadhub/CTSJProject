@@ -5,6 +5,7 @@ import { ClassesService } from 'src/app/cts/shared/services/classes.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
+import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-classes',
@@ -21,9 +22,15 @@ export class ClassesComponent implements OnInit {
   loading: boolean;
   display:boolean=false;
   position: string;
+  filtersForm: FormGroup;
+  sections: SelectItem[] = [];
 
-  constructor(private classesService: ClassesService, private router: Router, private route: ActivatedRoute) {
+  constructor(private classesService: ClassesService, private router: Router, private route: ActivatedRoute,private fb: FormBuilder) {
     this.classes = [];
+    this.sections = [
+      { label: '1-section', value: '1' },
+      { label: '2-sections', value: '2' }
+    ];
   }
 
   public ngOnInit() {
@@ -39,6 +46,8 @@ export class ClassesComponent implements OnInit {
       { field: 'createdby', header: 'Created By' }
     ];
     this.loading = true;
+    //to create form with validations
+    this.createFilterForm();
   }
 
   loadCarsLazy(event: LazyLoadEvent) {
@@ -71,7 +80,24 @@ export class ClassesComponent implements OnInit {
   classRevoke():void{
     this.display=false;
   }
-  
+ //Filters code starts from here
+   //Create form method to constuct a form with validations
+   createFilterForm() {
+    this.filtersForm = this.fb.group({
+      'tclass': new FormControl(''),
+      'tsection': new FormControl('')
+    });
+  }
+
+  // Add Teacher method
+  filterSubmit(): void {
+    console.log(this.filtersForm.value);
+  }
+  //Reset form method
+  resetFilterForm(): void {
+    this.filtersForm.reset();
+    console.log(this.filtersForm.value);
+  } 
 
 }
 

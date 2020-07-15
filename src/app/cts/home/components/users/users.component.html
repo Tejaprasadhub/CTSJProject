@@ -12,7 +12,7 @@
             </div>
         </div>
     </div>
-    <form [formGroup]="filtersForm" class="col-md-12" (ngSubmit)="filterSubmit()">
+    <form [formGroup]="filtersForm" (ngSubmit)="filterSubmit()">
         <div #myFiltersDiv class="col-md-12 box transform">
             <div class="row search-box">
                 <div class="col-md-3">
@@ -29,7 +29,7 @@
                     <p-dropdown [options]="status" class="w-100" formControlName="tuserstatus" placeholder="Select Status" 
                        ></p-dropdown>
                 </div>
-                <div class="col-md-9 text-right search-buttons">
+                <div class="col-md-3 text-right search-buttons">
                     <button pButton type="submit" icon="pi pi-search" label="Search"
                         class="ui-button-secondary table-header-items"></button>&nbsp;
                     <button pButton type="button" icon="pi pi-refresh" label="Clear"  (click)="resetFilterForm()"

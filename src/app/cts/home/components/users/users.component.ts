@@ -89,7 +89,17 @@ export class UsersComponent implements OnInit {
     ];
     this.loading = true;
     this.createFilterForm();
+  } 
+  loadCarsLazy(event: LazyLoadEvent) {
+    this.loading = true;
+    setTimeout(() => {
+      if (this.datasource) {
+        this.users = this.datasource.slice(event.first, (event.first + event.rows));
+        this.loading = false;
+      }
+    }, 1000);
   }
+  //filter code starts from here
   createFilterForm() {
     this.filtersForm = this.fb.group({
       'tusertype': new FormControl(''),
@@ -106,13 +116,4 @@ export class UsersComponent implements OnInit {
     console.log(this.filtersForm.value);
   }
 
-  loadCarsLazy(event: LazyLoadEvent) {
-    this.loading = true;
-    setTimeout(() => {
-      if (this.datasource) {
-        this.users = this.datasource.slice(event.first, (event.first + event.rows));
-        this.loading = false;
-      }
-    }, 1000);
-  }
 }

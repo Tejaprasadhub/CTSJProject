@@ -87,8 +87,6 @@ export class ExamsComponent implements OnInit {
     this.filtersForm = this.fb.group({
       'ttitle': new FormControl(''),
       'tyear': new FormControl(''),
-      'tcreateddate': new FormControl(''),
-      'tcreatedby': new FormControl('')
     });
   }
   filterSubmit(): void {

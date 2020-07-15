@@ -7,6 +7,8 @@ import { UsersService } from 'src/app/cts/shared/services/users.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
+import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
+
 
 @Component({
   selector: 'app-users',
@@ -23,20 +25,21 @@ export class UsersComponent implements OnInit {
   display:boolean=false;
   position: string;
   @ViewChild('myFiltersDiv') myFiltersDiv: ElementRef;
-  usertype: any[];
+  usertypes: any[];
   experience: any[];
   loading: boolean;
-  userstatus: { name: string; }[];
+  status:any;
+  filtersForm: FormGroup;
 
-  constructor(private usersService: UsersService, private router: Router,private route:ActivatedRoute) {
-    this.usertype = [
-      { name: 'Admin' },
-      { name: 'DataEntryOperator' },
-      { name: 'Teacher' }
+  constructor(private usersService: UsersService, private router: Router,private route:ActivatedRoute, private fb: FormBuilder) {
+    this.usertypes = [
+      { label: 'Admin', value: 'ADMN' },
+      { label: 'DataEntryOperator', value: 'DEOR' },
+      { label: 'Teacher', value: 'TCHR' }
     ];
-    this.userstatus = [
-      { name: 'Active' },
-      { name: 'InActive' }
+    this.status = [
+      { label: 'Active', value: 'AC' },
+      { label: 'InActive', value: 'NA' },
     ];
     this.users = []
   }
@@ -85,6 +88,22 @@ export class UsersComponent implements OnInit {
       { field: 'userstatus', header: 'User Status' }
     ];
     this.loading = true;
+    this.createFilterForm();
+  }
+  createFilterForm() {
+    this.filtersForm = this.fb.group({
+      'tusertype': new FormControl(''),
+      'tuserName': new FormControl(''),
+      'tuserstatus':new FormControl('')     
+    });
+  }
+  filterSubmit(): void {
+    console.log(this.filtersForm.value);
+  }
+  //Reset form method
+  resetFilterForm(): void {
+    this.filtersForm.reset();
+    console.log(this.filtersForm.value);
   }
 
   loadCarsLazy(event: LazyLoadEvent) {

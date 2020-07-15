@@ -27,6 +27,9 @@ import { AddNewsComponent } from '../components/news/add-news/add-news.component
 import { AddAchievementComponent } from '../components/achievements/add-achievement/add-achievement.component';
 import { AchievementsComponent } from '../components/achievements/achievements.component';
 import { RoleAccessComponent } from '../components/role-access/role-access.component';
+import { AuditlogsComponent } from '../components/auditlogs/auditlogs.component';
+import { AddAuditlogComponent } from '../components/auditlogs/add-auditlog/add-auditlog.component';
+import { SettingsComponent } from '../components/settings/settings.component';
 
 
 
@@ -82,43 +85,43 @@ const homeRoutes: Routes = [
         path: 'users/add-user',
         component: AddUserComponent,
         canActivate:[AuthenticationGuardService],
-        data: { title: 'Users List' }
+        data: { title: 'Add User' }
       },
       {
         path: 'branches',
         component: BranchesComponent,
         canActivate:[AuthenticationGuardService],
-        data: { title: 'Users List' }
+        data: { title: 'Branches' }
       },
       {
         path: 'branches/add-branch',
         component: AddBranchComponent,
         canActivate:[AuthenticationGuardService],
-        data: { title: 'Users List' }
+        data: { title: 'Add Branch' }
       },
       {
         path: 'news',
         component: NewsComponent,
         canActivate:[AuthenticationGuardService],
-        data: { title: 'Users List' }
+        data: { title: 'News' }
       },
       {
         path: 'news/add-news',
         component: AddNewsComponent,
         canActivate:[AuthenticationGuardService],
-        data: { title: 'Users List' }
+        data: { title: 'Add News' }
       },
       {
         path: 'achivements',
         component: AchievementsComponent,
         canActivate:[AuthenticationGuardService],
-        data: { title: 'Users List' }
+        data: { title: 'Achievement' }
       },
       {
         path: 'achivements/add-achievement',
         component: AddAchievementComponent,
         canActivate:[AuthenticationGuardService],
-        data: { title: 'Users List' }
+        data: { title: 'Add achievement' }
       },
       {
         path: 'exams',
@@ -130,7 +133,7 @@ const homeRoutes: Routes = [
         path: 'exams/add-exam',
         component: AddExamComponent,
         canActivate:[AuthenticationGuardService],
-        data: { title: 'Exams List' }
+        data: { title: 'Add Exam' }
       },
       {
         path: 'classes',
@@ -142,14 +145,27 @@ const homeRoutes: Routes = [
         path: 'classes/add-class',
         component: AddClassComponent,
         canActivate:[AuthenticationGuardService],
-        data: { title: 'Exams List' }
+        data: { title: 'Add Class' }
       },
       {
         path: 'roleaccess',
         component: RoleAccessComponent,
         canActivate:[AuthenticationGuardService],
-        data: { title: 'Classes List' }
+        data: { title: 'Role Access List' }
       },
+      {
+        path: 'auditlogs',
+        component: AuditlogsComponent,
+        canActivate:[AuthenticationGuardService],
+        data: { title: 'Audit logs List' },
+        children: [
+          {
+            path: 'add-auditlog',
+            component: AddAuditlogComponent,
+            canActivate:[AuthenticationGuardService]
+          }
+        ]
+      },     
      
       {
         path: 'sections',
@@ -167,7 +183,13 @@ const homeRoutes: Routes = [
         path: 'dashboard',
         component: DashboardComponent,
         canActivate:[AuthenticationGuardService],
-        data: { title: 'Change Password' }
+        data: { title: 'Dashboard' }
+      },
+      {
+        path: 'settings',
+        component: SettingsComponent,
+        canActivate:[AuthenticationGuardService],
+        data: { title: 'Settings' }
       }
     ]
   }

@@ -16,6 +16,8 @@ import { SpinnerComponent } from './spinner/spinner.component';
 import { LoadingHttpInterceptor, LoadingHttpInterceptorFactoryProvider } from './core/loading-http-interceptor/loading-http-interceptor.component';
 import { BranchesComponent } from './cts/home/components/branches/branches.component';
 import { AddBranchComponent } from './cts/home/components/branches/add-branch/add-branch.component';
+import { AuditlogsComponent } from './cts/home/components/auditlogs/auditlogs.component';
+import { AddAuditlogComponent } from './cts/home/components/auditlogs/add-auditlog/add-auditlog.component';
 
 const LoadingHttpInterceptorProvider = {
   provide: HTTP_INTERCEPTORS,
@@ -29,7 +31,9 @@ const LoadingHttpInterceptorProvider = {
     PagenotfoundComponent,
     SpinnerComponent,
     BranchesComponent,
-    AddBranchComponent
+    AddBranchComponent,
+    AuditlogsComponent,
+    AddAuditlogComponent
 
   ],
   imports: [

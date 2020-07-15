@@ -1,1 +1,75 @@
-<p>settings works!</p>
+<div class="container-fluid">
+    <div class="col-md-12 component-header">
+        <div class="row">
+            <div class="col-md-4">
+                <span class="table-header-items">Settings</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 error-block animated fadeIn" *ngIf="errorMessage">
+        <div class="col-md-12">
+            <i class="fa fa-exclamation-circle"></i>
+            <b>{{errorMessage}}</b>
+        </div>
+    </div>
+    <div class="col-md-12 success-block animated fadeIn" *ngIf="successMessage">
+        <div class="col-md-12">
+            <i class="fa fa-check"></i>
+            <b>{{successMessage}}</b>
+        </div>
+    </div>
+    <form [formGroup]="settingsForm" (ngSubmit)="settingsSubmit()">
+        
+        <div class="row search-box form-block">
+            <div class="col-md-6">
+                <span>SMS</span><br>
+                <p-dropdown [options]="sms" filter="true" formControlName="sms" placeholder="Select"></p-dropdown>
+            </div>
+            <div class="col-md-6">
+                <span>EMAIL</span><br>
+                <p-dropdown [options]="email" filter="true" formControlName="email1" placeholder="Select"></p-dropdown>
+            </div>
+            <div class="col-md-12"><br>
+                <span class="table-header-items">SMS Notifications Settings</span>
+            </div>
+            <div class="col-md-6">
+                <span>Select SMS Vendor</span><br>
+                <p-dropdown [options]="vendor" filter="true" formControlName="vendor" placeholder="Select a Vendor">
+                </p-dropdown>
+            </div>
+            <div class="col-md-6">
+                <span>Sender Name</span><br>
+                <input id="input" class="w-100" maxlength="45" formControlName="sender" type="text"
+                    placeholder="Student Name" size="30" pInputText>
+            </div>
+            <div class="col-md-6">
+                <span>Transactional Key</span><br>
+                <input id="input" class="w-100" maxlength="45" formControlName="transkey" type="text"
+                    placeholder="Student Name" size="30" pInputText>
+            </div>
+            <div class="col-md-6">
+                <span>Promational Key</span><br>
+                <input id="input" class="w-100" maxlength="45" formControlName="promkey" type="text"
+                    placeholder="Student Name" size="30" pInputText>
+            </div>
+            <div class="col-md-12"><br>
+                <span class="table-header-items">Email Notification Settings</span>
+            </div>
+            <div class="col-md-6">
+                <span>Email</span><br>
+                <input id="input" class="w-100" maxlength="45" formControlName="email2" type="text"
+                    placeholder="Student Name" size="30" pInputText>
+            </div>
+            <div class="col-md-6">
+                <span>Password</span><br>
+                <input id="input" class="w-100" maxlength="45" formControlName="password" type="text"
+                    placeholder="Student Name" size="30" pInputText>
+            </div>
+            <div class="col-md-6"></div>
+            <div class="col-md-6 text-right"><br>
+            <button pButton type="submit" icon="pi pi-check" label="Submit" 
+                    class="ui-button-secondary table-header-items"></button>&nbsp;
+            </div>
+        </div>
+    </form>
+</div>

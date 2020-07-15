@@ -1,0 +1,43 @@
+<div class="container-fluid">
+    <div class="col-md-12 search-box">
+        <p-table #dt [columns]="cols" [value]="auditlogs" [lazy]="true" (onLazyLoad)="loadCarsLazy($event)"
+        [paginator]="true" [rows]="10" [totalRecords]="totalRecords" [loading]="loading" [responsive]="true"
+        [reorderableColumns]="true" dataKey="firstname" (onRowExpand)="rowExpand($event,dt)" >               
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th style="width:2.5em"></th>
+                <th *ngFor="let col of columns" [pSortableColumn]="col.field" pReorderableColumn
+                    style="width: 20% !important;">
+                    <div class="">
+                        {{col.header}}
+                        <p-sortIcon [field]="col.field" style="float:right"></p-sortIcon>
+                    </div>   
+                </th>
+                
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns" let-expanded="expanded">
+            <tr>
+                <td>
+                    <a href="#" [pRowToggler]="rowData">
+                        <i [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
+                    </a>
+                </td>
+                <td *ngFor="let col of columns">
+                    {{rowData[col.field]}}                       
+                </td>
+            
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="rowexpansion"  let-rowData let-columns="columns">
+            <tr class="expansion-div">
+                <td [attr.colspan]="columns.length + 1">
+                    <div class="ui-fluid">
+                        <router-outlet></router-outlet>                            
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+        </p-table>
+    </div>
+</div>

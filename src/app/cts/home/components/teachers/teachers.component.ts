@@ -82,7 +82,7 @@ export class TeachersComponent implements OnInit {
 
   addNew($event:any){
     // this.router.navigateByUrl("Teachers/add-teacher?type=create");
-    this.router.navigate(['add-teacher'], {relativeTo: this.route,queryParams: { type: 'create'}});
+    this.router.navigate(['add-teacher'], {relativeTo: this.route,queryParams: { type: window.btoa('create')}});
   }
   editTeacher():void{
     // this.router.navigateByUrl("Teachers/add-teacher?type=edit&id=1");

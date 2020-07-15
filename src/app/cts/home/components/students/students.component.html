@@ -12,37 +12,38 @@
             </div>
         </div>
     </div>
+    <form [formGroup]="filtersForm"  (ngSubmit)="filterSubmit()">
     <div #myFiltersDiv class="col-md-12 box transform">
-        <div class="row search-box">
-            
+        <div class="row search-box">            
             <div class="col-md-3">
                 <span>Student Name</span><br>
-                <input id="name" class="w-100" type="text" placeholder="Student Name" size="30" pInputText>
+                <input id="name" class="w-100" type="text" formControlName="tname" placeholder="Student Name" size="30" pInputText>
             </div>
             <div class="col-md-3">
                 <span>Gender</span><br>
-                <p-dropdown [options]="gender" class="w-100" placeholder="Select a Gender" optionLabel="name" [showClear]="true"></p-dropdown>
+                <p-dropdown [options]="gender" class="w-100" formControlName="tgender" placeholder="Select a Gender" ></p-dropdown>
             </div>
             <div class="col-md-3">
                 <span>Date Of Birth</span><br>
-                <p-calendar placeholder="Select Date" [inputStyle]="{'width':'100% !important'}"  [showIcon]="true"></p-calendar>
+                <p-calendar placeholder="Select Date" formControlName="tdateOfbirth" [inputStyle]="{'width':'100% !important'}"  [showIcon]="true"></p-calendar>
             </div>
             <div class="col-md-3">
                 <span>Email</span><br>
-                <input id="email" class="w-100" type="text" placeholder="Enter Email" size="30" pInputText>
+                <input id="email" class="w-100" type="text" formControlName="temail" placeholder="Enter Email" size="30" pInputText>
             </div>
             <div class="col-md-3">
                 <span>Class</span><br>
-                <p-dropdown [options]="class" class="w-100" placeholder="Select a Class" optionLabel="name" [showClear]="true"></p-dropdown>
+                <p-dropdown [options]="classes" class="w-100" formControlName="tclass" placeholder="Select a Class" ></p-dropdown>
             </div>
             <div class="col-md-9 text-right search-buttons">
-                <button pButton type="button" icon="pi pi-search" label="Search"
+                <button pButton type="submit" icon="pi pi-search" label="Search"
                     class="ui-button-secondary table-header-items"></button>&nbsp;
-                <button pButton type="button" icon="pi pi-refresh" label="Clear"
+                <button pButton type="button" icon="pi pi-refresh" label="Clear" (click)="resetFilterForm()"
                     class="ui-button-secondary table-header-items"></button>
             </div>
         </div>
     </div>
+    </form>
     <div class="col-md-12 search-box">
         <p-table #dt [columns]="cols" [value]="students" [lazy]="true" (onLazyLoad)="loadCarsLazy($event)"
             [paginator]="true" [rows]="10" [totalRecords]="totalRecords" [loading]="loading" [responsive]="true"

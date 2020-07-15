@@ -6,6 +6,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Gender, Class123 } from 'src/app/cts/shared/models/gender';
 import { Router, ActivatedRoute } from '@angular/router';
+import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-students',
@@ -34,17 +35,22 @@ export class StudentsComponent implements OnInit {
   successMessage: string = "";
 
   colors: SelectItem[];
-  gender: Gender[];
-  class: Class123[];
+  gender: any[];
+  classes: any[];
+   //to create Teacher From 
+   filtersForm: FormGroup;
 
-  constructor(private studentsService: StudentsService, private router: Router, private route: ActivatedRoute) {
+  constructor(private studentsService: StudentsService, private router: Router, private route: ActivatedRoute, private fb: FormBuilder) {
     this.gender = [
-      { name: 'Male', code: 'M' },
-      { name: 'Female', code: 'F' }
+      { label: 'Male', value: 'M' },
+      { label: 'Female', value: 'F' }
     ];
-    this.class = [
-      { name: '1st Class', code: '1' },
-      { name: '2nd class', code: '' }
+    this.classes = [
+      { label: '1st Class', value: '1' },
+      { label: '2nd Class', value: '2' },
+      { label: '3rd Class', value: '3' },
+      { label: '4th Class', value: '4' },
+      { label: '5th Class', value: '5' }
     ];
   }
   toggleClass($event: any) {
@@ -80,6 +86,10 @@ export class StudentsComponent implements OnInit {
       { label: 'Orange', value: 'Orange' },
       { label: 'Blue', value: 'Blue' }
     ];
+   
+
+ //to create form with validations
+ this.createFilterForm()
 
     // FilterUtils['custom'] = (value, filter): boolean => {
     //     if (filter === undefined || filter === null || filter.trim() === '') {
@@ -92,10 +102,13 @@ export class StudentsComponent implements OnInit {
 
     //     return parseInt(filter) > value;
     // }
+   
   }
 
   loadCarsLazy(event: LazyLoadEvent) {
     this.loading = true;
+    
+   
 
     //in a real application, make a remote request to load data using state metadata from event
     //event.first = First row offset
@@ -133,5 +146,25 @@ export class StudentsComponent implements OnInit {
     this.display = false;
     this.successMessage = "Student deleted successfully"
   }
+ //Filters code starts from here
+   //Create form method to constuct a form with validations
+   createFilterForm() {
+    this.filtersForm = this.fb.group({
+      'tname': new FormControl(''),
+      'tgender': new FormControl(''),
+      'tdateOfbirth': new FormControl(''),
+      'temail': new FormControl(''),
+      'tclass': new FormControl('')
+    });
+  }
 
+// Add Teacher method
+  filterSubmit(): void {
+    console.log(this.filtersForm.value);
+  }
+  //Reset form method
+  resetFilterForm(): void {
+    this.filtersForm.reset();
+    console.log(this.filtersForm.value);
+  }
 }

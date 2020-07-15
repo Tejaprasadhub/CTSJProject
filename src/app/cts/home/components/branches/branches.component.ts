@@ -5,6 +5,7 @@ import { BranchesService } from 'src/app/cts/shared/services/branches.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
+import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-branches',
@@ -21,9 +22,9 @@ export class BranchesComponent implements OnInit {
   loading: boolean;
   display:boolean=false;
   position: string;
+  filtersForm: FormGroup;
 
-
-  constructor(private BranchesService: BranchesService, private router: Router, private route: ActivatedRoute) {
+  constructor(private BranchesService: BranchesService, private router: Router, private route: ActivatedRoute,private fb: FormBuilder) {
     this.branches = [];
    }
 
@@ -40,6 +41,8 @@ export class BranchesComponent implements OnInit {
       { field: 'createdby', header: 'Created By' }
     ];
     this.loading = true;
+     //to create form with validations
+     this.createFilterForm();
   }
   loadCarsLazy(event: LazyLoadEvent) {
     this.loading = true;
@@ -71,5 +74,22 @@ export class BranchesComponent implements OnInit {
   branchRevoke():void{
     this.display=false;
   }
-  
+ //Filters code starts from here
+   //Create form method to constuct a form with validations
+   createFilterForm() {
+    this.filtersForm = this.fb.group({
+      'ttitle': new FormControl(''),
+      'tcode': new FormControl('')     
+    });
+  }
+
+  // Add Teacher method
+  filterSubmit(): void {
+    console.log(this.filtersForm.value);
+  }
+  //Reset form method
+  resetFilterForm(): void {
+    this.filtersForm.reset();
+    console.log(this.filtersForm.value);
+  } 
 }

@@ -5,6 +5,7 @@ import { NewsService } from 'src/app/cts/shared/services/news.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
+import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-news',
@@ -21,9 +22,15 @@ export class NewsComponent implements OnInit {
   loading: boolean;
   display:boolean=false;
   position: string;
-
-  constructor(private newsService: NewsService, private router: Router, private route: ActivatedRoute) {
+  branchids: SelectItem[] = [];
+//to create Teacher From 
+filtersForm: FormGroup;
+  constructor(private newsService: NewsService, private router: Router, private route: ActivatedRoute, private fb: FormBuilder) {
     this.news = [];
+    this.branchids = [
+      { label: 'skota', value: '1' },
+      { label: 'boddam', value: '2' }
+    ];
   }
 
   public ngOnInit() {
@@ -33,13 +40,15 @@ export class NewsComponent implements OnInit {
       this.totalRecords = this.datasource.length;
     });
     this.cols = [
-      { field: 'title', header: 'Name' },
+      { field: 'title', header: 'Title' },
       { field: 'description', header: 'Description' },
       { field: 'branchid', header: 'Branch Id' },
       { field: 'createddate', header: 'Created Date' },
       { field: 'createdby', header: 'Created By' }
     ];
     this.loading = true;
+     //to create form with validations
+     this.createFilterForm();
   }
 
   loadCarsLazy(event: LazyLoadEvent) {
@@ -72,7 +81,24 @@ export class NewsComponent implements OnInit {
   newsRevoke():void{
     this.display=false;
   }
-  
+   //Filters code starts from here
+   //Create form method to constuct a form with validations
+   createFilterForm() {
+    this.filtersForm = this.fb.group({
+      'ttitle': new FormControl(''),
+      'tbranchid': new FormControl('')
+    });
+  }
+
+  // Add Teacher method
+  filterSubmit(): void {
+    console.log(this.filtersForm.value);
+  }
+  //Reset form method
+  resetFilterForm(): void {
+    this.filtersForm.reset();
+    console.log(this.filtersForm.value);
+  }
 
 }
 

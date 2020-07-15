@@ -1,1 +1,45 @@
-<p>role-access works!</p>
+<div class="container-fluid">
+    <div class="col-md-12 component-header">
+        <div class="row">
+            <div class="col-md-4">
+                <span class="table-header-items">Role Access</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="row search-box form-block">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <p-dropdown [options]="users" filter="true" (onChange)="dropdownChange($event)"
+                    placeholder="Select User">
+                </p-dropdown>
+            </div>
+            <div class="col-md-4"></div>
+            <br>
+            <br>
+            <div class="col-md-12">
+                <p-table [value]="userFeatures" sortField="brand" sortMode="single" (onSort)="onSort()">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Feature</th>
+                            <th>Visibility</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+                        <tr class="ui-widget-header" *ngIf="rowGroupMetadata[rowData.featureTitle].index === rowIndex">
+                            <td colspan="2">
+                                <span style="font-weight:bold">{{rowData.featureTitle}}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>{{rowData.featureOption}}</td>
+                            <td></td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </div>
+
+
+    </div>
+</div>

@@ -1,0 +1,5 @@
+{
+    "api":{
+        "security":"http://localhost:64341/api/"
+    }
+}

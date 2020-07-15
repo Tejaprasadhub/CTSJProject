@@ -2,6 +2,7 @@ import{HttpClient, HttpHeaders} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, catchError } from 'rxjs/operators';
 import { SessionTimeoutService } from 'src/app/core/security/session-timeout.service';
+import { AppConstants } from '../../app-constants';
 
 
 @Injectable({
@@ -19,7 +20,7 @@ export class LoginService {
       UserName:loginUserData.userName,
       Password:loginUserData.password
     });
-    var  loginUrl:string = "http://localhost:64341/api/"+"AccessToken/ValidateUser"
+    var  loginUrl:string = AppConstants.Api.security+"AccessToken/ValidateUser"
 
     return this.httpClient.post
     (loginUrl,data,{headers:headers,withCredentials:true}).pipe(
@@ -33,7 +34,6 @@ export class LoginService {
 
         //store username and jwt token in local storage to keep user logged in between page refreshes
         sessionStorage.setItem('currentUser',userInformationString);
-        // sessionStorage.setItem('redirectUrl',response.redirectUrl);
 
         this.sessionTimeOutService.startTimer(response.timeoutMinutes,response.warningMinutes);
 

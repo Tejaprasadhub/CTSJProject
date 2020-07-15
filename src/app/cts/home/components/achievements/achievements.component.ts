@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { LazyLoadEvent, SelectItem } from 'primeng/api/public_api';
 import { Achievements } from 'src/app/cts/shared/models/achievements';
-
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AchievementsService } from 'src/app/cts/shared/services/achievements.service';
+import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-achievements',
@@ -24,8 +24,9 @@ export class AchievementsComponent implements OnInit {
   successMessage:string="";
   display:boolean=false;
   position: string;
-
-  constructor(private achievementsService: AchievementsService, private router: Router,private route:ActivatedRoute) {
+//to create Teacher From 
+filtersForm: FormGroup;
+  constructor(private achievementsService: AchievementsService, private router: Router,private route:ActivatedRoute,private fb: FormBuilder) {
     this.achievements = [];
   }
 
@@ -42,6 +43,8 @@ export class AchievementsComponent implements OnInit {
       { field: 'createdby', header: 'Created By' }
     ];
     this.loading = true;
+     //to create form with validations
+     this.createFilterForm();
   }
 
   loadCarsLazy(event: LazyLoadEvent) {
@@ -77,5 +80,22 @@ export class AchievementsComponent implements OnInit {
     this.display=false;
     this.successMessage="Achievement deleted successfully"
   }
+//Filters code starts from here
+   //Create form method to constuct a form with validations
+   createFilterForm() {
+    this.filtersForm = this.fb.group({
+      'ttitle': new FormControl(''),
+      'tdate': new FormControl('')
+    });
+  }
 
+  // Add Teacher method
+  filterSubmit(): void {
+    console.log(this.filtersForm.value);
+  }
+  //Reset form method
+  resetFilterForm(): void {
+    this.filtersForm.reset();
+    console.log(this.filtersForm.value);
+  }
 }

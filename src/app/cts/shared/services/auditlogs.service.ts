@@ -11,42 +11,15 @@ export class AuditlogsService {
   [
     {
       "id": 1,
-      "firstname": "aBehara",
-      "middlename": "Teja",
-      "lastname": "Prasad",
-      "gender": "Male",
-      "dob": new Date("17/06/1995"),
-      "joinDate": new Date("17/06/1995"),
-      "email": "tejaprasadbehara@gmail.com",
-      "image": "gsdgsdg",
-      "classs": 1,
-      "section": "A"
+      "table": "Teachers"
     },
     {
       "id": 2,
-      "firstname": "Behara2",
-      "middlename": "Teja2",
-      "lastname": "Prasad2",
-      "gender": "Male2",
-      "dob": new Date("17/06/1995"),
-      "joinDate": new Date("17/06/1995"),
-      "email": "tejaprasadbehara2@gmail.com",
-      "image": "gsdgsdg2",
-      "classs": 1,
-      "section": "A"
+      "table": "Users"
     },
     {
       "id": 3,
-      "firstname": "Behara2",
-      "middlename": "Teja2",
-      "lastname": "Prasad2",
-      "gender": "Male2",
-      "dob": new Date("17/06/1995"),
-      "joinDate": new Date("17/06/1995"),
-      "email": "tejaprasadbehara2@gmail.com",
-      "image": "gsdgsdg2",
-      "classs": 1,
-      "section": "A"
+      "table": "Students"    
     }
     
   ];

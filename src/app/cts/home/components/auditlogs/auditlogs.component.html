@@ -1,4 +1,11 @@
 <div class="container-fluid">
+    <div class="col-md-12 component-header">
+        <div class="row">
+            <div class="col-md-12">
+                <span class="table-header-items">Audit Logs</span>
+            </div>
+        </div>
+    </div>
     <div class="col-md-12 search-box">
         <p-table #dt [columns]="cols" [value]="auditlogs" [lazy]="true" (onLazyLoad)="loadCarsLazy($event)"
         [paginator]="true" [rows]="10" [totalRecords]="totalRecords" [loading]="loading" [responsive]="true"

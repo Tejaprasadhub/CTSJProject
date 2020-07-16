@@ -29,11 +29,8 @@ export class AuditlogsComponent implements OnInit {
       this.totalRecords = this.datasource.length;
     });
     this.cols = [
-      { field: 'firstname', header: 'Name' },
-      { field: 'gender', header: 'Gender' },
-      { field: 'dob', header: 'Date Of Birth' },
-      { field: 'email', header: 'Email' },
-      { field: 'classs', header: 'Class' }
+      { field: 'id', header: 'S.no' },
+      { field: 'table', header: 'Audit Log Table' },
     ];
     this.loading = true;
   }

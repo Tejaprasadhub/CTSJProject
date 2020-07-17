@@ -3,7 +3,7 @@ import { LazyLoadEvent, SelectItem } from 'primeng/api/public_api';
 import { Branches } from 'src/app/cts/shared/models/branches';
 import { BranchesService } from 'src/app/cts/shared/services/branches.service';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { map,takeUntil } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 
@@ -14,60 +14,57 @@ import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 })
 export class BranchesComponent implements OnInit {
   private ngUnsubscribe = new Subject();
-  datasource: Branches[];
   branches: Branches[];
-  totalRecords: number;
   cols: any[];
   @ViewChild('myFiltersDiv') myFiltersDiv: ElementRef;
-  loading: boolean;
   display:boolean=false;
   position: string;
   filtersForm: FormGroup;
+
+  numberOfPages:number =10;
+  totalcount:number=0;
 
   constructor(private BranchesService: BranchesService, private router: Router, private route: ActivatedRoute,private fb: FormBuilder) {
     this.branches = [];
    }
 
   ngOnInit(): void {
-    this.BranchesService.getBranches();
-    this.BranchesService.branchesJson.pipe(takeUntil(this.ngUnsubscribe)).subscribe(Branches => {
-      this.datasource = Branches;
-      this.totalRecords = this.datasource.length;
+    //Get Branches API call
+    this.BranchesService.getBranches()
+    .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{  
+      this.branches= result;
+      this.totalcount = parseInt(result.length);
+      
     });
+    //Table headers and fields
     this.cols = [
       { field: 'title', header: 'title' },
       { field: 'code', header: 'code' },
       { field: 'createddate', header: 'Created Date' },
       { field: 'createdby', header: 'Created By' }
     ];
-    this.loading = true;
      //to create form with validations
      this.createFilterForm();
   }
-  loadCarsLazy(event: LazyLoadEvent) {
-    this.loading = true;
-    setTimeout(() => {
-      if (this.datasource) {
-        this.branches = this.datasource.slice(event.first, (event.first + event.rows));
-        this.loading = false;
-        console.log(this.branches)
-      }
-    }, 1000);
-  }
+  //Search box toggling
   toggleBranch($event: any) {
     if (this.myFiltersDiv.nativeElement.classList.contains('transform-active'))
       this.myFiltersDiv.nativeElement.classList.remove('transform-active')
     else
       this.myFiltersDiv.nativeElement.classList.add('transform-active')
   }
+  //Crud events
   addNew($event: any) {
-    this.router.navigate(['add-branch'], { relativeTo: this.route, queryParams: { type: 'create' } });
+    let id="0";
+    this.router.navigate(['add-branch'], { relativeTo: this.route, queryParams: { type: window.btoa('create'),id: window.btoa(id) } });
   }
-  editBranch():void{
-    // this.router.navigateByUrl("Users/add-teacher?type=edit&id=1");
-    this.router.navigate(['add-branch'],{relativeTo: this.route,queryParams: { type: 'edit', id: '1' }});
+  editBranch(id):void{
+    this.router.navigate(['add-branch'],{relativeTo: this.route,queryParams: { type: window.btoa('edit'), id: window.btoa(id) }});
   }
-  deleteBranch():void{
+  viewBranch(id):void{
+    this.router.navigate(['add-branch'],{relativeTo: this.route,queryParams: { type: window.btoa('view'), id: window.btoa(id) }});
+  }
+  deleteBranch(id):void{
     this.position="top";
     this.display=true;
   }
@@ -75,19 +72,18 @@ export class BranchesComponent implements OnInit {
     this.display=false;
   }
  //Filters code starts from here
-   //Create form method to constuct a form with validations
+   //Construct Filter Form
    createFilterForm() {
     this.filtersForm = this.fb.group({
       'ttitle': new FormControl(''),
       'tcode': new FormControl('')     
     });
   }
-
-  // Add Teacher method
+  //Filter Submit method
   filterSubmit(): void {
     console.log(this.filtersForm.value);
   }
-  //Reset form method
+  //Filter Reset method
   resetFilterForm(): void {
     this.filtersForm.reset();
     console.log(this.filtersForm.value);

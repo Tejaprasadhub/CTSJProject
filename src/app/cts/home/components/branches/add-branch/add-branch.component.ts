@@ -24,17 +24,16 @@ export class AddBranchComponent implements OnInit {
   isRequired: boolean = false;
   display: boolean = false;
   editData: any;
-  sections: SelectItem[] = [];
-
- 
+  sections: SelectItem[] = []; 
 
   constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute,private location: Location) { 
   }
 
   ngOnInit(): void {
+    //to read url parameters
     this.route.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params => {
-      this.branchId = params['id'];
-      this.formType = params['type'];
+      this.branchId = window.atob(params['id']);
+      this.formType = window.atob(params['type']);
     });
     //to create form with validations
     this.createForm();
@@ -75,12 +74,6 @@ export class AddBranchComponent implements OnInit {
       'title': this.editData.title
     })
   }
-
-
-
-
-
-
 
   editControls(): void {
     this.isRequired = true;

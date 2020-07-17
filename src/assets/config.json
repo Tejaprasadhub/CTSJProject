@@ -3,4 +3,4 @@
         "security":"http://localhost:64341/api/",
         "AdminApp":"http://localhost:64371/api/"
     }
-}
+} 

@@ -17,7 +17,7 @@ export class RoleAccessService {
     return this.httpClient.post
     (loginUrl,{headers:headers,withCredentials:true}).pipe(
     map((response:any)=> {
-       return response.table1;
+       return response;
     })); 
   }
 }

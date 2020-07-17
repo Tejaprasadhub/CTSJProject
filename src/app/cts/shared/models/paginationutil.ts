@@ -19,7 +19,7 @@ export class Paginationutil {
             pageNumber = (Table.first/Table.rows) +1;
         }
         let currentrows = Table.row * pageNumber;
-        let sorts = (Table.sortField == undefined) ? '' : ((Table.sortField) + '' + (Table.sortOrder == -1 ? 'DESC' : 'ASC'));
+        let sorts = (Table.sortField == undefined) ? '' : ((Table.sortField) + '' + (Table.sortOrder == -1 ? ' DESC' : ' ASC'));
         let pageSize = Table.rows;
 
         if(isReset){

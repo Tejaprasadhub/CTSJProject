@@ -36,13 +36,13 @@ export class BranchesComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    this.loadGrids(Paginationutil.getDefaultFilter());
+    //this.loadGrids(Paginationutil.getDefaultFilter());
     //Table headers and fields
     this.cols = [
       { field: 'title', header: 'title' },
       { field: 'code', header: 'code' },
-      { field: 'createddate', header: 'Created Date' },
-      { field: 'createdby', header: 'Created By' }
+      { field: 'createDate', header: 'Created Date' },
+      { field: 'createdBy', header: 'Created By' }
     ];
      //to create form with validations
      this.createFilterForm();
@@ -79,10 +79,10 @@ export class BranchesComponent implements OnInit {
     //Get Branches API call
     this.BranchesService.getBranches(pagingData)
     .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{  
-      this.branches= result;
-
+      if(result.success){
+      this.branches= result.data;
       //pagination starts from here
-      this.totalcount = parseInt(result.length);    
+      this.totalcount = parseInt(result.total);    
 
       if(this.totalcount <= paging.pageSize){
         this.noOfItems = this.totalcount;
@@ -98,6 +98,7 @@ export class BranchesComponent implements OnInit {
         });
       }
       let currentrows = (this.currentPage * this.numberOfPages);
+    }
     });
   }
   //Crud events

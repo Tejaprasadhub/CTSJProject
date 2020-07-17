@@ -225,7 +225,7 @@ body .ui-radiobutton .ui-radiobutton-box.ui-state-active,body .ui-accordion .ui-
 
   .search-box{
     background: #f8f9fa;
-    padding: 10px;
+    padding: 10px 10px 35px 10px;
     margin-top: 10px;
     border-top: 3px solid #351681;
     background-color: white;
@@ -354,3 +354,44 @@ body .fc .fc-event {
 }
     
 //   table common styles ends here
+
+
+//pagination starts from here
+.ui-table .ui-paginator-bottom {
+    border-top: 0;
+    margin-top: 0;
+    background-color: #fff;
+    padding: 0;
+    background: linear-gradient(180deg, #fff 0, #fff);
+    float: left;
+}
+.pagecount-dropdown{
+    float: left;
+    padding-left: 10px;
+}
+.pagecounting{
+    color:black;
+    padding-left: 5px;
+    line-height: 35px;
+    font-size: 13px;
+    font-weight: bold;
+}
+.pagecount{
+    float: right;
+    color:black;
+    padding-right: 2px;
+    font-size: 13px;
+    line-height: 35px;
+    font-weight: bold;
+}
+
+.ui-paginator-bottom p-dropdown{
+    float: right;
+    display: block;
+    margin-left: 12px;
+    width: 50px;
+    height: auto;
+}
+.ui-paginator{
+    border-bottom:none !important;
+}

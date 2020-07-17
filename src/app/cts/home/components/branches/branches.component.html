@@ -1,6 +1,6 @@
 <div class="container-fluid">
-        <!-- Component Header Starts -->
-        <div class="col-md-12 component-header">
+    <!-- Component Header Starts -->
+    <div class="col-md-12 component-header">
         <div class="row">
             <div class="col-md-4">
                 <span class="table-header-items">Branches</span>
@@ -14,32 +14,33 @@
         </div>
     </div>
     <!-- Form Starts Here -->
-    <form [formGroup]="filtersForm"  (ngSubmit)="filterSubmit()">
-    <div #myFiltersDiv class="col-md-12 box transform">
-        <div class="row search-box">
-            <div class="col-md-3">
-                <span>Title</span><br>
-                <input id="title" class="w-100" formControlName="ttitle" type="text" placeholder="Title" size="30" pInputText>
-            </div>
-            <div class="col-md-3">
-                <span>Code</span><br>
-                <input id="code" class="w-100" formControlName="tcode" type="text" placeholder="Code" size="30" pInputText>
-            </div>
-            <div class="col-md-3"></div>
-            <div class="col-md-3 text-right search-buttons">
-                <button pButton type="submit" icon="pi pi-search" label="Search"
-                    class="ui-button-secondary table-header-items"></button>&nbsp;
-                <button pButton type="button" icon="pi pi-refresh" label="Clear" (click)="resetFilterForm()"
-                    class="ui-button-secondary table-header-items"></button>
+    <form [formGroup]="filtersForm" (ngSubmit)="filterSubmit()">
+        <div #myFiltersDiv class="col-md-12 box transform">
+            <div class="row search-box">
+                <div class="col-md-3">
+                    <span>Title</span><br>
+                    <input id="title" class="w-100" formControlName="ttitle" type="text" placeholder="Title" size="30"
+                        pInputText>
+                </div>
+                <div class="col-md-3">
+                    <span>Code</span><br>
+                    <input id="code" class="w-100" formControlName="tcode" type="text" placeholder="Code" size="30"
+                        pInputText>
+                </div>
+                <div class="col-md-3"></div>
+                <div class="col-md-3 text-right search-buttons">
+                    <button pButton type="submit" icon="pi pi-search" label="Search"
+                        class="ui-button-secondary table-header-items"></button>&nbsp;
+                    <button pButton type="button" icon="pi pi-refresh" label="Clear" (click)="resetFilterForm()"
+                        class="ui-button-secondary table-header-items"></button>
+                </div>
             </div>
         </div>
-    </div>
     </form>
     <div class="col-md-12 search-box">
-        <p-table #dt [columns]="cols" [value]="branches" [lazy]="true" dataKey="indexId" 
-        
-            [paginator]="true" [rows]="10"   [responsive]="true"
-            [reorderableColumns]="true" dataKey="firstname">
+        <p-table #dt [columns]="cols" [value]="branches" [lazy]="true" dataKey="indexId" [paginator]="true"
+            [responsive]="true" [rows]="numberOfPages" (onLazyLoad)="onPageChange($event)" [totalRecords]="totalcount"
+            [rowsPerPageOptions]="[10,20,30,40,50]" [reorderableColumns]="true" dataKey="firstname">
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th *ngFor="let col of columns" [pSortableColumn]="col.field" pReorderableColumn
@@ -55,33 +56,34 @@
             <ng-template pTemplate="body" let-rowData let-columns="columns" let-expanded="expanded">
                 <tr>
                     <td *ngFor="let col of columns">
-                        <a class="bold" (click)="viewBranch(rowData.id)">{{rowData[col.field]}}</a>                        
+                        <a class="bold" (click)="viewBranch(rowData.id)">{{rowData[col.field]}}</a>
                     </td>
                     <td class="d-flex">
-                        <i class="pi pi-pencil"  (click)="editBranch(rowData.id)"></i>&nbsp;
+                        <i class="pi pi-pencil" (click)="editBranch(rowData.id)"></i>&nbsp;
                         <i class="pi pi-trash" (click)="deleteBranch(rowData)"></i>
                     </td>
                 </tr>
             </ng-template>
         </p-table>
-
-        
-        <!-- <div class="pagecount-dropdown">
-            <span class="pagecounting">Items per page</span>
-            [rows]="numberOfPages" [totalRecords]="totalcount" [rowsPerPageOptions]="[10,20,30,40,50]"
-        </div>
-        <div class="pagecount">
-            <div *ngIf="dt.totalRecords != 0">{{dt.first+1}}-{{((dt.first+dt.rows)>dt.totalRecords)?dt.totalRecords:(dt.first+dt.rows)}} of {{dt.totalRecords}}
-                Items
+        <div class="col-md-12">
+            <div class="pagecount-dropdown">
+                <span class="pagecounting">Items per page</span>
             </div>
-            <div *ngIf="dt == undefined || dt.totalRecords==0">No Items to Display</div>
-        </div> -->
-        
+            <div class="pagecount">
+                <div *ngIf="dt.totalRecords != 0">
+                    {{dt.first+1}}-{{((dt.first+dt.rows)>dt.totalRecords)?dt.totalRecords:(dt.first+dt.rows)}} of
+                    {{dt.totalRecords}}
+                    Items
+                </div>
+                <div *ngIf="dt == undefined || dt.totalRecords==0">No Items to Display</div>
+            </div>
+        </div>
     </div>
-    <p-dialog header="Delete Confirmation" [transitionOptions]="'500ms'" [baseZIndex]="20000" [(visible)]="display" [style]="{width: '30vw'}" [responsive]="true" [draggable]="true" [position]="position">
+    <p-dialog header="Delete Confirmation" [transitionOptions]="'500ms'" [baseZIndex]="20000" [(visible)]="display"
+        [style]="{width: '30vw'}" [responsive]="true" [draggable]="true" [position]="position">
         <p>Are you sure you want to delete Branch?</p>
         <p-footer class="btm-buttons">
-            <button type="button" pButton icon="pi pi-check" label="Yes" (click)="branchRevoke()" ></button>
+            <button type="button" pButton icon="pi pi-check" label="Yes" (click)="branchRevoke()"></button>
             <button type="button" pButton icon="pi pi-times" (click)="display=false" label="No"></button>
         </p-footer>
-    </p-dialog>  
+    </p-dialog>

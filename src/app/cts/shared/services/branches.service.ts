@@ -14,14 +14,14 @@ export class BranchesService {
     public branchesJson = this.branchesJsonData.asObservable();
 
     constructor(private httpClient : HttpClient) { }
-    public getBranches() {
+    public getBranches(pagingData) {
         // this.branchesJsonData.next(this.branches);
         const headers = new HttpHeaders().set("Content-Type","application/json");
    
-    var  loginUrl:string = AppConstants.Api.AdminApp+"Branches"
+    var  loginUrl:string = AppConstants.Api.AdminApp+"Branches/GetBranches"
 
-    return this.httpClient.get
-    (loginUrl,{headers:headers,withCredentials:true}).pipe(
+    return this.httpClient.post
+    (loginUrl,pagingData,{headers:headers,withCredentials:true}).pipe(
     map((response:any)=> {
        return response;
     })); 

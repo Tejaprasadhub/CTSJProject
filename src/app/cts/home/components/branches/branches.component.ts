@@ -6,6 +6,8 @@ import { Subject } from 'rxjs';
 import { map,takeUntil } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
+import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
+
 
 @Component({
   selector: 'app-branches',
@@ -21,21 +23,20 @@ export class BranchesComponent implements OnInit {
   position: string;
   filtersForm: FormGroup;
 
+  //pagination starts from here
   numberOfPages:number =10;
   totalcount:number=0;
+  noOfItems=10;
+  advancedFilterValue:string ="";
+  currentPage:number = 1;
+  pageCount:number;
 
   constructor(private BranchesService: BranchesService, private router: Router, private route: ActivatedRoute,private fb: FormBuilder) {
     this.branches = [];
    }
 
   ngOnInit(): void {
-    //Get Branches API call
-    this.BranchesService.getBranches()
-    .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{  
-      this.branches= result;
-      this.totalcount = parseInt(result.length);
-      
-    });
+    this.loadGrids(Paginationutil.getDefaultFilter());
     //Table headers and fields
     this.cols = [
       { field: 'title', header: 'title' },
@@ -52,6 +53,52 @@ export class BranchesComponent implements OnInit {
       this.myFiltersDiv.nativeElement.classList.remove('transform-active')
     else
       this.myFiltersDiv.nativeElement.classList.add('transform-active')
+  }
+
+
+  onPageChange(event:LazyLoadEvent){
+    let pageObject = Paginationutil.getGridFilters(event,this.advancedFilterValue);
+
+    this.currentPage = pageObject.currentPage;
+
+    let isinitialload = this.pageCount == undefined || this.pageCount == null;
+    this.pageCount = pageObject.pageCount;
+
+    let currentrows = event.rows * pageObject.pageNo;
+
+    if(this.totalcount != 0){
+      this.noOfItems =(currentrows < this.totalcount ? currentrows : this.totalcount);
+    }
+
+    this.loadGrids(JSON.stringify(pageObject));
+
+  }
+
+  loadGrids(pagingData){
+    let paging = JSON.parse(pagingData);
+    //Get Branches API call
+    this.BranchesService.getBranches(pagingData)
+    .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{  
+      this.branches= result;
+
+      //pagination starts from here
+      this.totalcount = parseInt(result.length);    
+
+      if(this.totalcount <= paging.pageSize){
+        this.noOfItems = this.totalcount;
+      }else{
+        this.noOfItems = (JSON.parse(pagingData)).pageSize;
+      }
+
+      if(this.branches != null && this.branches != undefined){
+        this.branches = this.branches.map(function(el,i){
+          var o = Object.assign({},el);
+          o.indexId = i;
+          return o;
+        });
+      }
+      let currentrows = (this.currentPage * this.numberOfPages);
+    });
   }
   //Crud events
   addNew($event: any) {

@@ -67,14 +67,18 @@ filtersForm: FormGroup;
     else
       this.myFiltersDiv.nativeElement.classList.add('transform-active')
   }
+  //Crud events
   addNew($event: any) {
-    this.router.navigate(['add-news'], { relativeTo: this.route, queryParams: { type: 'create' } });
+    let id="0";
+    this.router.navigate(['add-news'], { relativeTo: this.route, queryParams: { type: window.btoa('create'),id: window.btoa(id) } });
   }
-  editNews():void{
-    // this.router.navigateByUrl("Users/add-teacher?type=edit&id=1");
-    this.router.navigate(['add-news'],{relativeTo: this.route,queryParams: { type: 'edit', id: '1' }});
+  editNews(id):void{
+    this.router.navigate(['add-news'],{relativeTo: this.route,queryParams: { type: window.btoa('edit'), id: window.btoa(id) }});
   }
-  deleteNews():void{
+  viewNews(id):void{
+    this.router.navigate(['add-news'],{relativeTo: this.route,queryParams: { type: window.btoa('view'), id: window.btoa(id) }});
+  }
+  deleteNews(id):void{
     this.position="top";
     this.display=true;
   }

@@ -64,14 +64,18 @@ filtersForm: FormGroup;
       this.myFiltersDiv.nativeElement.classList.add('transform-active')
   }
 
-  addNew($event:any){
-    this.router.navigate(['add-achievement'], {relativeTo: this.route,queryParams: { type: 'create'}});
+   //Crud events
+   addNew($event: any) {
+    let id="0";
+    this.router.navigate(['add-achievement'], { relativeTo: this.route, queryParams: { type: window.btoa('create'),id: window.btoa(id) } });
   }
-  editAchievement():void{
-    // this.router.navigateByUrl("Achievements/add-achievement?type=edit&id=1");
-    this.router.navigate(['add-achievement'], {relativeTo: this.route,queryParams: { type: 'edit',id:'1'}});
+  editAchievement(id):void{
+    this.router.navigate(['add-achievement'],{relativeTo: this.route,queryParams: { type: window.btoa('edit'), id: window.btoa(id) }});
   }
-  deleteAchievement():void{
+  viewAchievement(id):void{
+    this.router.navigate(['add-achievement'],{relativeTo: this.route,queryParams: { type: window.btoa('view'), id: window.btoa(id) }});
+  }
+  deleteAchievement(id):void{
     this.position="top";
     this.display=true;
     this.successMessage="";

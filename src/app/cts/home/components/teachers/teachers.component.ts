@@ -79,16 +79,18 @@ export class TeachersComponent implements OnInit {
     else
       this.myFiltersDiv.nativeElement.classList.add('transform-active')
   }
-
-  addNew($event:any){
-    // this.router.navigateByUrl("Teachers/add-teacher?type=create");
-    this.router.navigate(['add-teacher'], {relativeTo: this.route,queryParams: { type: window.btoa('create')}});
-  }
-  editTeacher():void{
-    // this.router.navigateByUrl("Teachers/add-teacher?type=edit&id=1");
-    this.router.navigate(['add-teacher'],{relativeTo: this.route,queryParams: { type: 'edit', id: '1' }});
-  }
-  deleteTeacher():void{
+//Crud events
+addNew($event: any) {
+  let id="0";
+  this.router.navigate(['add-teacher'], { relativeTo: this.route, queryParams: { type: window.btoa('create'),id: window.btoa(id) } });
+}
+editTeacher(id):void{
+  this.router.navigate(['add-teacher'],{relativeTo: this.route,queryParams: { type: window.btoa('edit'), id: window.btoa(id) }});
+}
+viewTeacher(id):void{
+  this.router.navigate(['add-teacher'],{relativeTo: this.route,queryParams: { type: window.btoa('view'), id: window.btoa(id) }});
+}
+  deleteTeacher(id):void{
     this.position="top";
     this.display=true;
     this.successMessage=""; 

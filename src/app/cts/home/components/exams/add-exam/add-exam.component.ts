@@ -28,10 +28,10 @@ export class AddExamComponent implements OnInit {
   constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute,private location: Location) { }
 
   ngOnInit(): void {// On page load
-    //to get the query parameter values
+    //to read url parameters
     this.route.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params => {
-      this.examId = params['id'];
-      this.formType = params['type'];
+      this.examId = window.atob(params['id']);
+      this.formType = window.atob(params['type']);
     });
     //to create form with validations
     this.createForm();

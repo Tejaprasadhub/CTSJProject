@@ -58,15 +58,18 @@ export class UsersComponent implements OnInit {
     else
       this.myFiltersDiv.nativeElement.classList.add('transform-active')
   }
-  addNew($event:any){
-    // this.router.navigateByUrl("Users/add-user");
-    this.router.navigate(['add-user'], {relativeTo: this.route,queryParams: { type: 'create'}});
-  }
-  editUser():void{
-    // this.router.navigateByUrl("Users/add-teacher?type=edit&id=1");
-    this.router.navigate(['add-user'],{relativeTo: this.route,queryParams: { type: 'edit', id: '1' }});
-  }
-  deleteUser():void{
+ //Crud events
+ addNew($event: any) {
+  let id="0";
+  this.router.navigate(['add-user'], { relativeTo: this.route, queryParams: { type: window.btoa('create'),id: window.btoa(id) } });
+}
+editUser(id):void{
+  this.router.navigate(['add-user'],{relativeTo: this.route,queryParams: { type: window.btoa('edit'), id: window.btoa(id) }});
+}
+viewUser(id):void{
+  this.router.navigate(['add-user'],{relativeTo: this.route,queryParams: { type: window.btoa('view'), id: window.btoa(id) }});
+}
+  deleteUser(id):void{
     this.position="top";
     this.display=true;
   }

@@ -36,9 +36,10 @@ export class AddClassComponent implements OnInit {
    }
 
   ngOnInit(): void {
+    //to read url parameters
     this.route.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params => {
-      this.classId = params['id'];
-      this.formType = params['type'];
+      this.classId = window.atob(params['id']);
+      this.formType = window.atob(params['type']);
     });
     //to create form with validations
     this.createForm();

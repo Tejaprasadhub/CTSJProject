@@ -66,11 +66,11 @@
             <ng-template pTemplate="body" let-rowData let-columns="columns" let-expanded="expanded">
                 <tr>
                     <td *ngFor="let col of columns" >
-                        <a class="bold" href="admin/achivements/add-achievement?type=view&id=1">{{rowData[col.field]}}</a>
+                        <a class="bold" (click)="viewAchievement(rowData.id)">{{rowData[col.field]}}</a>
                     </td>
                     <td >
-                        <i class="pi pi-pencil" (click)="editAchievement()"></i>&nbsp;
-                        <i class="pi pi-trash" (click)="deleteAchievement()"></i>
+                        <i class="pi pi-pencil" (click)="editAchievement(rowData.id)"></i>&nbsp;
+                        <i class="pi pi-trash" (click)="deleteAchievement(rowData.id)"></i>
                     </td>
                 </tr>
             </ng-template>

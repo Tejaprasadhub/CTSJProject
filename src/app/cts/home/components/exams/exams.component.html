@@ -69,11 +69,11 @@
             <ng-template pTemplate="body" let-rowData let-columns="columns" let-expanded="expanded">
                 <tr>
                     <td *ngFor="let col of columns">
-                        <a class="bold" href="admin/exams/add-exam?type=view&id=1">{{rowData[col.field]}}</a>
+                        <a class="bold" (click)="viewExam(rowData.id)">{{rowData[col.field]}}</a>
                     </td>
                     <td>
-                        <i class="pi pi-pencil" (click)="editExam()"></i>&nbsp;
-                        <i class="pi pi-trash" (click)="deleteExam()"></i>
+                        <i class="pi pi-pencil" (click)="editExam(rowData.id)"></i>&nbsp;
+                        <i class="pi pi-trash" (click)="deleteExam(rowData.id)"></i>
                     </td>
                 </tr>
             </ng-template>

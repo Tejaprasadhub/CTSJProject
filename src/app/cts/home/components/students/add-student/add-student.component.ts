@@ -49,10 +49,11 @@ export class AddStudentComponent implements OnInit {
   }
 
   ngOnInit(): void {    
-    this.route.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params => {
-      this.studentId = params['id'];
-      this.formType = params['type'];
-    });
+   //to read url parameters
+   this.route.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params => {
+    this.studentId = window.atob(params['id']);
+    this.formType = window.atob(params['type']);
+  });
     //to create form with validations
     this.createForm();
     //to check whether the form to be created or updated

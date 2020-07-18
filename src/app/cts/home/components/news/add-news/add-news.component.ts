@@ -36,10 +36,11 @@ export class AddNewsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params => {
-      this.newsId = params['id'];
-      this.formType = params['type'];
-    });
+   //to read url parameters
+   this.route.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params => {
+    this.newsId = window.atob(params['id']);
+    this.formType = window.atob(params['type']);
+  });
     //to create form with validations
     this.createForm();
     //to check whether the form to be created or updated

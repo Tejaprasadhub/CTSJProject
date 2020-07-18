@@ -108,11 +108,11 @@
             <ng-template pTemplate="body" let-rowData let-columns="columns" let-expanded="expanded">
                 <tr>
                     <td *ngFor="let col of columns">
-                        <a class="bold" href="admin/teachers/add-teacher?type=view&id=1">{{rowData[col.field]}}</a>
+                        <a class="bold" (click)="viewTeacher(rowData.id)">{{rowData[col.field]}}</a>
                     </td>
                     <td class="d-flex">
-                        <i class="pi pi-pencil" (click)="editTeacher()"></i>&nbsp;
-                        <i class="pi pi-trash" (click)="deleteTeacher()"></i>
+                        <i class="pi pi-pencil" (click)="editTeacher(rowData.id)"></i>&nbsp;
+                        <i class="pi pi-trash" (click)="deleteTeacher(rowData.id)"></i>
                     </td>
                 </tr>
             </ng-template>

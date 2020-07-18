@@ -130,14 +130,18 @@ export class StudentsComponent implements OnInit {
     this.router.navigate(['student',{ outlets: { detail: ['student-profile'] } }], {relativeTo: this.route});
   }
 
+  //Crud events
   addNew($event: any) {
-    this.router.navigate(['add-student'], { relativeTo: this.route, queryParams: { type: 'create' } });
+    let id="0";
+    this.router.navigate(['add-student'], { relativeTo: this.route, queryParams: { type: window.btoa('create'),id: window.btoa(id) } });
   }
-
-  editStudent(): void {
-    this.router.navigate(['add-student'], { relativeTo: this.route, queryParams: { type: 'edit', id: '1' } });
+  editStudent(id):void{
+    this.router.navigate(['add-student'],{relativeTo: this.route,queryParams: { type: window.btoa('edit'), id: window.btoa(id) }});
   }
-  deleteStudent(): void {
+  viewStudent(id):void{
+    this.router.navigate(['add-student'],{relativeTo: this.route,queryParams: { type: window.btoa('view'), id: window.btoa(id) }});
+  }
+  deleteStudent(id): void {
     this.position = "top";
     this.display = true;
     this.successMessage = "";

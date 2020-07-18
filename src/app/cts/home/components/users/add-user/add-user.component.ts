@@ -48,9 +48,10 @@ export class AddUserComponent implements OnInit {
     }
 
   ngOnInit(): void {
-    this.route.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params => {
-      this.userId = params['id'];
-      this.formType = params['type'];
+     //to read url parameters
+     this.route.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params => {
+      this.userId = window.atob(params['id']);
+      this.formType = window.atob(params['type']);
     });
 
     this.createForm();

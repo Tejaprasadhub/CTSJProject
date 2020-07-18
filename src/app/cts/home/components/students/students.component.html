@@ -69,11 +69,11 @@
                         </a>
                     </td>
                     <td *ngFor="let col of columns">
-                        <a class="bold" href="admin/students/add-student?type=view&id=1">{{rowData[col.field]}}</a>                        
+                        <a class="bold" (click)="viewStudent(rowData.id)">{{rowData[col.field]}}</a>                        
                     </td>
                     <td class="d-flex">
-                        <i class="pi pi-pencil" (click)="editStudent()"></i>&nbsp;
-                        <i class="pi pi-trash" (click)="deleteStudent()"></i>
+                        <i class="pi pi-pencil" (click)="editStudent(rowData.id)"></i>&nbsp;
+                        <i class="pi pi-trash" (click)="deleteStudent(rowData.id)"></i>
                     </td>
                 </tr>
             </ng-template>

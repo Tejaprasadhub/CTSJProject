@@ -57,11 +57,11 @@
             <ng-template pTemplate="body" let-rowData let-columns="columns" let-expanded="expanded">
                 <tr>
                     <td *ngFor="let col of columns">
-                        <a class="bold" href="admin/users/add-user?type=view&id=1">{{rowData[col.field]}}</a>
+                        <a class="bold" (click)="viewUser(rowData.id)">{{rowData[col.field]}}</a>
                     </td>
                     <td class="d-flex">
-                        <i class="pi pi-pencil" (click)="editUser()"></i>&nbsp;
-                        <i class="pi pi-trash" (click)="deleteUser()"></i>
+                        <i class="pi pi-pencil" (click)="editUser(rowData.id)"></i>&nbsp;
+                        <i class="pi pi-trash" (click)="deleteUser(rowData.id)"></i>
                     </td>
                 </tr>
             </ng-template>

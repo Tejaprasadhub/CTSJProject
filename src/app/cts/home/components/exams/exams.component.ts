@@ -65,15 +65,18 @@ export class ExamsComponent implements OnInit {
       this.myFiltersDiv.nativeElement.classList.add('transform-active')
   }
 
-  addNew($event:any){
-    // this.router.navigateByUrl("Exams/add-exam?type=create");
-    this.router.navigate(['add-exam'], {relativeTo: this.route,queryParams: { type: 'create'}});
-  }
-  editExam():void{
-    // this.router.navigateByUrl("Exams/add-exam?type=edit&id=1");
-    this.router.navigate(['add-exam'], {relativeTo: this.route,queryParams: { type: 'edit',id:'1'}});
-  }
-  deleteExam():void{
+ //Crud events
+ addNew($event: any) {
+  let id="0";
+  this.router.navigate(['add-exam'], { relativeTo: this.route, queryParams: { type: window.btoa('create'),id: window.btoa(id) } });
+}
+editExam(id):void{
+  this.router.navigate(['add-exam'],{relativeTo: this.route,queryParams: { type: window.btoa('edit'), id: window.btoa(id) }});
+}
+viewExam(id):void{
+  this.router.navigate(['add-exam'],{relativeTo: this.route,queryParams: { type: window.btoa('view'), id: window.btoa(id) }});
+}
+  deleteExam(id):void{
     this.position="top";
     this.display=true;
     this.successMessage="";

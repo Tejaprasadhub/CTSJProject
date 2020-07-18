@@ -66,14 +66,18 @@ export class ClassesComponent implements OnInit {
     else
       this.myFiltersDiv.nativeElement.classList.add('transform-active')
   }
+  //Crud events
   addNew($event: any) {
-    this.router.navigate(['add-class'], { relativeTo: this.route, queryParams: { type: 'create' } });
+    let id="0";
+    this.router.navigate(['add-class'], { relativeTo: this.route, queryParams: { type: window.btoa('create'),id: window.btoa(id) } });
   }
-  editClass():void{
-    // this.router.navigateByUrl("Users/add-teacher?type=edit&id=1");
-    this.router.navigate(['add-class'],{relativeTo: this.route,queryParams: { type: 'edit', id: '1' }});
+  editClass(id):void{
+    this.router.navigate(['add-class'],{relativeTo: this.route,queryParams: { type: window.btoa('edit'), id: window.btoa(id) }});
   }
-  deleteClass():void{
+  viewClass(id):void{
+    this.router.navigate(['add-class'],{relativeTo: this.route,queryParams: { type: window.btoa('view'), id: window.btoa(id) }});
+  }
+  deleteClass(id):void{
     this.position="top";
     this.display=true;
   }

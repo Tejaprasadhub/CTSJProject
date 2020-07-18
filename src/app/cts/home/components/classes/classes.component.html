@@ -53,11 +53,11 @@
             <ng-template pTemplate="body" let-rowData let-columns="columns" let-expanded="expanded">
                 <tr>
                     <td *ngFor="let col of columns">
-                        <a class="bold" href="admin/classes/add-class?type=view&id=1">{{rowData[col.field]}}</a>                        
+                        <a class="bold" (click)="viewClass(rowData.id)">{{rowData[col.field]}}</a>                        
                     </td>
                     <td class="d-flex">
-                        <i class="pi pi-pencil" (click)="editClass()"></i>&nbsp;
-                        <i class="pi pi-trash" (click)="deleteClass()"></i>
+                        <i class="pi pi-pencil" (click)="editClass(rowData.id)"></i>&nbsp;
+                        <i class="pi pi-trash" (click)="deleteClass(rowData.id)"></i>
                     </td>
                 </tr>
             </ng-template>

@@ -53,11 +53,11 @@
             <ng-template pTemplate="body" let-rowData let-columns="columns" let-expanded="expanded">
                 <tr>
                     <td *ngFor="let col of columns">
-                        <a class="bold" href="admin/news/add-news?type=view&id=1">{{rowData[col.field]}}</a>                        
+                        <a class="bold" (click)="viewNews(rowData.id)">{{rowData[col.field]}}</a>                        
                     </td>
                     <td class="d-flex">
-                        <i class="pi pi-pencil" (click)="editNews()"></i>&nbsp;
-                        <i class="pi pi-trash" (click)="deleteNews()"></i>
+                        <i class="pi pi-pencil" (click)="editNews(rowData.id)"></i>&nbsp;
+                        <i class="pi pi-trash" (click)="deleteNews(rowData.id)"></i>
                     </td>
                 </tr>
             </ng-template>

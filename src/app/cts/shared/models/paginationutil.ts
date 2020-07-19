@@ -26,6 +26,11 @@ export class Paginationutil {
             Table.first =0;
         }
 
+        let columnLevelFilter = Object.keys(Table.filters).map((key)=>{
+            let comparison = `LIKE '%${Table.filters[key].value}%'`;
+            return `(${key} ${comparison})`
+        }).join(' AND ')
+
         return {
             "currentPage":currentPage,
             "pageCount":pageCount,
@@ -33,7 +38,7 @@ export class Paginationutil {
             "pageNo":(isReset ? 1 : pageNumber),
             "pageSize":pageSize,
             "group":"",
-            "filter":""
+            "filter":(columnLevelFilter.trim() != "" ? `(${columnLevelFilter})` : "")
         };
     }
 }

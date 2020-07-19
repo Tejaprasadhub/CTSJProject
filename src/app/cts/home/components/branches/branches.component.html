@@ -19,14 +19,15 @@
             <div class="row search-box">
                 <div class="col-md-3">
                     <span>Title</span><br>
-                    <input id="title" class="w-100" formControlName="ttitle" type="text" placeholder="Title" size="30"
-                        
+                    <input id="title" #tt class="w-100" formControlName="ttitle" type="text" placeholder="Title" size="30"
+                        (keydown)="$event.key === 'Enter' ? dt.filter(tt.value,'Title',''): ''"
                     pInputText>
                 </div>
                 <div class="col-md-3">
                     <span>Code</span><br>
-                    <input id="code" class="w-100" formControlName="tcode" type="text" placeholder="Code" size="30"
-                        pInputText>
+                    <input id="code" #ct class="w-100" formControlName="tcode" type="text" placeholder="Code" size="30"
+                    (keydown)="$event.key === 'Enter' ? dt.filter(ct.value,'code',''): ''"
+                    pInputText>
                 </div>
                 <div class="col-md-3"></div>
                 <div class="col-md-3 text-right search-buttons">

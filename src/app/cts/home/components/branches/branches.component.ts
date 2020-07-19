@@ -135,5 +135,6 @@ export class BranchesComponent implements OnInit {
   resetFilterForm(): void {
     this.filtersForm.reset();
     console.log(this.filtersForm.value);
+    
   } 
 }

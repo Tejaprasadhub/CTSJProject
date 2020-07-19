@@ -43,8 +43,6 @@ export class AddEventComponent implements OnInit {
     this.registration = [
       { label: 'yes', value: 'y' },
       { label: 'no', value: 'n' }
-     
-
     ];
    }
 

@@ -30,6 +30,8 @@ import { RoleAccessComponent } from '../components/role-access/role-access.compo
 import { AuditlogsComponent } from '../components/auditlogs/auditlogs.component';
 import { AddAuditlogComponent } from '../components/auditlogs/add-auditlog/add-auditlog.component';
 import { SettingsComponent } from '../components/settings/settings.component';
+import { AddTimetableComponent } from '../components/timetable/add-timetable/add-timetable.component';
+import { TimetableComponent } from '../components/timetable/timetable.component';
 
 
 
@@ -122,6 +124,18 @@ const homeRoutes: Routes = [
         component: AddAchievementComponent,
         canActivate:[AuthenticationGuardService],
         data: { title: 'Add achievement' }
+      },
+      {
+        path: 'timetable',
+        component: TimetableComponent,
+        canActivate:[AuthenticationGuardService],
+        data: { title: 'Timetable' }
+      },
+      {
+        path: 'timetable/add-timetable',
+        component: AddTimetableComponent,
+        canActivate:[AuthenticationGuardService],
+        data: { title: 'Add timetable' }
       },
       {
         path: 'exams',

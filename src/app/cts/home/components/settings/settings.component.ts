@@ -15,7 +15,9 @@ export class SettingsComponent implements OnInit {
   errorMessage: string = "";
   successMessage: string = "";
   formSubmitAttempt: boolean = false;
-
+  smsDiv: boolean = false;
+  emailDiv: boolean = false;
+   isRequired: boolean = false;
 
   constructor(private fb: FormBuilder) {
     this.sms = [
@@ -37,14 +39,17 @@ export class SettingsComponent implements OnInit {
   }
   createForm() {
     this.settingsForm = this.fb.group({
-      'sms': new FormControl(''),
-      'email1': new FormControl(''),
-      'vendor': new FormControl(''),
-      'sender': new FormControl(''),
-      'transkey': new FormControl(''),
-      'promkey': new FormControl(''),
-      'email2': new FormControl(''),
-      'password': new FormControl('')
+      'sms': new FormControl('',{ validators: [Validators.required] }),
+      'email1': new FormControl('',{ validators: [Validators.required] }),
+      'vendor': new FormControl('',{ validators: [Validators.required] }),
+      'sender': new FormControl('',{ validators: [Validators.required] }),
+      'transkey': new FormControl('',{ validators: [Validators.required] }),
+      'promkey': new FormControl('',{ validators: [Validators.required] }),
+      'email2': new FormControl('', { validators: [Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")] }),
+      'password': new FormControl('', {
+        validators: [Validators.required, Validators.minLength(8), Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}')
+        ]
+      })
     });
   }
   settingsSubmit(): void {
@@ -55,6 +60,20 @@ export class SettingsComponent implements OnInit {
       this.formSubmitAttempt = false;
       console.log(this.settingsForm.value);
       this.successMessage = "Your changes have been successfully saved";
+    }
+  }
+  dropdownChange(event, type): void {
+    if (type == 'sms') {
+      if (event.value == "Y") 
+        this.smsDiv = true      
+      else 
+        this.smsDiv = false      
+    }
+    else {
+      if (event.value == "Y") 
+        this.emailDiv = true      
+      else 
+        this.emailDiv = false      
     }
   }
 }

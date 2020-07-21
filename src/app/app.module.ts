@@ -24,6 +24,8 @@ import { AuthenticatedHttpInterceptorService } from './core/security/authenticat
 import { LocalstoragetokenService } from './core/security/localstoragetoken.service';
 import { SessionTimeoutService } from './core/security/session-timeout.service';
 import { Router } from '@angular/router';
+import { TimetableComponent } from './cts/home/components/timetable/timetable.component';
+import { AddTimetableComponent } from './cts/home/components/timetable/add-timetable/add-timetable.component';
 
 const SessionTimeoutServiceProvider={
   provide:SessionTimeoutService,
@@ -57,7 +59,9 @@ const AuthenticatedHttpInterceptorServiceProvider={
     BranchesComponent,
     AddBranchComponent,
     AuditlogsComponent,
-    AddAuditlogComponent
+    AddAuditlogComponent,
+    TimetableComponent,
+    AddTimetableComponent
 
   ],
   imports: [

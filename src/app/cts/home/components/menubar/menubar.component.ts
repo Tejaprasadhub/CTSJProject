@@ -72,6 +72,10 @@ export class MenubarComponent implements OnInit {
           ]
         },
         {
+          "label": "TimeTable",
+          "url": "admin/timetable"
+        },
+        {
           "label": "Role Access",
           "url": "admin/roleaccess"
         },

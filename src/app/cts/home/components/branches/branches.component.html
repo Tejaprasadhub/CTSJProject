@@ -16,11 +16,11 @@
     <!-- Form Starts Here -->
     <form [formGroup]="filtersForm" (ngSubmit)="filterSubmit()">
         <div #myFiltersDiv class="col-md-12 box transform">
-            <div class="row search-box">
+            <div class="row search-box search-box-padding">
                 <div class="col-md-3">
                     <span>Title</span><br>
                     <input id="title" #tt class="w-100" formControlName="ttitle" type="text" placeholder="Title" size="30"
-                        (keydown)="$event.key === 'Enter' ? dt.filter(tt.value,'Title',''): ''"
+                    (keydown)="$event.key === 'Enter' ? dt.filter(tt.value,'title',''): ''"
                     pInputText>
                 </div>
                 <div class="col-md-3">
@@ -33,7 +33,7 @@
                 <div class="col-md-3 text-right search-buttons">
                     <button pButton type="submit" icon="pi pi-search" label="Search"
                         class="ui-button-secondary table-header-items"></button>&nbsp;
-                    <button pButton type="button" icon="pi pi-refresh" label="Clear" (click)="resetFilterForm()"
+                    <button pButton type="button" icon="pi pi-refresh" label="Clear"  (click)="resetFilterForm()"
                         class="ui-button-secondary table-header-items"></button>
                 </div>
             </div>
@@ -67,6 +67,7 @@
                 </tr>
             </ng-template>
         </p-table>
+        <!-- pagination div starts from here -->
         <div class="col-md-12">
             <div class="pagecount-dropdown">
                 <span class="pagecounting">Items per page</span>
@@ -80,6 +81,7 @@
                 <div *ngIf="dt == undefined || dt.totalRecords==0">No Items to Display</div>
             </div>
         </div>
+        <!-- pagination div ends here -->
     </div>
     <p-dialog header="Delete Confirmation" [transitionOptions]="'500ms'" [baseZIndex]="20000" [(visible)]="display"
         [style]="{width: '30vw'}" [responsive]="true" [draggable]="true" [position]="position">

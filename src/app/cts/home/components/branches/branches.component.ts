@@ -23,7 +23,7 @@ export class BranchesComponent implements OnInit {
   position: string;
   filtersForm: FormGroup;
 
-  //pagination starts from here
+  //pagination and api integration starts from here
   numberOfPages:number =10;
   totalcount:number=0;
   noOfItems=10;
@@ -36,13 +36,12 @@ export class BranchesComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    //this.loadGrids(Paginationutil.getDefaultFilter());
     //Table headers and fields
     this.cols = [
       { field: 'title', header: 'title' },
       { field: 'code', header: 'code' },
-      { field: 'createDate', header: 'Created Date' },
-      { field: 'createdBy', header: 'Created By' }
+      { field: 'createddate', header: 'Created Date' },
+      { field: 'createdby', header: 'Created By' }
     ];
      //to create form with validations
      this.createFilterForm();
@@ -54,8 +53,7 @@ export class BranchesComponent implements OnInit {
     else
       this.myFiltersDiv.nativeElement.classList.add('transform-active')
   }
-
-
+//Api Integration Starts from here
   onPageChange(event:LazyLoadEvent){
     let pageObject = Paginationutil.getGridFilters(event,this.advancedFilterValue);
 
@@ -101,6 +99,8 @@ export class BranchesComponent implements OnInit {
     }
     });
   }
+  //API Integration ends here
+
   //Crud events
   addNew($event: any) {
     let id="0";
@@ -133,8 +133,6 @@ export class BranchesComponent implements OnInit {
   }
   //Filter Reset method
   resetFilterForm(): void {
-    this.filtersForm.reset();
-    console.log(this.filtersForm.value);
-    
+    this.filtersForm.reset();    
   } 
 }

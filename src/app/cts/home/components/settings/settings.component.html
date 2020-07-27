@@ -18,7 +18,7 @@
             <b>{{successMessage}}</b>
         </div>
     </div>
-    <form [formGroup]="settingsForm" (ngSubmit)="settingsSubmit()">
+    <form [formGroup]="settingsForm"  class="col-md-12" (ngSubmit)="settingsSubmit()">
         <div class="col-md-12 error-block animated fadeIn" *ngIf="(!settingsForm.valid && formSubmitAttempt)">
             <div class="col-md-12">
                 <i class="fa fa-exclamation-triangle"></i>
@@ -51,7 +51,7 @@
                                 (!settingsForm.controls['sender'].valid && settingsForm.controls['sender'].untouched && formSubmitAttempt))">
                                 <i class="fa fa-circle"></i>
                                 <span *ngIf="(settingsForm.controls['sender'].errors?.required)">Enter "Sender"</span>
-                            </div>
+                            </div> 
                             <div class="col-md-3 error-div" *ngIf="((!settingsForm.controls['transkey'].valid && settingsForm.controls['transkey'].touched)|| 
                                 (!settingsForm.controls['transkey'].valid && settingsForm.controls['transkey'].untouched && 
                                 formSubmitAttempt))">
@@ -86,14 +86,14 @@
         <div class="row search-box search-box-padding form-block ">
             <div class="col-md-6">
                 <span>SMS</span><br>
-                <p-dropdown [options]="sms" filter="true" class="required" (onChange)="dropdownChange($event,'sms')"
+                <p-dropdown [options]="sms" filter="true" class="required" (onChange)="dropdownChange($event,'sms')" placeholder="Select"
                     formControlName="sms"  [ngClass]="{'error':((!settingsForm.controls['sms'].valid && settingsForm.controls['sms'].touched) || 
                     (!settingsForm.controls['sms'].valid && settingsForm.controls['sms'].untouched && 
                     formSubmitAttempt)),'required':(isRequired == true )}"></p-dropdown>
             </div>
             <div class="col-md-6">
                 <span>EMAIL</span><br>
-                <p-dropdown [options]="email" filter="true" class="required" (onChange)="dropdownChange($event,'email')"
+                <p-dropdown [options]="email" filter="true" class="required" (onChange)="dropdownChange($event,'email')" placeholder="Select"
                     formControlName="email1" [ngClass]="{'error':((!settingsForm.controls['email1'].valid && settingsForm.controls['email1'].touched) || 
                     (!settingsForm.controls['email1'].valid && settingsForm.controls['email1'].untouched && 
                     formSubmitAttempt)),'required':(isRequired == true )}"></p-dropdown>

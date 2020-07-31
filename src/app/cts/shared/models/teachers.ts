@@ -11,7 +11,8 @@ export class Teachers {
     public experience:string,
     public expertise:string,
     public classes:string,
-    public sections:string    
+    public sections:string,
+    public indexId:number    
     ){}
 
 }

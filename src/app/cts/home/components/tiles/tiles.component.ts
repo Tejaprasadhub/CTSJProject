@@ -23,7 +23,8 @@ export class TilesComponent implements OnInit {
       new Tiles(40, 'users','lightblue','fa-users'),
       new Tiles(6, 'exams','yellow','fa-pencil'),
       new Tiles(10, 'classes','pink','fa-home'),
-      new Tiles(24, 'branches','blue','fa-puzzle-piece')
+      new Tiles(24, 'branches','blue','fa-puzzle-piece'),
+      new Tiles(24, 'subjects','blue','fa fa-book')
     ];    
 
     this.responsiveOptions = [

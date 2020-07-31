@@ -32,6 +32,8 @@ import { AddAuditlogComponent } from '../components/auditlogs/add-auditlog/add-a
 import { SettingsComponent } from '../components/settings/settings.component';
 import { AddTimetableComponent } from '../components/timetable/add-timetable/add-timetable.component';
 import { TimetableComponent } from '../components/timetable/timetable.component';
+import { SubjectsComponent } from '../components/subjects/subjects.component';
+import { AddSubjectsComponent } from '../components/subjects/add-subjects/add-subjects.component';
 
 
 
@@ -100,6 +102,18 @@ const homeRoutes: Routes = [
         component: AddBranchComponent,
         canActivate:[AuthenticationGuardService],
         data: { title: 'Add Branch' }
+      },
+      {
+        path: 'subjects',
+        component: SubjectsComponent,
+        canActivate:[AuthenticationGuardService],
+        data: { title: 'Branches' }
+      },
+      {
+        path: 'subjects/add-subject',
+        component: AddSubjectsComponent,
+        canActivate:[AuthenticationGuardService],
+        data: { title: 'Add Subject' }
       },
       {
         path: 'news',

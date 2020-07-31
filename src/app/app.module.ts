@@ -26,6 +26,8 @@ import { SessionTimeoutService } from './core/security/session-timeout.service';
 import { Router } from '@angular/router';
 import { TimetableComponent } from './cts/home/components/timetable/timetable.component';
 import { AddTimetableComponent } from './cts/home/components/timetable/add-timetable/add-timetable.component';
+import { SubjectsComponent } from './cts/home/components/subjects/subjects.component';
+import { AddSubjectsComponent } from './cts/home/components/subjects/add-subjects/add-subjects.component';
 
 const SessionTimeoutServiceProvider={
   provide:SessionTimeoutService,
@@ -61,7 +63,9 @@ const AuthenticatedHttpInterceptorServiceProvider={
     AuditlogsComponent,
     AddAuditlogComponent,
     TimetableComponent,
-    AddTimetableComponent
+    AddTimetableComponent,
+    SubjectsComponent,
+    AddSubjectsComponent
 
   ],
   imports: [

@@ -18,13 +18,16 @@
             <div class="row search-box search-box-padding">
                 <div class="col-md-3">
                     <span>Teacher Name</span><br>
-                    <input id="name" class="w-100" type="text" formControlName="tName" placeholder="Teacher Name"
-                        size="30" pInputText>
+                    <input id="name" #tt class="w-100" type="text" formControlName="tName" placeholder="Teacher Name"  size="30"
+                    (keydown)="$event.key === 'Enter' ? dt.filter(tt.value,'teachername',''): ''"
+                    pInputText>
                 </div>
-                <div class="col-md-3">
-                    <span>Qualification</span><br>
-                    <p-dropdown [options]="qualification" class="w-100" formControlName="tQualification"
-                        placeholder="Select a Qualification"  ></p-dropdown>
+                <div class="col-md-3">    
+                        <span>Qualification</span><br>
+                    <p-multiSelect [options]="qualifications"  (onChange)="multiselectSearch($event,'qualification_id')" formControlName="tQualification" placeholder="Select Qualifications"  class="w-100">
+                   
+                   
+                    </p-multiSelect>
                 </div>
                 <div class="col-md-3">
                     <span>Date Of Birth</span><br>
@@ -109,13 +112,24 @@
             <ng-template pTemplate="body" let-rowData let-columns="columns" let-expanded="expanded">
                 <tr>
                     <td *ngFor="let col of columns">
-                        <a class="bold" (click)="viewTeacher(rowData.id)">   
-                            {{rowData[col.field]}}  
-                        </a>
+                        <div *ngIf="col.field != 'classes' && col.field != 'sections' && col.field != 'subjects' && col.field != 'qualifications'">
+                            <a class="bold" (click)="viewTeacher(rowData.id)">   
+                                {{rowData[col.field]}}  
+                            </a>
+                        </div>
+                        <div *ngIf="col.field == 'classes' || col.field == 'sections' || col.field == 'subjects' || col.field == 'qualifications'">
+                            <span class="tableRowData" *ngFor="let datavalue of rowData[col.field]">
+                                    <li>
+                                        {{datavalue.label}}
+                                    </li>
+                            </span>
+                        </div>                        
                     </td>
-                    <td class="d-flex">
+                    <td>
+                        <div>
                         <i class="pi pi-pencil" (click)="editTeacher(rowData.id)"></i>&nbsp;
                         <i class="pi pi-trash" (click)="deleteTeacher(rowData.id)"></i>
+                    </div>
                     </td>
                 </tr>
             </ng-template>

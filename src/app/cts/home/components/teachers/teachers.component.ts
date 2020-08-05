@@ -7,8 +7,13 @@ import { takeUntil } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
-// import * as angular from "angular";
+import { Table } from 'primeng/table';
 
+// import * as angular from "angular";
+export class multiselectObject {
+  key: string;
+  value: string;
+}
 
 @Component({
   selector: 'app-teachers',
@@ -27,7 +32,7 @@ export class TeachersComponent implements OnInit {
   successMessage: string = "";
   cols: any[];
   @ViewChild('myFiltersDiv') myFiltersDiv: ElementRef;
-  qualification: any[];
+  qualifications: any[];
   experience: any[];
   expertise: any[];
   classes: any[];
@@ -42,17 +47,19 @@ export class TeachersComponent implements OnInit {
   numberOfPages: number = 10;
   totalcount: number = 0;
   noOfItems = 10;
-  advancedFilterValue: string = "";
+  multiSelectFilterValue: string = "";
   currentPage: number = 1;
   pageCount: number;
   rowDataString: string = "";
+  selectedArray: Array<multiselectObject> = [];
+  @ViewChild(Table, { static: false }) DataTable: Table;
+
 
   constructor(private teachersService: TeachersService, private router: Router, private route: ActivatedRoute,
     private fb: FormBuilder) {
-    this.qualification = [
-      { label: 'B.Ed', value: 'B.Ed' },
-      { label: 'M.Ed', value: 'M.Ed' },
-      { label: 'Other', value: 'OTH' }
+    this.qualifications = [
+      { label: 'B.Ed', value: '27' },
+      { label: 'M.Ed', value: '28' }
     ];
     this.experience = [
       { label: '0-1(yrs)', value: '0-1' },
@@ -91,11 +98,11 @@ export class TeachersComponent implements OnInit {
     this.cols = [
       { field: 'teachername', header: 'Name' },
       { field: 'dob', header: 'DOB' },
-      { field: 'qualification', header: 'Qualification' },
+      { field: 'qualifications', header: 'Qualifications' },
       { field: 'email', header: 'Email' },
       { field: 'mobilenumber', header: 'Mobile ' },
-      { field: 'experience', header: 'Experience' },
-      { field: 'expertise', header: 'Expertise' },
+      { field: 'experience', header: 'Experience(Yrs)' },
+      { field: 'subjects', header: 'Subjects' },
       { field: 'classes', header: 'Classes' },
       { field: 'sections', header: 'Sections' }
     ];
@@ -113,7 +120,7 @@ export class TeachersComponent implements OnInit {
   }
   //Api Integration Starts from here
   onPageChange(event: LazyLoadEvent) {
-    let pageObject = Paginationutil.getGridFilters(event, this.advancedFilterValue);
+    let pageObject = Paginationutil.getGridFilters(event, this.multiSelectFilterValue);
 
     this.currentPage = pageObject.currentPage;
 
@@ -193,6 +200,38 @@ export class TeachersComponent implements OnInit {
     });
   }
 
+  multiselectSearch(event, from) {  
+    //creating new object   
+    let customObj = new multiselectObject();
+    customObj.key = from;
+    customObj.value = event.itemValue;
+
+    //if object is exists in array then remove object from else push object into array
+    var find = false;
+    for (let item of this.selectedArray) {
+      // same smallItem value
+      if (item.value == customObj.value) {
+        find = true;
+      }
+    }
+    if (!find) {
+      this.selectedArray.push(customObj);
+    } else {
+      this.selectedArray = this.selectedArray.filter(obj => obj.value !== customObj.value)
+    }
+
+    //to create fileter stirng for multiselect
+    this.multiSelectFilterValue = this.selectedArray.map(object => {
+      let comparison = `'${object.value}'`;
+      return `(${object.key}=${comparison})`
+    }).join(' OR ')
+
+    //calling get method with multiselect filters
+    let totalFilter = Paginationutil.getGridFilters(this.DataTable, this.multiSelectFilterValue)
+    this.loadGrids(JSON.stringify(totalFilter));
+    
+  }
+
   // Add Teacher method
   filterSubmit(): void {
     console.log(this.filtersForm.value);
@@ -202,25 +241,5 @@ export class TeachersComponent implements OnInit {
     this.filtersForm.reset();
     console.log(this.filtersForm.value);
   }
-  //createRowValues
-  createRowValues(rowDataValue):string{
-    // this.rowDataString = "";
-    // if (rowDataValue instanceof Array) {
-    //   console.log('value is Array!');
-    //   this.rowDataString += '<span class="rowData">';
-    //     rowDataValue.forEach(function (value) {
-    //         this.rowDataString +="<li>"+value.label+"</li>";
-    //     });
-    //     this.rowDataString+="</span>";        
-    //   } else {
-    //   console.log('Not an array');
-    //   this.rowDataString = rowDataValue;
-    //   }
-    // return this.rowDataString;
 
-    // angular.isArray(rowDataValue)
-
-    return rowDataValue;
-       
-  }
 }

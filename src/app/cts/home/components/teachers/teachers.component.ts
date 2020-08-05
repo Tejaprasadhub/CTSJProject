@@ -7,6 +7,8 @@ import { takeUntil } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
+// import * as angular from "angular";
+
 
 @Component({
   selector: 'app-teachers',
@@ -43,7 +45,7 @@ export class TeachersComponent implements OnInit {
   advancedFilterValue: string = "";
   currentPage: number = 1;
   pageCount: number;
-
+  rowDataString: string = "";
 
   constructor(private teachersService: TeachersService, private router: Router, private route: ActivatedRoute,
     private fb: FormBuilder) {
@@ -199,5 +201,26 @@ export class TeachersComponent implements OnInit {
   resetFilterForm(): void {
     this.filtersForm.reset();
     console.log(this.filtersForm.value);
+  }
+  //createRowValues
+  createRowValues(rowDataValue):string{
+    // this.rowDataString = "";
+    // if (rowDataValue instanceof Array) {
+    //   console.log('value is Array!');
+    //   this.rowDataString += '<span class="rowData">';
+    //     rowDataValue.forEach(function (value) {
+    //         this.rowDataString +="<li>"+value.label+"</li>";
+    //     });
+    //     this.rowDataString+="</span>";        
+    //   } else {
+    //   console.log('Not an array');
+    //   this.rowDataString = rowDataValue;
+    //   }
+    // return this.rowDataString;
+
+    // angular.isArray(rowDataValue)
+
+    return rowDataValue;
+       
   }
 }

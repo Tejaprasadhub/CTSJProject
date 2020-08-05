@@ -92,14 +92,12 @@
         <!-- <p-table #dt [columns]="cols" [value]="teachers" [lazy]="true" (onLazyLoad)="loadCarsLazy($event)"
             [paginator]="true" [rows]="10" [totalRecords]="totalRecords" [loading]="loading" [responsive]="true"
             [reorderableColumns]="true" dataKey="firstname"> -->
-            <p-table #dt [columns]="cols" [value]="teachers" [lazy]="true" dataKey="indexId" [paginator]="true"
+            <p-table #dt [columns]="cols" [resizableColumns]="true" [value]="teachers" [lazy]="true" dataKey="indexId" [paginator]="true"
             [responsive]="true" [rows]="numberOfPages" (onLazyLoad)="onPageChange($event)" [totalRecords]="totalcount"
             [rowsPerPageOptions]="[10,20,30,40,50]" [reorderableColumns]="true" dataKey="firstname">
             <ng-template pTemplate="header" let-columns>
                 <tr>
-
-                    <th *ngFor="let col of columns" [pSortableColumn]="col.field" pReorderableColumn
-                        style="width: 20% !important;">
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.field" pReorderableColumn>
                         <div class="">
                             {{col.header}}
                             <p-sortIcon [field]="col.field" style="float:right"></p-sortIcon>
@@ -111,7 +109,9 @@
             <ng-template pTemplate="body" let-rowData let-columns="columns" let-expanded="expanded">
                 <tr>
                     <td *ngFor="let col of columns">
-                        <a class="bold" (click)="viewTeacher(rowData.id)">{{rowData[col.field]}}</a>
+                        <a class="bold" (click)="viewTeacher(rowData.id)">   
+                            {{rowData[col.field]}}  
+                        </a>
                     </td>
                     <td class="d-flex">
                         <i class="pi pi-pencil" (click)="editTeacher(rowData.id)"></i>&nbsp;

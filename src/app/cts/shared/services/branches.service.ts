@@ -10,21 +10,18 @@ import { map } from 'rxjs/operators';
 })
 export class BranchesService {
 
-    private branchesJsonData = new BehaviorSubject<any>(null);
-    public branchesJson = this.branchesJsonData.asObservable();
-
-    constructor(private httpClient : HttpClient) { }
+    constructor(private httpClient: HttpClient) { }
     public getBranches(pagingData) {
         // this.branchesJsonData.next(this.branches);
-        const headers = new HttpHeaders().set("Content-Type","application/json");
-   
-    var  loginUrl:string = AppConstants.Api.AdminApp+"Branches/GetBranches"
+        const headers = new HttpHeaders().set("Content-Type", "application/json");
 
-    return this.httpClient.post
-    (loginUrl,pagingData,{headers:headers,withCredentials:true}).pipe(
-    map((response:any)=> {
-       return response;
-    })); 
+        var loginUrl: string = AppConstants.Api.AdminApp + "Branches/GetBranches"
+
+        return this.httpClient.post
+            (loginUrl, pagingData, { headers: headers, withCredentials: true }).pipe(
+                map((response: any) => {
+                    return response;
+                }));
     }
 }
 

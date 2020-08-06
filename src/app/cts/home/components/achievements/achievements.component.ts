@@ -43,6 +43,7 @@ filtersForm: FormGroup;
     this.cols = [
       { field: 'title', header: 'Title' },
       { field: 'date', header: 'Date' },
+      { field: 'branch', header: 'Branch' },
       { field: 'createddate', header: 'Created Date' },
       { field: 'createdby', header: 'Created By' }
     ];

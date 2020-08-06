@@ -1,40 +1,27 @@
 import { Injectable } from '@angular/core';
 import { Qualifications } from '../models/qualifications';
 import { BehaviorSubject } from 'rxjs';
+import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { AppConstants } from '../../app-constants';
+import { map } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
 })
-export class QualificationsService {
-    public qualifications: Qualifications[] =
-        [
-            {
-                "id": 1,
-                "code": "BED",
-                "title": "B.ED",
-                "createddate": new Date("10/10/2019"),
-                "createdby": "Sindhuja"
-            }, {
-              "id": 1,
-              "code": "BED",
-              "title": "B.ED",
-              "createddate": new Date("10/10/2019"),
-              "createdby": "Sindhuja"
-            },
-            {
-              "id": 1,
-              "code": "BED",
-              "title": "B.ED",
-              "createddate": new Date("10/10/2019"),
-              "createdby": "Sindhuja"
-            },
-        ];
+export class QualificationsService {  
 
-    private qualificationsJsonData = new BehaviorSubject<any>(null);
-    public qualificationsJson = this.qualificationsJsonData.asObservable();
+    constructor(private httpClient: HttpClient) { }
+    public getQualifications(pagingData) {
+        // this.branchesJsonData.next(this.branches);
+        const headers = new HttpHeaders().set("Content-Type", "application/json");
 
-    constructor() { }
-    public getQualifications() {
-        this.qualificationsJsonData.next(this.qualifications);
+        var loginUrl: string = AppConstants.Api.AdminApp + "Qualifications/GetQualifications"
+
+        return this.httpClient.post
+            (loginUrl, pagingData, { headers: headers, withCredentials: true }).pipe(
+                map((response: any) => {
+                    return response;
+                }));
     }
+    
 }

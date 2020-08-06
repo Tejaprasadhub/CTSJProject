@@ -4,6 +4,7 @@ export class Qualifications {
         public code: string,
         public title: string,
         public createddate: Date,
-        public createdby: string
+        public createdby: string,
+        public indexId:number
     ) { }
 }

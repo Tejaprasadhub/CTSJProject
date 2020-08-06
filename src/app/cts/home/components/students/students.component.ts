@@ -3,10 +3,11 @@ import { LazyLoadEvent, SelectItem } from 'primeng/api/public_api';
 import { Students } from 'src/app/cts/shared/models/students';
 import { StudentsService } from 'src/app/cts/shared/services/students.service';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { map,takeUntil } from 'rxjs/operators';;
 import { Gender, Class123 } from 'src/app/cts/shared/models/gender';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
+import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
 
 @Component({
   selector: 'app-students',
@@ -39,8 +40,15 @@ export class StudentsComponent implements OnInit {
   classes: any[];
    //to create Teacher From 
    filtersForm: FormGroup;
+   //pagination and api integration starts from here
+  numberOfPages:number =10;
+  totalcount:number=0;
+  noOfItems=10;
+  advancedFilterValue:string ="";
+  currentPage:number = 1;
+  pageCount:number;
 
-  constructor(private studentsService: StudentsService, private router: Router, private route: ActivatedRoute, private fb: FormBuilder) {
+  constructor(private StudentsService: StudentsService, private router: Router, private route: ActivatedRoute, private fb: FormBuilder) {
     this.gender = [
       { label: 'Male', value: 'M' },
       { label: 'Female', value: 'F' }
@@ -60,18 +68,15 @@ export class StudentsComponent implements OnInit {
       this.myFiltersDiv.nativeElement.classList.add('transform-active')
   }
   public ngOnInit() {
-    this.studentsService.getStudents();
-    //  this.totalRecords = this.datasource.length;
-    this.studentsService.studentsJson.pipe(takeUntil(this.ngUnsubscribe)).subscribe(students => {
-      this.datasource = students;
-      this.totalRecords = this.datasource.length;
-    });
+  
     this.cols = [
       { field: 'firstname', header: 'Name' },
       { field: 'gender', header: 'Gender' },
       { field: 'dob', header: 'Date Of Birth' },
       { field: 'email', header: 'Email' },
-      { field: 'classs', header: 'Class' }
+      { field: 'classs', header: 'Class' },
+      { field: 'branch', header: 'Branch ' },
+      { field: 'createdby', header: 'Createdby' }
     ];
     this.loading = true;
 
@@ -104,27 +109,53 @@ export class StudentsComponent implements OnInit {
     // }
    
   }
+//Api Integration Starts from here
+onPageChange(event:LazyLoadEvent){
+  let pageObject = Paginationutil.getGridFilters(event,this.advancedFilterValue);
 
-  loadCarsLazy(event: LazyLoadEvent) {
-    this.loading = true;
-    
-   
+  this.currentPage = pageObject.currentPage;
 
-    //in a real application, make a remote request to load data using state metadata from event
-    //event.first = First row offset
-    //event.rows = Number of rows per page
-    //event.sortField = Field name to sort with
-    //event.sortOrder = Sort order as number, 1 for asc and -1 for dec
-    //filters: FilterMetadata object having field as key and filter value, filter matchMode as value
+  let isinitialload = this.pageCount == undefined || this.pageCount == null;
+  this.pageCount = pageObject.pageCount;
 
-    //imitate db connection over a network
-    setTimeout(() => {
-      if (this.datasource) {
-        this.students = this.datasource.slice(event.first, (event.first + event.rows));
-        this.loading = false;
-      }
-    }, 1000);
+  let currentrows = event.rows * pageObject.pageNo;
+
+  if(this.totalcount != 0){
+    this.noOfItems =(currentrows < this.totalcount ? currentrows : this.totalcount);
   }
+
+  this.loadGrids(JSON.stringify(pageObject));
+
+}
+
+loadGrids(pagingData){
+  let paging = JSON.parse(pagingData);
+  //Get Branches API call
+  this.StudentsService.getStudents(pagingData)
+  .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{  
+    if(result.success){
+    this.students= result.data;
+    //pagination starts from here
+    this.totalcount = parseInt(result.total);    
+
+    if(this.totalcount <= paging.pageSize){
+      this.noOfItems = this.totalcount;
+    }else{
+      this.noOfItems = (JSON.parse(pagingData)).pageSize;
+    }
+
+    if(this.students != null && this.students != undefined){
+      this.students = this.students.map(function(el,i){
+        var o = Object.assign({},el);
+        o.indexId = i;
+        return o;
+      });
+    }
+    let currentrows = (this.currentPage * this.numberOfPages);
+  }
+  });
+}
+//API Integration ends here
 
   rowExpand(event, data) {
     this.router.navigate(['student',{ outlets: { detail: ['student-profile'] } }], {relativeTo: this.route});

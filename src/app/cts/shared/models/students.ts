@@ -11,7 +11,8 @@ export class Students {
     public email:string,
     public image:string,
     public classs:number,
-    public section:string
+    public section:string,
+    public indexId:number
     
     ){}
 

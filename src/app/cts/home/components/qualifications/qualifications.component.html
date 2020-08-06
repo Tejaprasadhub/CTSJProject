@@ -2,12 +2,12 @@
     <div class="col-md-12 component-header">
         <div class="row">
             <div class="col-md-4">
-                <span class="table-header-items">TimeTable</span>
+                <span class="table-header-items">Qualifications</span>
             </div>
             <div class="col-md-8 text-right">
                 <button pButton type="button" icon="pi pi-filter" label="Filters"
                     class="ui-button-secondary table-header-items" (click)="toggleClass($event)"></button>&nbsp;
-                <button pButton type="button" icon="pi pi-plus" label="TimeTable"
+                <button pButton type="button" icon="pi pi-plus" label="Qualification"
                     class="ui-button-secondary table-header-items" (click)="addNew($event)"></button>
             </div>
         </div>
@@ -16,31 +16,17 @@
         <div #myFiltersDiv class="col-md-12 box transform">
             <div class="row search-box search-box-padding">
                 <div class="col-md-3">
-                    <span>Class Id</span><br>
-                    <p-dropdown [options]="classid" class="w-100" formControlName="tclassid"
-                        placeholder="Select Class"  ></p-dropdown>
+                    <span>Title</span><br>
+                    <input id="title" class="w-100" type="text" formControlName="ttitle" placeholder="Title" size="30"
+                        pInputText>
                 </div>
                 <div class="col-md-3">
-                    <span>Subject Id</span><br>
-                    <p-dropdown [options]="subjectid" class="w-100" formControlName="tsubjectid"
-                        placeholder="Select Subject"  ></p-dropdown>
+                    <span>Year</span><br>
+                    <p-calendar placeholder="Select Year" view="month" dateFormat="mm/yy" [yearNavigator]="true"
+                        yearRange="2000:2030" formControlName="tyear" [inputStyle]="{'width':'100% !important'}"
+                        [showIcon]="true">
+                    </p-calendar>
                 </div>
-                <div class="col-md-3">
-                    <span>Teacher Id</span><br>
-                    <p-dropdown [options]="teacherid" class="w-100" formControlName="tteaherid"
-                        placeholder="Select Teacher"></p-dropdown>
-                </div>
-                <div class="col-md-3">
-                    <span>Period From</span><br>
-                    <p-calendar  [showTime]="true" class="w-100" formControlName="tperiodfrom"
-                    placeholder="Select Time"></p-calendar>
-                </div>
-                <div class="col-md-3">
-                    <span>Period To</span><br>
-                    <p-calendar  [showTime]="true" class="w-100" formControlName="tperiodto"
-                    placeholder="Select Time"></p-calendar>
-                </div>
-                <div class="col-md-3"></div>
                 <div class="col-md-3"></div>
                 <div class="col-md-3 text-right search-buttons">
                     <button pButton type="submit" icon="pi pi-search" label="Search"
@@ -65,9 +51,9 @@
     </div>
 
     <div class="col-md-12 search-box">
-        <p-table #dt [columns]="cols" [value]="timetable" [lazy]="true" dataKey="indexId" [paginator]="true"
-        [responsive]="true" [rows]="numberOfPages" (onLazyLoad)="onPageChange($event)" [totalRecords]="totalcount"
-        [rowsPerPageOptions]="[10,20,30,40,50]" [reorderableColumns]="true" dataKey="firstname">
+        <p-table #dt [columns]="cols" [value]="qualifications" [lazy]="true" (onLazyLoad)="loadCarsLazy($event)"
+            [paginator]="true" [rows]="10" [totalRecords]="totalRecords" [loading]="loading" [responsive]="true"
+            [reorderableColumns]="true" dataKey="firstname">
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th *ngFor="let col of columns" [pSortableColumn]="col.field" pReorderableColumn
@@ -83,38 +69,22 @@
             <ng-template pTemplate="body" let-rowData let-columns="columns" let-expanded="expanded">
                 <tr>
                     <td *ngFor="let col of columns">
-                        <a class="bold" (click)="viewTimetable(rowData.id)">{{rowData[col.field]}}</a>
-                    </td> 
+                        <a class="bold" (click)="viewQualification(rowData.id)">{{rowData[col.field]}}</a>
+                    </td>
                     <td>
-                        <i class="pi pi-pencil" (click)="editTimetable(rowData.id)"></i>&nbsp;
-                        <i class="pi pi-trash" (click)="deleteTimetable(rowData.id)"></i>
+                        <i class="pi pi-pencil" (click)="editQualification(rowData.id)"></i>&nbsp;
+                        <i class="pi pi-trash" (click)="deleteQualification(rowData.id)"></i>
                     </td>
                 </tr>
             </ng-template>
         </p-table>
-        <!-- pagination div starts from here -->
-        <div class="col-md-12">
-            <div class="pagecount-dropdown">
-                <span class="pagecounting">Items per page</span>
-            </div>
-            <div class="pagecount">
-                <div *ngIf="dt.totalRecords != 0">
-                    {{dt.first+1}}-{{((dt.first+dt.rows)>dt.totalRecords)?dt.totalRecords:(dt.first+dt.rows)}} of
-                    {{dt.totalRecords}}
-                    Items
-                </div>
-                <div *ngIf="dt == undefined || dt.totalRecords==0">No Items to Display</div>
-            </div>
-        </div>
-        <!-- pagination div ends here -->
     </div>
 
     <p-dialog header="Delete Confirmation" [transitionOptions]="'500ms'" [baseZIndex]="20000" [(visible)]="display"
         [style]="{width: '30vw'}" [responsive]="true" [draggable]="true" [position]="position">
-        <p>Are you sure you want to delete Timetable?</p>
+        <p>Are you sure you want to delete Qualification?</p>
         <p-footer class="btm-buttons">
-            <button type="button" pButton icon="pi pi-check" label="Yes" (click)="timetableRevoke()"></button>
+            <button type="button" pButton icon="pi pi-check" label="Yes" (click)="qualificationRevoke()"></button>
             <button type="button" pButton icon="pi pi-times" (click)="display=false" label="No"></button>
         </p-footer>
     </p-dialog>
-

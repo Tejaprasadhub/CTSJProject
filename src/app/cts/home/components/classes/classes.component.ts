@@ -3,9 +3,10 @@ import { LazyLoadEvent, SelectItem } from 'primeng/api/public_api';
 import { Classes } from 'src/app/cts/shared/models/classes';
 import { ClassesService } from 'src/app/cts/shared/services/classes.service';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { map,takeUntil } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
+import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
 
 @Component({
   selector: 'app-classes',
@@ -24,8 +25,15 @@ export class ClassesComponent implements OnInit {
   position: string;
   filtersForm: FormGroup;
   sections: SelectItem[] = [];
+  //pagination and api integration starts from here
+  numberOfPages:number =10;
+  totalcount:number=0;
+  noOfItems=10;
+  advancedFilterValue:string ="";
+  currentPage:number = 1;
+  pageCount:number;
 
-  constructor(private classesService: ClassesService, private router: Router, private route: ActivatedRoute,private fb: FormBuilder) {
+  constructor(private ClassesService: ClassesService, private router: Router, private route: ActivatedRoute,private fb: FormBuilder) {
     this.classes = [];
     this.sections = [
       { label: '1-section', value: '1' },
@@ -34,11 +42,6 @@ export class ClassesComponent implements OnInit {
   }
 
   public ngOnInit() {
-    this.classesService.getClasses();
-    this.classesService.classesJson.pipe(takeUntil(this.ngUnsubscribe)).subscribe(classes => {
-      this.datasource = classes;
-      this.totalRecords = this.datasource.length;
-    });
     this.cols = [
       { field: 'name', header: 'Name' },
       { field: 'noofsections', header: 'No.of Sections' },
@@ -48,17 +51,7 @@ export class ClassesComponent implements OnInit {
     this.loading = true;
     //to create form with validations
     this.createFilterForm();
-  }
-
-  loadCarsLazy(event: LazyLoadEvent) {
-    this.loading = true;
-    setTimeout(() => {
-      if (this.datasource) {
-        this.classes = this.datasource.slice(event.first, (event.first + event.rows));
-        this.loading = false;
-      }
-    }, 1000);
-  }
+  } 
 
   toggleClass($event: any) {
     if (this.myFiltersDiv.nativeElement.classList.contains('transform-active'))
@@ -66,6 +59,56 @@ export class ClassesComponent implements OnInit {
     else
       this.myFiltersDiv.nativeElement.classList.add('transform-active')
   }
+//Api Integration Starts from here
+onPageChange(event:LazyLoadEvent){
+  let pageObject = Paginationutil.getGridFilters(event,this.advancedFilterValue);
+
+  this.currentPage = pageObject.currentPage;
+
+  let isinitialload = this.pageCount == undefined || this.pageCount == null;
+  this.pageCount = pageObject.pageCount;
+
+  let currentrows = event.rows * pageObject.pageNo;
+
+  if(this.totalcount != 0){
+    this.noOfItems =(currentrows < this.totalcount ? currentrows : this.totalcount);
+  }
+
+  this.loadGrids(JSON.stringify(pageObject));
+
+}
+
+loadGrids(pagingData){
+  let paging = JSON.parse(pagingData);
+  //Get Branches API call
+  this.ClassesService.getClasses(pagingData)
+  .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{  
+    if(result.success){
+    this.classes= result.data;
+    //pagination starts from here
+    this.totalcount = parseInt(result.total);    
+
+    if(this.totalcount <= paging.pageSize){
+      this.noOfItems = this.totalcount;
+    }else{
+      this.noOfItems = (JSON.parse(pagingData)).pageSize;
+    }
+
+    if(this.classes != null && this.classes != undefined){
+      this.classes = this.classes.map(function(el,i){
+        var o = Object.assign({},el);
+        o.indexId = i;
+        return o;
+      });
+    }
+    let currentrows = (this.currentPage * this.numberOfPages);
+  }
+  });
+}
+//API Integration ends here
+
+
+
   //Crud events
   addNew($event: any) {
     let id="0";

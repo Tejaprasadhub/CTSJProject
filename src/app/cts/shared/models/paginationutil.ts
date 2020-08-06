@@ -30,6 +30,8 @@ export class Paginationutil {
             return `(${key} ${comparison})`
         }).join(' AND ')
 
+        
+
         let finalFilterString = "";
 
         if (columnLevelFilter.trim() != "" && multiselectFilter.trim() != "") {

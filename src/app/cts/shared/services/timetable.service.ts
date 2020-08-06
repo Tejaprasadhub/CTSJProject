@@ -1,49 +1,27 @@
 import { Injectable } from '@angular/core';
 import { Timetable } from '../models/timetable';
 import { BehaviorSubject } from 'rxjs';
+import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { AppConstants } from '../../app-constants';
+import { map } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
 })
-export class TimetableService {
-    public timetable: Timetable[] =
-        [
-            {
-                "id": 1,
-                "classid": 1,
-                "subjectid": 1,
-                "teacherid": 1,
-                "periodfrom": new Date("10/10/2019"),
-                "periodto": new Date("10/10/2019"),
-                "createddate": new Date("10/10/2019"),
-                "createdby": "Sindhuja"
-            }, {
-              "id": 2,
-              "classid": 1,
-              "subjectid": 1,
-              "teacherid": 1,
-              "periodfrom": new Date("10/10/2019"),
-              "periodto": new Date("10/10/2019"),
-              "createddate": new Date("10/10/2019"),
-              "createdby": "Sindhuja"
-            },
-            {
-              "id": 3,
-              "classid": 1,
-              "subjectid": 1,
-              "teacherid": 1,
-              "periodfrom": new Date("10/10/2019"),
-              "periodto": new Date("10/10/2019"),
-              "createddate": new Date("10/10/2019"),
-              "createdby": "Sindhuja"
-            },
-        ];
+export class TimetableService { 
 
-    private timetableJsonData = new BehaviorSubject<any>(null);
-    public timetableJson = this.timetableJsonData.asObservable();
+    constructor(private httpClient: HttpClient) { }
+    public getTimetable(pagingData) {
+        // this.timetableJsonData.next(this.timetable);
+        const headers = new HttpHeaders().set("Content-Type", "application/json");
 
-    constructor() { }
-    public getTimetable() {
-        this.timetableJsonData.next(this.timetable);
+        var loginUrl: string = AppConstants.Api.AdminApp + "Timetable/GetTimetable"
+
+        return this.httpClient.post
+            (loginUrl, pagingData, { headers: headers, withCredentials: true }).pipe(
+                map((response: any) => {
+                    return response;
+                }));
     }
+    
 }

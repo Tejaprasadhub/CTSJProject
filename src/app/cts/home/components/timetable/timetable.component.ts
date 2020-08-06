@@ -3,9 +3,10 @@ import { LazyLoadEvent, SelectItem } from 'primeng/api/public_api';
 import { Timetable } from 'src/app/cts/shared/models/timetable';
 import { TimetableService } from 'src/app/cts/shared/services/timetable.service';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { map,takeUntil } from 'rxjs/operators';;
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
+import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
 
 
 @Component({
@@ -29,8 +30,16 @@ export class TimetableComponent implements OnInit {
   classid: any[];
   subjectid: any[];
   teacherid: any[];
+   //pagination and api integration starts from here
+   numberOfPages:number =10;
+   totalcount:number=0;
+   noOfItems=10;
+   advancedFilterValue:string ="";
+   currentPage:number = 1;
+   pageCount:number;
+ 
 
-  constructor(private timetableService: TimetableService, private router: Router,private route:ActivatedRoute,private fb: FormBuilder) {
+  constructor(private TimetableService: TimetableService, private router: Router,private route:ActivatedRoute,private fb: FormBuilder) {
     this.classid = [
       { label: 'class1', value: '1' },
       { label: 'class2', value: '2' },
@@ -50,15 +59,10 @@ export class TimetableComponent implements OnInit {
   }
 
   public ngOnInit() {
-    this.timetableService.getTimetable();
-    this.timetableService.timetableJson.pipe(takeUntil(this.ngUnsubscribe)).subscribe(timetable => {
-      this.datasource = timetable;
-      this.totalRecords = this.datasource.length;
-    });
     this.cols = [
-      { field: 'classid', header: 'Class Id' },
-      { field: 'subjectid', header: 'Subject Id' },
-      { field: 'teacherid', header: 'Teacher Id' },
+      { field: 'class', header: 'Class Id' },
+      { field: 'subject', header: 'Subject Id' },
+      { field: 'teacher', header: 'Teacher Id' },
       { field: 'periodfrom', header: 'Period From' },
       { field: 'periodto', header: 'Period To' },
       { field: 'createddate', header: 'Created Date' },
@@ -68,16 +72,6 @@ export class TimetableComponent implements OnInit {
     //to create form with validations
     this.createFilterForm();
   }
-
-  loadCarsLazy(event: LazyLoadEvent) {
-    this.loading = true;
-    setTimeout(() => {
-      if (this.datasource) {
-        this.timetable = this.datasource.slice(event.first, (event.first + event.rows));
-        this.loading = false;
-      }
-    }, 1000);
-  }
  
   toggleClass($event: any) {
     if (this.myFiltersDiv.nativeElement.classList.contains('transform-active'))
@@ -86,6 +80,53 @@ export class TimetableComponent implements OnInit {
       this.myFiltersDiv.nativeElement.classList.add('transform-active')
   }
 
+//Api Integration Starts from here
+onPageChange(event:LazyLoadEvent){
+  let pageObject = Paginationutil.getGridFilters(event,this.advancedFilterValue);
+
+  this.currentPage = pageObject.currentPage;
+
+  let isinitialload = this.pageCount == undefined || this.pageCount == null;
+  this.pageCount = pageObject.pageCount;
+
+  let currentrows = event.rows * pageObject.pageNo;
+
+  if(this.totalcount != 0){
+    this.noOfItems =(currentrows < this.totalcount ? currentrows : this.totalcount);
+  }
+
+  this.loadGrids(JSON.stringify(pageObject));
+
+}
+
+loadGrids(pagingData){
+  let paging = JSON.parse(pagingData);
+  //Get Branches API call
+  this.TimetableService.getTimetable(pagingData)
+  .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{  
+    if(result.success){
+    this.timetable= result.data;
+    //pagination starts from here
+    this.totalcount = parseInt(result.total);    
+
+    if(this.totalcount <= paging.pageSize){
+      this.noOfItems = this.totalcount;
+    }else{
+      this.noOfItems = (JSON.parse(pagingData)).pageSize;
+    }
+
+    if(this.timetable != null && this.timetable != undefined){
+      this.timetable = this.timetable.map(function(el,i){
+        var o = Object.assign({},el);
+        o.indexId = i;
+        return o;
+      });
+    }
+    let currentrows = (this.currentPage * this.numberOfPages);
+  }
+  });
+}
+//API Integration ends here
  //Crud events
  addNew($event: any) {
   let id="0";

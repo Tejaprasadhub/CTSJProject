@@ -1,40 +1,25 @@
 import { Injectable } from '@angular/core';
 import { Classes } from '../models/classes';
 import { BehaviorSubject } from 'rxjs';
+import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { AppConstants } from '../../app-constants';
+import { map } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
 })
 export class ClassesService {
-    public classes: Classes[] =
-        [
-            {
-                "id": 1,
-                "name": "4th",
-                "noofsections": 2,
-                "createddate": new Date("10/10/2019"),
-                "createdby": "Sindhuja"
-            }, {
-                "id": 2,
-                "name": "5th",
-                "noofsections": 1,
-                "createddate": new Date("10/10/2019"),
-                "createdby": "Sindhuja"
-            },
-            {
-                "id": 3,
-                "name": "10th",
-                "noofsections": 3,
-                "createddate": new Date("10/10/2019"),
-                "createdby": "Sindhuja"
-            },
-        ];
+    constructor(private httpClient: HttpClient) { }
+    public getClasses(pagingData) {
+        // this.classesJsonData.next(this.classes);
+        const headers = new HttpHeaders().set("Content-Type", "application/json");
 
-    private classesJsonData = new BehaviorSubject<any>(null);
-    public classesJson = this.classesJsonData.asObservable();
+        var loginUrl: string = AppConstants.Api.AdminApp + "Classes/GetClasses"
 
-    constructor() { }
-    public getClasses() {
-        this.classesJsonData.next(this.classes);
+        return this.httpClient.post
+            (loginUrl, pagingData, { headers: headers, withCredentials: true }).pipe(
+                map((response: any) => {
+                    return response;
+                }));
     }
 }

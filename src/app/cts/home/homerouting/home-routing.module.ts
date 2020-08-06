@@ -34,6 +34,8 @@ import { AddTimetableComponent } from '../components/timetable/add-timetable/add
 import { TimetableComponent } from '../components/timetable/timetable.component';
 import { SubjectsComponent } from '../components/subjects/subjects.component';
 import { AddSubjectsComponent } from '../components/subjects/add-subjects/add-subjects.component';
+import { QualificationsComponent } from '../components/qualifications/qualifications.component';
+import { AddQualificationComponent } from '../components/qualifications/addqualifications/addqualifications.component';
 
 
 
@@ -107,7 +109,7 @@ const homeRoutes: Routes = [
         path: 'subjects',
         component: SubjectsComponent,
         canActivate:[AuthenticationGuardService],
-        data: { title: 'Branches' }
+        data: { title: 'Subjects' }
       },
       {
         path: 'subjects/add-subject',
@@ -174,6 +176,18 @@ const homeRoutes: Routes = [
         component: AddClassComponent,
         canActivate:[AuthenticationGuardService],
         data: { title: 'Add Class' }
+      },
+      {
+        path: 'qualifications',
+        component: QualificationsComponent,
+        canActivate:[AuthenticationGuardService],
+        data: { title: 'Qualifications List' }
+      },
+      {
+        path: 'qualifications/add-qualification',
+        component: AddQualificationComponent,
+        canActivate:[AuthenticationGuardService],
+        data: { title: 'Add Qualification' }
       },
       {
         path: 'roleaccess',

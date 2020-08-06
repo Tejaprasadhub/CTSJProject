@@ -4,6 +4,7 @@ export class Classes {
         public name: string,
         public noofsections: number,
         public createddate: Date,
-        public createdby: string
+        public createdby: string,
+        public indexId:number
     ) { }
 }

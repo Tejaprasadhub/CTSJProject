@@ -28,6 +28,8 @@ import { TimetableComponent } from './cts/home/components/timetable/timetable.co
 import { AddTimetableComponent } from './cts/home/components/timetable/add-timetable/add-timetable.component';
 import { SubjectsComponent } from './cts/home/components/subjects/subjects.component';
 import { AddSubjectsComponent } from './cts/home/components/subjects/add-subjects/add-subjects.component';
+import { QualificationsComponent } from './cts/home/components/qualifications/qualifications.component';
+import { AddQualificationComponent } from './cts/home/components/qualifications/addqualifications/addqualifications.component';
 
 const SessionTimeoutServiceProvider={
   provide:SessionTimeoutService,
@@ -65,7 +67,9 @@ const AuthenticatedHttpInterceptorServiceProvider={
     TimetableComponent,
     AddTimetableComponent,
     SubjectsComponent,
-    AddSubjectsComponent
+    AddSubjectsComponent,
+    QualificationsComponent,
+    AddQualificationComponent
 
   ],
   imports: [

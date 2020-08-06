@@ -7,6 +7,7 @@ export class Timetable {
         public periodfrom: Date,
         public periodto: Date,
         public createddate: Date,
-        public createdby: string
+        public createdby: string,
+        public indexId:number
     ) { }
 }

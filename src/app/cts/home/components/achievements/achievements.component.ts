@@ -2,10 +2,11 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { LazyLoadEvent, SelectItem } from 'primeng/api/public_api';
 import { Achievements } from 'src/app/cts/shared/models/achievements';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { map,takeUntil } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AchievementsService } from 'src/app/cts/shared/services/achievements.service';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
+import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
 
 @Component({
   selector: 'app-achievements',
@@ -26,16 +27,19 @@ export class AchievementsComponent implements OnInit {
   position: string;
 //to create Teacher From 
 filtersForm: FormGroup;
-  constructor(private achievementsService: AchievementsService, private router: Router,private route:ActivatedRoute,private fb: FormBuilder) {
+
+ //pagination and api integration starts from here
+ numberOfPages:number =10;
+ totalcount:number=0;
+ noOfItems=10;
+ advancedFilterValue:string ="";
+ currentPage:number = 1;
+ pageCount:number;
+  constructor(private AchievementsService: AchievementsService, private router: Router,private route:ActivatedRoute,private fb: FormBuilder) {
     this.achievements = [];
   }
 
-  public ngOnInit() {
-    this.achievementsService.getAchievements();
-    this.achievementsService.achievementsJson.pipe(takeUntil(this.ngUnsubscribe)).subscribe(achievements => {
-      this.datasource = achievements;
-      this.totalRecords = this.datasource.length;
-    });
+  public ngOnInit() {    
     this.cols = [
       { field: 'title', header: 'Title' },
       { field: 'date', header: 'Date' },
@@ -47,15 +51,7 @@ filtersForm: FormGroup;
      this.createFilterForm();
   }
 
-  loadCarsLazy(event: LazyLoadEvent) {
-    this.loading = true;
-    setTimeout(() => {
-      if (this.datasource) {
-        this.achievements = this.datasource.slice(event.first, (event.first + event.rows));
-        this.loading = false;
-      }
-    }, 1000);
-  }
+  
 
   toggleClass($event: any) {
     if (this.myFiltersDiv.nativeElement.classList.contains('transform-active'))
@@ -63,7 +59,54 @@ filtersForm: FormGroup;
     else
       this.myFiltersDiv.nativeElement.classList.add('transform-active')
   }
+  
+//Api Integration Starts from here
+onPageChange(event:LazyLoadEvent){
+  let pageObject = Paginationutil.getGridFilters(event,this.advancedFilterValue);
 
+  this.currentPage = pageObject.currentPage;
+
+  let isinitialload = this.pageCount == undefined || this.pageCount == null;
+  this.pageCount = pageObject.pageCount;
+
+  let currentrows = event.rows * pageObject.pageNo;
+
+  if(this.totalcount != 0){
+    this.noOfItems =(currentrows < this.totalcount ? currentrows : this.totalcount);
+  }
+
+  this.loadGrids(JSON.stringify(pageObject));
+
+}
+
+loadGrids(pagingData){
+  let paging = JSON.parse(pagingData);
+  //Get Branches API call
+  this.AchievementsService.getAchievements(pagingData)
+  .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{  
+    if(result.success){
+    this.achievements= result.data;
+    //pagination starts from here
+    this.totalcount = parseInt(result.total);    
+
+    if(this.totalcount <= paging.pageSize){
+      this.noOfItems = this.totalcount;
+    }else{
+      this.noOfItems = (JSON.parse(pagingData)).pageSize;
+    }
+
+    if(this.achievements != null && this.achievements != undefined){
+      this.achievements = this.achievements.map(function(el,i){
+        var o = Object.assign({},el);
+        o.indexId = i;
+        return o;
+      });
+    }
+    let currentrows = (this.currentPage * this.numberOfPages);
+  }
+  });
+}
+//API Integration ends here
    //Crud events
    addNew($event: any) {
     let id="0";

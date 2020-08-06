@@ -8,6 +8,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
+import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
 
 
 @Component({
@@ -30,8 +31,15 @@ export class UsersComponent implements OnInit {
   loading: boolean;
   status:any;
   filtersForm: FormGroup;
+  //pagination and api integration starts from here
+  numberOfPages:number =10;
+  totalcount:number=0;
+  noOfItems=10;
+  advancedFilterValue:string ="";
+  currentPage:number = 1;
+  pageCount:number;
 
-  constructor(private usersService: UsersService, private router: Router,private route:ActivatedRoute, private fb: FormBuilder) {
+  constructor(private UsersService: UsersService, private router: Router,private route:ActivatedRoute, private fb: FormBuilder) {
     this.usertypes = [
       { label: 'Admin', value: 'ADMN' },
       { label: 'DataEntryOperator', value: 'DEOR' },
@@ -77,32 +85,68 @@ viewUser(id):void{
     this.display=false;
   }
 
-  public ngOnInit() {
-    this.usersService.getUsers();
-    this.usersService.usersJson.pipe(takeUntil(this.ngUnsubscribe)).subscribe(users => {
-      this.datasource = users;
-      this.totalRecords = this.datasource.length;
-    });
+  public ngOnInit() {   
     this.cols = [
       { field: 'usertype', header: 'User Type' },
       { field: 'username', header: 'User Name' },
       { field: 'displayname', header: 'Display Name' },
-      { field: 'password', header: 'Password' },
+      { field: 'branchtitle', header: 'Branch' },
+      { field: 'createddate', header: 'Created On' },
       { field: 'userstatus', header: 'User Status' }
     ];
     this.loading = true;
      //to create form with validations
     this.createFilterForm();
   } 
-  loadCarsLazy(event: LazyLoadEvent) {
-    this.loading = true;
-    setTimeout(() => {
-      if (this.datasource) {
-        this.users = this.datasource.slice(event.first, (event.first + event.rows));
-        this.loading = false;
-      }
-    }, 1000);
+
+  //Api Integration Starts from here
+  onPageChange(event:LazyLoadEvent){
+    let pageObject = Paginationutil.getGridFilters(event,this.advancedFilterValue);
+
+    this.currentPage = pageObject.currentPage;
+
+    let isinitialload = this.pageCount == undefined || this.pageCount == null;
+    this.pageCount = pageObject.pageCount;
+
+    let currentrows = event.rows * pageObject.pageNo;
+
+    if(this.totalcount != 0){
+      this.noOfItems =(currentrows < this.totalcount ? currentrows : this.totalcount);
+    }
+
+    this.loadGrids(JSON.stringify(pageObject));
+
   }
+
+  loadGrids(pagingData){
+    let paging = JSON.parse(pagingData);
+    //Get Branches API call
+    this.UsersService.getUsers(pagingData)
+    .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{  
+      if(result.success){
+      this.users= result.data;
+      //pagination starts from here
+      this.totalcount = parseInt(result.total);    
+
+      if(this.totalcount <= paging.pageSize){
+        this.noOfItems = this.totalcount;
+      }else{
+        this.noOfItems = (JSON.parse(pagingData)).pageSize;
+      }
+
+      if(this.users != null && this.users != undefined){
+        this.users = this.users.map(function(el,i){
+          var o = Object.assign({},el);
+          o.indexId = i;
+          return o;
+        });
+      }
+      let currentrows = (this.currentPage * this.numberOfPages);
+    }
+    });
+  }
+  //API Integration ends here
+
   //filter code starts from here
   createFilterForm() {
     this.filtersForm = this.fb.group({

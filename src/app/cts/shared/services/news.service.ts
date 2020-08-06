@@ -1,43 +1,26 @@
 import { Injectable } from '@angular/core';
 import { News } from '../models/news';
 import { BehaviorSubject } from 'rxjs';
+import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { AppConstants } from '../../app-constants';
+import { map } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
 })
 export class NewsService {
-    public news: News[] =
-        [
-            {
-                "id": 1,
-                "title": "acheivement",
-                "branchid": 2,
-                "description":"he acheived something",
-                "createddate": new Date("10/10/2019"),
-                "createdby": "Sindhuja"
-            }, {
-              "id": 1,
-              "title": "acheivement",
-              "branchid": 3,
-              "description":"he acheived something",
-              "createddate": new Date("10/10/2019"),
-              "createdby": "Sindhuja"
-            },
-            {
-              "id": 1,
-              "title": "acheivement",
-              "branchid": 4,
-              "description":"he acheived something",
-              "createddate": new Date("10/10/2019"),
-              "createdby": "Sindhuja"
-            },
-        ];
+    constructor(private httpClient: HttpClient) { }
+    public getNews(pagingData) {
+        // this.branchesJsonData.next(this.branches);
+        const headers = new HttpHeaders().set("Content-Type", "application/json");
 
-    private newsJsonData = new BehaviorSubject<any>(null);
-    public newsJson = this.newsJsonData.asObservable();
+        var loginUrl: string = AppConstants.Api.AdminApp + "News/GetNews"
 
-    constructor() { }
-    public getNews() {
-        this.newsJsonData.next(this.news);
+        return this.httpClient.post
+            (loginUrl, pagingData, { headers: headers, withCredentials: true }).pipe(
+                map((response: any) => {
+                    return response;
+                }));
     }
 }
+

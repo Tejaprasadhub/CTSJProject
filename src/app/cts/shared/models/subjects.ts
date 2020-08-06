@@ -4,6 +4,7 @@ export class Subjects {
         public code: string,
         public name: string,
         public createddate: Date,
-        public createdby: string
+        public createdby: string,
+        public indexId:number
     ) { }
 }

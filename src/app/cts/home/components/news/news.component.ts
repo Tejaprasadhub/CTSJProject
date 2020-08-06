@@ -3,9 +3,10 @@ import { LazyLoadEvent, SelectItem } from 'primeng/api/public_api';
 import { News } from 'src/app/cts/shared/models/news';
 import { NewsService } from 'src/app/cts/shared/services/news.service';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
+import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
 
 @Component({
   selector: 'app-news',
@@ -20,12 +21,19 @@ export class NewsComponent implements OnInit {
   cols: any[];
   @ViewChild('myFiltersDiv') myFiltersDiv: ElementRef;
   loading: boolean;
-  display:boolean=false;
+  display: boolean = false;
   position: string;
   branchids: SelectItem[] = [];
-//to create Teacher From 
-filtersForm: FormGroup;
-  constructor(private newsService: NewsService, private router: Router, private route: ActivatedRoute, private fb: FormBuilder) {
+  //to create Teacher From 
+  filtersForm: FormGroup;
+  //pagination and api integration starts from here
+  numberOfPages: number = 10;
+  totalcount: number = 0;
+  noOfItems = 10;
+  advancedFilterValue: string = "";
+  currentPage: number = 1;
+  pageCount: number;
+  constructor(private NewsService: NewsService, private router: Router, private route: ActivatedRoute, private fb: FormBuilder) {
     this.news = [];
     this.branchids = [
       { label: 'skota', value: '1' },
@@ -34,32 +42,20 @@ filtersForm: FormGroup;
   }
 
   public ngOnInit() {
-    this.newsService.getNews();
-    this.newsService.newsJson.pipe(takeUntil(this.ngUnsubscribe)).subscribe(news => {
-      this.datasource = news;
-      this.totalRecords = this.datasource.length;
-    });
     this.cols = [
       { field: 'title', header: 'Title' },
+      { field: 'date', header: 'Date' },
       { field: 'description', header: 'Description' },
-      { field: 'branchid', header: 'Branch Id' },
+      { field: 'branch', header: 'Branch' },
       { field: 'createddate', header: 'Created Date' },
       { field: 'createdby', header: 'Created By' }
     ];
     this.loading = true;
-     //to create form with validations
-     this.createFilterForm();
+    //to create form with validations
+    this.createFilterForm();
   }
 
-  loadCarsLazy(event: LazyLoadEvent) {
-    this.loading = true;
-    setTimeout(() => {
-      if (this.datasource) {
-        this.news = this.datasource.slice(event.first, (event.first + event.rows));
-        this.loading = false;
-      }
-    }, 1000);
-  }
+
 
   toggleNews($event: any) {
     if (this.myFiltersDiv.nativeElement.classList.contains('transform-active'))
@@ -67,27 +63,75 @@ filtersForm: FormGroup;
     else
       this.myFiltersDiv.nativeElement.classList.add('transform-active')
   }
+  //Api Integration Starts from here
+  onPageChange(event: LazyLoadEvent) {
+    let pageObject = Paginationutil.getGridFilters(event, this.advancedFilterValue);
+
+    this.currentPage = pageObject.currentPage;
+
+    let isinitialload = this.pageCount == undefined || this.pageCount == null;
+    this.pageCount = pageObject.pageCount;
+
+    let currentrows = event.rows * pageObject.pageNo;
+
+    if (this.totalcount != 0) {
+      this.noOfItems = (currentrows < this.totalcount ? currentrows : this.totalcount);
+    }
+
+    this.loadGrids(JSON.stringify(pageObject));
+
+  }
+
+  loadGrids(pagingData) {
+    let paging = JSON.parse(pagingData);
+    //Get Branches API call
+    this.NewsService.getNews(pagingData)
+      .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+        if (result.success) {
+          this.news = result.data;
+          //pagination starts from here
+          this.totalcount = parseInt(result.total);
+
+          if (this.totalcount <= paging.pageSize) {
+            this.noOfItems = this.totalcount;
+          } else {
+            this.noOfItems = (JSON.parse(pagingData)).pageSize;
+          }
+
+          if (this.news != null && this.news != undefined) {
+            this.news = this.news.map(function (el, i) {
+              var o = Object.assign({}, el);
+              o.indexId = i;
+              return o;
+            });
+          }
+          let currentrows = (this.currentPage * this.numberOfPages);
+        }
+      });
+  }
+  //API Integration ends here
+
   //Crud events
   addNew($event: any) {
-    let id="0";
-    this.router.navigate(['add-news'], { relativeTo: this.route, queryParams: { type: window.btoa('create'),id: window.btoa(id) } });
+    let id = "0";
+    this.router.navigate(['add-news'], { relativeTo: this.route, queryParams: { type: window.btoa('create'), id: window.btoa(id) } });
   }
-  editNews(id):void{
-    this.router.navigate(['add-news'],{relativeTo: this.route,queryParams: { type: window.btoa('edit'), id: window.btoa(id) }});
+  editNews(id): void {
+    this.router.navigate(['add-news'], { relativeTo: this.route, queryParams: { type: window.btoa('edit'), id: window.btoa(id) } });
   }
-  viewNews(id):void{
-    this.router.navigate(['add-news'],{relativeTo: this.route,queryParams: { type: window.btoa('view'), id: window.btoa(id) }});
+  viewNews(id): void {
+    this.router.navigate(['add-news'], { relativeTo: this.route, queryParams: { type: window.btoa('view'), id: window.btoa(id) } });
   }
-  deleteNews(id):void{
-    this.position="top";
-    this.display=true;
+  deleteNews(id): void {
+    this.position = "top";
+    this.display = true;
   }
-  newsRevoke():void{
-    this.display=false;
+  newsRevoke(): void {
+    this.display = false;
   }
-   //Filters code starts from here
-   //Create form method to constuct a form with validations
-   createFilterForm() {
+  //Filters code starts from here
+  //Create form method to constuct a form with validations
+  createFilterForm() {
     this.filtersForm = this.fb.group({
       'ttitle': new FormControl(''),
       'tbranchid': new FormControl('')

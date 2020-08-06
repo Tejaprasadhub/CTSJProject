@@ -1,41 +1,27 @@
 import { Injectable } from '@angular/core';
 import { Achievements } from '../models/achievements';
 import { BehaviorSubject } from 'rxjs';
+import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { AppConstants } from '../../app-constants';
+import { map } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
 })
-export class AchievementsService {
-    public achievements: Achievements[] =
-        [
-            {
-                "id": 1,              
-                "title":"Ganesh chandra",
-                "date":"10/10/2019",
-                "createddate": new Date("10/10/2019"),
-                "createdby": "Sindhuja"
-            }, {
-              "id": 1,              
-              "title":"teja prasad",
-              "date":"10/10/2019",
-              "createddate": new Date("10/10/2019"),
-              "createdby": "Sindhuja"
-            },
-            {
-              "id": 1,              
-              "title":"rajesh",
-              "date":"10/10/2019",
-              "createddate": new Date("10/10/2019"),
-              "createdby": "Sindhuja"
-            },
-        ];
+export class AchievementsService { 
 
-    private achievementsJsonData = new BehaviorSubject<any>(null);
-    public achievementsJson = this.achievementsJsonData.asObservable();
+    constructor(private httpClient: HttpClient) { }
+    public getAchievements(pagingData) {
+        // this.achievementsJsonData.next(this.achievements);
+        const headers = new HttpHeaders().set("Content-Type", "application/json");
 
-    constructor() { }
-    public getAchievements() {
-        this.achievementsJsonData.next(this.achievements);
+        var loginUrl: string = AppConstants.Api.AdminApp + "Achievement/GetAchievements"
+
+        return this.httpClient.post
+            (loginUrl, pagingData, { headers: headers, withCredentials: true }).pipe(
+                map((response: any) => {
+                    return response;
+                }));
     }
 }
 

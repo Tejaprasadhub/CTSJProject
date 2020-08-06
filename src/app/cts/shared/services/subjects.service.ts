@@ -1,40 +1,27 @@
 import { Injectable } from '@angular/core';
 import { Subjects } from '../models/subjects';
 import { BehaviorSubject } from 'rxjs';
+import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { AppConstants } from '../../app-constants';
+import { map } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
 })
-export class SubjectsService {
-    public subjects: Subjects[] =
-        [
-            {
-                "id": 1,
-                "code": "ENSH",
-                "name": "English",
-                "createddate": new Date("10/10/2019"),
-                "createdby": "Sindhuja"
-            }, {
-              "id": 1,
-              "code": "MTHS",
-              "name": "Maths",
-              "createddate": new Date("10/10/2019"),
-              "createdby": "Sindhuja"
-            },
-            {
-              "id": 1,
-              "code": "CHEM",
-              "name": "Chemistry",
-              "createddate": new Date("10/10/2019"),
-              "createdby": "Sindhuja"
-            },
-        ];
+export class SubjectsService {  
 
-    private subjectsJsonData = new BehaviorSubject<any>(null);
-    public subjectsJson = this.subjectsJsonData.asObservable();
+    constructor(private httpClient: HttpClient) { }
+    public getSubjects(pagingData) {
+        // this.subjectsJsonData.next(this.subjects);
+        const headers = new HttpHeaders().set("Content-Type", "application/json");
 
-    constructor() { }
-    public getSubjects() {
-        this.subjectsJsonData.next(this.subjects);
+        var loginUrl: string = AppConstants.Api.AdminApp + "Subjects/GetSubjects"
+
+        return this.httpClient.post
+            (loginUrl, pagingData, { headers: headers, withCredentials: true }).pipe(
+                map((response: any) => {
+                    return response;
+                }));
     }
+    
 }

@@ -4,6 +4,7 @@ export class Exams {
         public title: string,
         public year: number,
         public createddate: Date,
-        public createdby: string
+        public createdby: string,
+        public indexId:number
     ) { }
 }

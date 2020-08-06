@@ -5,7 +5,8 @@ export class Users {
     public username:string,
     public displayname:string,
     public usertype:string,
-    public userstatus:string
+    public userstatus:string,
+    public indexId:number
     ){}
 
 }

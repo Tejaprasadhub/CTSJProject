@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Users } from '../models/users';
 import { BehaviorSubject } from 'rxjs';
+import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { AppConstants } from '../../app-constants';
+import { map } from 'rxjs/operators';
 
 
 
@@ -8,50 +11,18 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class UsersService {
- public users: Users[]= 
-  [
-    {
-      "id": 1,
-      "username": "Sindhuja",
-      "usertype" : "Teacher",
-      "userstatus": "Active",
-      "displayname": "Sindhu"
-    },{
-        "id": 2,
-        "username": "Teja",
-        "usertype" : "Admin",
-        "userstatus": "Active",
-        "displayname": "Teja"
-      },
-      {
-        "id": 3,
-        "username": "Chaitanya",
-        "usertype" : "DataEntry",
-        "userstatus": "Active",
-        "displayname": "Chaitu"
-      },
-      {
-      "id": 4,
-      "username": "Raju",
-      "usertype" : "Teacher",
-      "userstatus": "InActive",
-      "displayname": "Raj"
-    },
-    {
-    "id": 5,
-    "username": "Johnson",
-    "usertype" : "Teacher",
-    "userstatus": "InActive",
-    "displayname": "Jhon"
-  },
-  ];
+  constructor(private httpClient: HttpClient) { }
+  public getUsers(pagingData) {
+    // this.branchesJsonData.next(this.branches);
+    const headers = new HttpHeaders().set("Content-Type", "application/json");
 
-  private  usersJsonData = new BehaviorSubject<any>(null);
-  public  usersJson = this.usersJsonData.asObservable();
-  
-  constructor() { }
-  public  getUsers() {
-  // console.log(this.users)
-    this.usersJsonData.next(this.users);    
-  }
+    var loginUrl: string = AppConstants.Api.AdminApp + "Users/GetUsers"
+
+    return this.httpClient.post
+        (loginUrl, pagingData, { headers: headers, withCredentials: true }).pipe(
+            map((response: any) => {
+                return response;
+            }));
 }
+}
+

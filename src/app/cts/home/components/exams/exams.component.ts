@@ -3,9 +3,10 @@ import { LazyLoadEvent, SelectItem } from 'primeng/api/public_api';
 import { Exams } from 'src/app/cts/shared/models/exams';
 import { ExamsService } from 'src/app/cts/shared/services/exams.service';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { map,takeUntil } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
+import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
 
 
 @Component({
@@ -26,17 +27,19 @@ export class ExamsComponent implements OnInit {
   display:boolean=false;
   position: string;
   filtersForm: FormGroup;
+  //pagination and api integration starts from here
+  numberOfPages:number =10;
+  totalcount:number=0;
+  noOfItems=10;
+  advancedFilterValue:string ="";
+  currentPage:number = 1;
+  pageCount:number;
 
-  constructor(private examsService: ExamsService, private router: Router,private route:ActivatedRoute,private fb: FormBuilder) {
+  constructor(private ExamsService: ExamsService, private router: Router,private route:ActivatedRoute,private fb: FormBuilder) {
     this.exams = [];
   }
 
-  public ngOnInit() {
-    this.examsService.getExams();
-    this.examsService.examsJson.pipe(takeUntil(this.ngUnsubscribe)).subscribe(exams => {
-      this.datasource = exams;
-      this.totalRecords = this.datasource.length;
-    });
+  public ngOnInit() { 
     this.cols = [
       { field: 'title', header: 'Title' },
       { field: 'year', header: 'Year' },
@@ -48,15 +51,7 @@ export class ExamsComponent implements OnInit {
     this.createFilterForm();
   }
 
-  loadCarsLazy(event: LazyLoadEvent) {
-    this.loading = true;
-    setTimeout(() => {
-      if (this.datasource) {
-        this.exams = this.datasource.slice(event.first, (event.first + event.rows));
-        this.loading = false;
-      }
-    }, 1000);
-  }
+ 
  
   toggleClass($event: any) {
     if (this.myFiltersDiv.nativeElement.classList.contains('transform-active'))
@@ -64,7 +59,53 @@ export class ExamsComponent implements OnInit {
     else
       this.myFiltersDiv.nativeElement.classList.add('transform-active')
   }
+//Api Integration Starts from here
+onPageChange(event:LazyLoadEvent){
+  let pageObject = Paginationutil.getGridFilters(event,this.advancedFilterValue);
 
+  this.currentPage = pageObject.currentPage;
+
+  let isinitialload = this.pageCount == undefined || this.pageCount == null;
+  this.pageCount = pageObject.pageCount;
+
+  let currentrows = event.rows * pageObject.pageNo;
+
+  if(this.totalcount != 0){
+    this.noOfItems =(currentrows < this.totalcount ? currentrows : this.totalcount);
+  }
+
+  this.loadGrids(JSON.stringify(pageObject));
+
+}
+
+loadGrids(pagingData){
+  let paging = JSON.parse(pagingData);
+  //Get Branches API call
+  this.ExamsService.getExams(pagingData)
+  .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{  
+    if(result.success){
+    this.exams= result.data;
+    //pagination starts from here
+    this.totalcount = parseInt(result.total);    
+
+    if(this.totalcount <= paging.pageSize){
+      this.noOfItems = this.totalcount;
+    }else{
+      this.noOfItems = (JSON.parse(pagingData)).pageSize;
+    }
+
+    if(this.exams != null && this.exams != undefined){
+      this.exams = this.exams.map(function(el,i){
+        var o = Object.assign({},el);
+        o.indexId = i;
+        return o;
+      });
+    }
+    let currentrows = (this.currentPage * this.numberOfPages);
+  }
+  });
+}
+//API Integration ends here
  //Crud events
  addNew($event: any) {
   let id="0";

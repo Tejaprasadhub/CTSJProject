@@ -5,6 +5,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Location } from '@angular/common';
+import { Utility } from 'src/app/cts/shared/models/utility';
+import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
+import { NewsService } from 'src/app/cts/shared/services/news.service';
 
 @Component({
   selector: 'app-add-news',
@@ -28,7 +31,7 @@ export class AddNewsComponent implements OnInit {
 
 
 
-  constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private location: Location) {
+  constructor(private NewsService: NewsService,private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private location: Location) {
     this.branchids = [
       { label: 'skota', value: '1' },
       { label: 'boddam', value: '2' }
@@ -65,6 +68,7 @@ export class AddNewsComponent implements OnInit {
     this.addNewsForm = this.fb.group({
       'title': new FormControl('', { validators: [Validators.required] }),
       'branchid': new FormControl('', { validators: [Validators.required] }),
+      'date': new FormControl('', { validators: [Validators.required] }),
       'description': new FormControl('', { validators: [Validators.required] })
     });
   }
@@ -74,16 +78,22 @@ export class AddNewsComponent implements OnInit {
     this.bindEditNewsDetails();
   }
   bindEditNewsDetails() {
-    this.editData = {
-      'title': 'acheivment',
-      'branchid': '1',
-      'description': 'he achieved something'
-    }
-    this.addNewsForm.setValue({
-      'title': this.editData.title,
-      'branchid': this.editData.branchid,
-      'description': this.editData.description
-    })
+    let pagingData = new Utility();
+    pagingData = JSON.parse(Paginationutil.getDefaultFilter());
+    pagingData.idValue = this.newsId;
+    //Get Branches API call
+    this.NewsService.getNews(pagingData)
+      .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+        if (result.success) {
+          this.editData = result.data[0];
+          this.addNewsForm.setValue({
+            'title': this.editData.title,
+            'date': new Date(this.editData.date),
+            'description': this.editData.description,
+            'branchid': this.editData.branch
+          })
+        }
+      }); 
   }
 
 

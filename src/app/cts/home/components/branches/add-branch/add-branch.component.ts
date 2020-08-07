@@ -5,6 +5,10 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Location } from '@angular/common';
+import { Utility } from 'src/app/cts/shared/models/utility';
+import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
+import { BranchesService } from 'src/app/cts/shared/services/branches.service';
+
 
 @Component({
   selector: 'app-add-branch',
@@ -26,7 +30,7 @@ export class AddBranchComponent implements OnInit {
   editData: any;
   sections: SelectItem[] = []; 
 
-  constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute,private location: Location) { 
+  constructor(private BranchesService: BranchesService,private fb: FormBuilder, private router: Router, private route: ActivatedRoute,private location: Location) { 
   }
 
   ngOnInit(): void {
@@ -65,14 +69,22 @@ export class AddBranchComponent implements OnInit {
     this.bindEditBranchDetails();
   }
   bindEditBranchDetails() {
-    this.editData = {
-      'code': 'skta',
-      'title': 'srungavarapukota'
-    }
-    this.addBranchForm.setValue({
-      'code': this.editData.code,
-      'title': this.editData.title
-    })
+
+    let pagingData = new Utility();
+    pagingData = JSON.parse(Paginationutil.getDefaultFilter());
+    pagingData.idValue = this.branchId;
+    //Get Branches API call
+    this.BranchesService.getBranches(pagingData)
+      .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+        if (result.success) {
+          this.editData = result.data[0];
+          this.addBranchForm.setValue({
+            'code': this.editData.code,
+            'title': this.editData.title
+          })
+        }
+      });
+      
   }
 
   editControls(): void {

@@ -4,6 +4,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Location } from '@angular/common';
+import { Utility } from 'src/app/cts/shared/models/utility';
+import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
+import { TimetableService } from 'src/app/cts/shared/services/timetable.service';
 
 @Component({
   selector: 'app-add-timetable',
@@ -28,7 +31,7 @@ export class AddTimetableComponent implements OnInit {
   teacherid: any[];
 
 
-  constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private location: Location) {
+  constructor(private TimetableService: TimetableService, private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private location: Location) {
     this.classid = [
       { label: 'class1', value: '1' },
       { label: 'class2', value: '2' },
@@ -87,22 +90,24 @@ export class AddTimetableComponent implements OnInit {
     this.bindEditTimetableDetails();
   }
   bindEditTimetableDetails() {
-    this.editData = {
-      'classid': '1',
-      'subjectid': '1',
-      'teacherid': '1',
-      'periodfrom': '11/02/2001 00:00',
-      'periodto': '11/02/2001 00:00',
-
-    }
-    this.addTimetableForm.setValue({
-      'classid': this.editData.classid,
-      'subjectid': this.editData.subjectid,
-      'teacherid': this.editData.teacherid,
-      'periodfrom': this.editData.periodfrom,
-      'periodto': this.editData.periodto
-
-    })
+    let pagingData = new Utility();
+    pagingData = JSON.parse(Paginationutil.getDefaultFilter());
+    pagingData.idValue = this.timetableId;
+    //Get Branches API call
+    this.TimetableService.getTimetable(pagingData)
+      .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+        if (result.success) {
+          this.editData = result.data[0];
+          this.addTimetableForm.setValue({
+            'classid': this.editData.class,
+            'subjectid': this.editData.subject,
+            'teacherid': this.editData.teacher,
+            'periodfrom': new Date(this.editData.periodfrom),
+            'periodto': new Date(this.editData.periodto)
+           
+          })
+        }
+      });
   }
 
 

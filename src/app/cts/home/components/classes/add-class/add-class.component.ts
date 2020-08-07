@@ -5,6 +5,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Location } from '@angular/common';
+import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
+import { Utility } from 'src/app/cts/shared/models/utility';
+import { ClassesService } from 'src/app/cts/shared/services/classes.service';
 
 @Component({
   selector: 'app-add-class',
@@ -12,6 +15,7 @@ import { Location } from '@angular/common';
   styleUrls: ['./add-class.component.scss']
 })
 export class AddClassComponent implements OnInit {
+  [x: string]: any;
   classId: string;
   formType: string;
   pageTitle: string;
@@ -26,14 +30,16 @@ export class AddClassComponent implements OnInit {
   editData: any;
   sections: SelectItem[] = [];
 
- 
 
-  constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute,private location: Location) {
+
+  constructor(private ClassesService: ClassesService, private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private location: Location) {
     this.sections = [
-      { label: '1-section', value: '1' },
-      { label: '2-sections', value: '2' }
+      { label: '1-section', value: 1 },
+      { label: '2-sections', value: 2 },
+      { label: '2-sections', value: 3 }
+
     ];
-   }
+  }
 
   ngOnInit(): void {
     //to read url parameters
@@ -73,14 +79,23 @@ export class AddClassComponent implements OnInit {
     this.bindEditClassDetails();
   }
   bindEditClassDetails() {
-    this.editData = {
-      'class': 'first',
-      'section': '1'
-    }
-    this.addClassForm.setValue({
-      'class': this.editData.class,
-      'section': this.editData.section
-    })
+
+    let pagingData = new Utility();
+    pagingData = JSON.parse(Paginationutil.getDefaultFilter());
+    pagingData.idValue = this.classId;
+    //Get Classes API call
+    this.ClassesService.getClasses(pagingData)
+      .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+        if (result.success) {
+          this.editData = result.data[0];
+          this.addClassForm.setValue({
+            'class': this.editData.name,
+            'section': this.editData.noofsections
+          })
+        }
+      });
+      
+    
   }
 
 
@@ -116,6 +131,6 @@ export class AddClassComponent implements OnInit {
     this.location.back();
   }
 
-  }
+}
 
 

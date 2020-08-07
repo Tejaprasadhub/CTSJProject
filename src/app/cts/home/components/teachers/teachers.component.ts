@@ -8,12 +8,10 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
 import { Table } from 'primeng/table';
+import { multiselectObject } from 'src/app/cts/shared/models/multi-select-object';
 
 // import * as angular from "angular";
-export class multiselectObject {
-  key: string;
-  value: string;
-}
+
 
 @Component({
   selector: 'app-teachers',

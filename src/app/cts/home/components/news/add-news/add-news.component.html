@@ -39,16 +39,24 @@
                             addNewsForm.controls['branchid'].touched)|| 
                             (!addNewsForm.controls['branchid'].valid && addNewsForm.controls['branchid'].untouched && 
                             formSubmitAttempt))">
+                                <i class="fa fa-circle"></i>
+                                <span *ngIf="(addNewsForm.controls['branchid'].errors?.required)">
+                                    Enter "Branch Id"
+                                </span>
+                            </div>
+                            <div class="col-md-3 error-div" *ngIf="((!addNewsForm.controls['date'].valid && addNewsForm.controls['date'].touched)|| 
+                            (!addNewsForm.controls['date'].valid && addNewsForm.controls['date'].untouched && 
+                            formSubmitAttempt))">
                             <i class="fa fa-circle"></i>
-                            <span *ngIf="(addNewsForm.controls['branchid'].errors?.required)">
-                                Enter "Branch Id"
-                            </span>
+                            <span *ngIf="(addNewsForm.controls['date'].errors?.required)">Enter
+                                "Date"</span>
                         </div>
-                        <div class="col-md-3 error-div" *ngIf="((!addNewsForm.controls['description'].valid && addNewsForm.controls['description'].touched)|| 
+                            <div class="col-md-3 error-div" *ngIf="((!addNewsForm.controls['description'].valid && addNewsForm.controls['description'].touched)|| 
                                 (!addNewsForm.controls['description'].valid && addNewsForm.controls['description'].untouched && 
                                 formSubmitAttempt))">
                                 <i class="fa fa-circle"></i>
-                                <span *ngIf="(addNewsForm.controls['description'].errors?.required)">Enter "Description"</span>
+                                <span *ngIf="(addNewsForm.controls['description'].errors?.required)">Enter
+                                    "Description"</span>
                             </div>
                         </div>
                     </div>
@@ -60,28 +68,34 @@
                 <span>
                     News Title
                 </span><br>
-                <input id="input" maxlength="45" class="w-100" [attr.disabled]="isDisabled ? 'disabled': null" formControlName="title"
-                    type="text" placeholder="News Title" size="30" pInputText [ngClass]="{'error':((!addNewsForm.controls['title'].valid && addNewsForm.controls['title'].touched) || 
+                <input id="input" maxlength="45" class="w-100" [attr.disabled]="isDisabled ? 'disabled': null"
+                    formControlName="title" type="text" placeholder="News Title" size="30" pInputText [ngClass]="{'error':((!addNewsForm.controls['title'].valid && addNewsForm.controls['title'].touched) || 
                     (!addNewsForm.controls['title'].valid && addNewsForm.controls['title'].untouched && 
                     formSubmitAttempt)),'required':(isRequired == true )}">
             </div>
             <div class="col-md-4">
                 <span>Branch Id</span><br>
                 <p-dropdown [options]="branchids" filter="true" formControlName="branchid" [disabled]="isDisabled"
-                placeholder="Select Branch" [ngClass]="{'error':((!addNewsForm.controls['branchid'].valid &&
+                    placeholder="Select Branch" [ngClass]="{'error':((!addNewsForm.controls['branchid'].valid &&
                 addNewsForm.controls['branchid'].touched) || 
                 (!addNewsForm.controls['branchid'].valid && addNewsForm.controls['branchid'].untouched && formSubmitAttempt)),
                 'required':(isRequired == true )}">
-            </p-dropdown>
+                </p-dropdown>
             </div>
             <div class="col-md-4">
+                <span>Date</span><br>
+                <p-calendar placeholder="Select Date" [disabled]="isDisabled" formControlName="date"
+                    [inputStyle]="{'width':'100% !important'}" [showIcon]="true"
+                    [ngClass]="{'error':((!addNewsForm.controls['date'].valid && addNewsForm.controls['date'].touched) || (!addNewsForm.controls['date'].valid && addNewsForm.controls['date'].untouched && formSubmitAttempt)),'required':(isRequired == true )}">
+                </p-calendar>
             </div>
             <div class="col-md-12">
 
                 <span>
                     Description
                 </span><br>
-            <textarea rows="3" cols="30" maxlength="500" placeholder="Descriptiom" pInputTextarea formControlName="description" autoResize="autoResize" [disabled]="isDisabled" [ngClass]="{'error':((!addNewsForm.controls['description'].valid &&
+                <textarea rows="3" cols="30" maxlength="500" placeholder="Descriptiom" pInputTextarea
+                    formControlName="description" autoResize="autoResize" [disabled]="isDisabled" [ngClass]="{'error':((!addNewsForm.controls['description'].valid &&
             addNewsForm.controls['description'].touched) || 
             (!addNewsForm.controls['description'].valid && addNewsForm.controls['description'].untouched && formSubmitAttempt)),
             'required':(isRequired == true )}"></textarea>
@@ -107,4 +121,3 @@
         </div>
     </form>
 </div>
-

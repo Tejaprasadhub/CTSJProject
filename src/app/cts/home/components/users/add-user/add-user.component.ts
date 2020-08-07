@@ -6,6 +6,9 @@ import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { Utility } from 'src/app/cts/shared/models/utility';
+import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
+import { UsersService } from 'src/app/cts/shared/services/users.service';
 
 
 @Component({
@@ -30,7 +33,7 @@ export class AddUserComponent implements OnInit {
   //to create Teacher From 
   addUserForm: FormGroup;
   formSubmitAttempt: boolean = false;
-  constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private location: Location) {
+  constructor(private UsersService: UsersService,private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private location: Location) {
     this.usertypes = [
       { label: 'Admin', value: 'ADMN' },
       { label: 'DataEntryOperator', value: 'DEOR' },
@@ -98,22 +101,24 @@ export class AddUserComponent implements OnInit {
     this.bindEditUserDetails();
   }
   bindEditUserDetails() {
-    this.editData = {
-      'usertype': 'ADMN',
-      'userName': 'teja',
-      'dispName': 'Teja',
-      'password': 'Optum234$',
-      'branchid':'1',
-      'userstatus':'AC'
-    }
-    this.addUserForm.setValue({
-      'usertype': this.editData.usertype,
-      'userName': this.editData.userName,
-      'dispName': this.editData.dispName,
-      'password': this.editData.password,
-      'branchid': this.editData.branchid,
-      'userstatus': this.editData.userstatus
-    })
+    let pagingData = new Utility();
+    pagingData = JSON.parse(Paginationutil.getDefaultFilter());
+    pagingData.idValue = this.userId;
+    //Get Branches API call
+    this.UsersService.getUsers(pagingData)
+      .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+        if (result.success) {
+          this.editData = result.data[0];
+          this.addUserForm.setValue({
+            'usertype': this.editData.usertype,
+            'userName': this.editData.username,
+            'dispName': this.editData.displayname,
+            'branchid': this.editData.branchtitle,
+            'userstatus': this.editData.userstatus,
+            'password': ''
+          })
+        }
+      });
   }
 
 

@@ -4,6 +4,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Location } from '@angular/common';
+import { SubjectsService } from 'src/app/cts/shared/services/subjects.service';
+import { Utility } from 'src/app/cts/shared/models/utility';
+import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
 
 @Component({
   selector: 'app-add-subjects',
@@ -26,7 +29,7 @@ export class AddSubjectsComponent implements OnInit {
   editData: any;
 
   
-  constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute,private location: Location) { }
+  constructor(private SubjectsService: SubjectsService,private fb: FormBuilder, private router: Router, private route: ActivatedRoute,private location: Location) { }
 
   ngOnInit(): void {// On page load
     //to read url parameters
@@ -66,14 +69,20 @@ export class AddSubjectsComponent implements OnInit {
     this.bindEditSubjectDetails();
   }
   bindEditSubjectDetails() {
-    this.editData = {
-      'code': 'ENGH',
-      'name': 'English'
-    }
-    this.addSubjectForm.setValue({
-      'code': this.editData.code,
-      'name': this.editData.name
-    })
+    let pagingData = new Utility();
+    pagingData = JSON.parse(Paginationutil.getDefaultFilter());
+    pagingData.idValue = this.subjectId;
+    //Get Branches API call
+    this.SubjectsService.getSubjects(pagingData)
+      .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+        if (result.success) {
+          this.editData = result.data[0];
+          this.addSubjectForm.setValue({
+            'code': this.editData.code,
+            'name': this.editData.name
+          })
+        }
+      });
   }
 
 

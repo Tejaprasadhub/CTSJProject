@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { ExamsService } from 'src/app/cts/shared/services/exams.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Location } from '@angular/common';
+import { Utility } from 'src/app/cts/shared/models/utility';
+import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
 
 @Component({
   selector: 'app-add-exam',
@@ -25,7 +28,7 @@ export class AddExamComponent implements OnInit {
   editData: any;
 
   
-  constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute,private location: Location) { }
+  constructor(private ExamsService: ExamsService,private fb: FormBuilder, private router: Router, private route: ActivatedRoute,private location: Location) { }
 
   ngOnInit(): void {// On page load
     //to read url parameters
@@ -65,19 +68,25 @@ export class AddExamComponent implements OnInit {
     this.bindEditExamDetails();
   }
   bindEditExamDetails() {
-    this.editData = {
-      'title': 'Ganeshchandra',
-      'year': '02/2001'
-    }
-    this.addExamForm.setValue({
-      'title': this.editData.title,
-      'year': this.editData.year
-    })
+    let pagingData = new Utility();
+    pagingData = JSON.parse(Paginationutil.getDefaultFilter());
+    pagingData.idValue = this.examId;
+    //Get Branches API call
+    this.ExamsService.getExams(pagingData)
+      .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+        if (result.success) {
+          this.editData = result.data[0];
+          this.addExamForm.setValue({
+            'year': new Date(this.editData.year),
+            'title': this.editData.title
+          })
+        }
+      });
   }
 
 
 
-
+ 
 
 
 

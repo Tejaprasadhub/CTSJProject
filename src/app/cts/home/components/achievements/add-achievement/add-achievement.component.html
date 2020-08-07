@@ -44,6 +44,12 @@
                             <i class="fa fa-circle"></i>
                             <span *ngIf="(addAchievementForm.controls['date'].errors?.required)">Enter "Date"</span>
                         </div>
+                        <div class="col-md-3 error-div"
+                            *ngIf="((!addAchievementForm.controls['branchid'].valid && addAchievementForm.controls['branchid'].touched)|| 
+                                (!addAchievementForm.controls['branchid'].valid && addAchievementForm.controls['branchid'].untouched && formSubmitAttempt))">
+                            <i class="fa fa-circle"></i>
+                            <span *ngIf="(addAchievementForm.controls['branchid'].errors?.required)">Enter "Branch Id"</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -66,7 +72,13 @@
                 [ngClass]="{'error':((!addAchievementForm.controls['date'].valid && addAchievementForm.controls['date'].touched) || (!addAchievementForm.controls['date'].valid && addAchievementForm.controls['date'].untouched && formSubmitAttempt)),'required':(isRequired == true )}">
             </p-calendar>
         </div>
-        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <span>Branch Id</span><br>
+                    <p-dropdown [options]="id" filter="true" formControlName="branchid"
+                    placeholder="Select BranchId" class="required" [disabled]="isDisabled"
+                    [ngClass]="{'error':((!addAchievementForm.controls['branchid'].valid && addAchievementForm.controls['branchid'].touched) || (!addAchievementForm.controls['branchid'].valid && addAchievementForm.controls['branchid'].untouched && formSubmitAttempt)),'required':(isRequired == true )}">
+                </p-dropdown>
+        </div>
         <br>
         <br>
         <br>

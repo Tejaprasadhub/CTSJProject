@@ -8,6 +8,8 @@ import { Location } from '@angular/common';
 import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
 import { Utility } from 'src/app/cts/shared/models/utility';
 import { ClassesService } from 'src/app/cts/shared/services/classes.service';
+import { Classes } from 'src/app/cts/shared/models/classes';
+import { AppConstants } from 'src/app/cts/app-constants';
 
 @Component({
   selector: 'app-add-class',
@@ -16,7 +18,7 @@ import { ClassesService } from 'src/app/cts/shared/services/classes.service';
 })
 export class AddClassComponent implements OnInit {
   [x: string]: any;
-  classId: string;
+  classId: number;
   formType: string;
   pageTitle: string;
   errorMessage: string = "";
@@ -29,6 +31,7 @@ export class AddClassComponent implements OnInit {
   display: boolean = false;
   editData: any;
   sections: SelectItem[] = [];
+  querytype:number;
 
 
 
@@ -44,7 +47,7 @@ export class AddClassComponent implements OnInit {
   ngOnInit(): void {
     //to read url parameters
     this.route.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params => {
-      this.classId = window.atob(params['id']);
+      this.classId = Number(window.atob(params['id']));
       this.formType = window.atob(params['type']);
     });
     //to create form with validations
@@ -54,15 +57,18 @@ export class AddClassComponent implements OnInit {
       this.pageTitle = "Add Class";
       this.isDisabled = false;
       this.isRequired = true;
+      this.querytype=1;
     } else if (this.formType == "edit") {
       this.pageTitle = "Edit Class";
       this.editControls();
       this.fetchData();
+      this.querytype=2;
     } else {
       this.pageTitle = "View Details";
       this.isDisabled = true;
       this.isRequired = false;
       this.fetchData();
+      this.querytype=2;
     }
 
   }
@@ -82,7 +88,7 @@ export class AddClassComponent implements OnInit {
 
     let pagingData = new Utility();
     pagingData = JSON.parse(Paginationutil.getDefaultFilter());
-    pagingData.idValue = this.classId;
+    pagingData.idValue = this.classId.toString();
     //Get Classes API call
     this.ClassesService.getClasses(pagingData)
       .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
@@ -111,14 +117,39 @@ export class AddClassComponent implements OnInit {
   }
 
   addClassSubmit(): void {
+    // this.errorMessage = "";
+    // this.successMessage = "";
+    // this.formSubmitAttempt = true;
+    // if (this.addClassForm.valid) {
+    //   this.formSubmitAttempt = false;
+    //   console.log(this.addClassForm.value);
+    //   this.addClassForm.reset();
+    //   this.successMessage = "Your changes have been successfully saved";
+    // }
+
     this.errorMessage = "";
     this.successMessage = "";
     this.formSubmitAttempt = true;
     if (this.addClassForm.valid) {
       this.formSubmitAttempt = false;
-      console.log(this.addClassForm.value);
-      this.addClassForm.reset();
-      this.successMessage = "Your changes have been successfully saved";
+      let customObj = new Classes();
+      customObj = this.addClassForm.value;
+      customObj.id = this.classId;
+      customObj.querytype = this.querytype;
+
+      //AED Branches API call
+      this.ClassesService.AEDClasses(customObj)
+        .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+          if (result.success) {
+            // this.branches= result.data;    
+            if (this.formType == "create") {
+            this.addClassForm.reset();
+            }
+            this.successMessage = AppConstants.Messages.successMessage;
+          }else{
+            this.errorMessage = AppConstants.Messages.errorMessage;
+          }
+        });
     }
   }
 

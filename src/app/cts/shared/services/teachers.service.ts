@@ -11,9 +11,6 @@ import { map } from 'rxjs/operators';
 })
 export class TeachersService {
 
-
-  private teachersJsonData = new BehaviorSubject<any>(null);
-  public teachersJson = this.teachersJsonData.asObservable();
   constructor(private httpClient : HttpClient) { }
   public getTeachers(pagingData) {
       // this.branchesJsonData.next(this.branches);

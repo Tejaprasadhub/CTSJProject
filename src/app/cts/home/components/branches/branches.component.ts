@@ -7,7 +7,8 @@ import { map,takeUntil } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
-
+import * as moment from 'moment';
+import { AppConstants } from 'src/app/cts/app-constants';
 
 @Component({
   selector: 'app-branches',
@@ -30,6 +31,8 @@ export class BranchesComponent implements OnInit {
   advancedFilterValue:string ="";
   currentPage:number = 1;
   pageCount:number;
+  moment: any = moment;
+  AppConstants:any;
 
   constructor(private BranchesService: BranchesService, private router: Router, private route: ActivatedRoute,private fb: FormBuilder) {
     this.branches = [];
@@ -135,4 +138,9 @@ export class BranchesComponent implements OnInit {
   resetFilterForm(): void {
     this.filtersForm.reset();    
   } 
+  //to get date format
+  getFormat(createddate):string{
+   return moment(createddate).format(Paginationutil.getDefaultFormat())
+  }
+
 }

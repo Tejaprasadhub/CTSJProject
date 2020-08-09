@@ -23,5 +23,17 @@ export class AchievementsService {
                     return response;
                 }));
     }
+    public AEDAchievements(pagingData) {
+        // this.branchesJsonData.next(this.branches);
+        const headers = new HttpHeaders().set("Content-Type", "application/json");
+
+        var loginUrl: string = AppConstants.Api.AdminApp + "Achievement/AEDAchievements"
+
+        return this.httpClient.post
+            (loginUrl, pagingData, { headers: headers, withCredentials: true }).pipe(
+                map((response: any) => {
+                    return response;
+                }));
+    }
 }
 

@@ -36,35 +36,42 @@
                 </div>
                 <div class="col-md-3">
                     <span>Email</span><br>
-                    <input id="email" class="w-100" formControlName="tEmail" type="text" placeholder="Enter Email"
-                        size="30" pInputText>
+                    <input id="email" #em class="w-100" formControlName="tEmail" type="text" placeholder="Enter Email"
+                    (keydown)="$event.key === 'Enter' ? dt.filter(em.value,'email',''): ''"    
+                    size="30" pInputText>
                 </div>
                 <div class="col-md-3">
                     <span>Mobile</span><br>
-                    <input id="mobile" class="w-100" formControlName="tMobile" type="text"
+                    <input id="mobile" #mb class="w-100" formControlName="tMobile" type="text"
+                    (keydown)="$event.key === 'Enter' ? dt.filter(mb.value,'mobilenumber',''): ''"    
                         placeholder="Enter MobileNumber" size="30" pInputText>
                 </div>
                 <div class="col-md-3">
                     <span>Experience</span><br>
-                    <p-dropdown [options]="experience" formControlName="tExperience" class="w-100"
-                        placeholder="Select a Experience"  ></p-dropdown>
+                        <p-multiSelect [options]="experience"  formControlName="tExperience" placeholder="Select Experience"  
+                        (onChange)="multiselectSearch($event,'experience')"
+                        class="w-100">
+                    </p-multiSelect>
                 </div>
                 <div class="col-md-3">
                     <span>Expertise</span><br>
                     <p-multiSelect [options]="expertise"  formControlName="tExpertise" placeholder="Select Subject"  
-                        class="w-100">
+                    (onChange)="multiselectSearch($event,'subject_id')"    
+                    class="w-100">
                     </p-multiSelect>
                 </div>
                 <div class="col-md-3">
                     <span>Classes</span><br>
                     <p-multiSelect [options]="classes"  formControlName="tClasses" placeholder="Select Classes" 
-                        class="w-100">
+                    (onChange)="multiselectSearch($event,'class_id')"    
+                    class="w-100">
                     </p-multiSelect> 
                 </div>
                 <div class="col-md-3">
                     <span>Sections</span><br>
                     <p-multiSelect [options]="sections"  formControlName="tSections" placeholder="Select Sections"  
-                        class="w-100">
+                    (onChange)="multiselectSearch($event,'section_id')"    
+                    class="w-100">
                     </p-multiSelect>
                 </div>
                 <div class="col-md-9 text-right search-buttons">
@@ -113,9 +120,15 @@
                 <tr>
                     <td *ngFor="let col of columns">
                         <div *ngIf="col.field != 'classes' && col.field != 'sections' && col.field != 'subjects' && col.field != 'qualifications'">
-                            <a class="bold" (click)="viewTeacher(rowData.id)">   
+                            <!-- <a class="bold" (click)="viewTeacher(rowData.id)">   
                                 {{rowData[col.field]}}  
-                            </a>
+                            </a> -->
+                            <div class="" *ngIf="col.field == 'dob'">
+                                <a class="bold" (click)="viewTeacher(rowData.id)">{{getFormat(rowData.dob)}}</a>
+                            </div>
+                            <div class="" *ngIf="col.field != 'dob'">
+                                <a class="bold" (click)="viewTeacher(rowData.id)">{{rowData[col.field]}}</a>
+                            </div>
                         </div>
                         <div *ngIf="col.field == 'classes' || col.field == 'sections' || col.field == 'subjects' || col.field == 'qualifications'">
                             <span class="tableRowData" *ngFor="let datavalue of rowData[col.field]">
@@ -126,7 +139,7 @@
                         </div>                        
                     </td>
                     <td>
-                        <div>
+                        <div class="d-flex">
                         <i class="pi pi-pencil" (click)="editTeacher(rowData.id)"></i>&nbsp;
                         <i class="pi pi-trash" (click)="deleteTeacher(rowData.id)"></i>
                     </div>

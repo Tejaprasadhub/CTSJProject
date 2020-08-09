@@ -8,6 +8,8 @@ import { Location } from '@angular/common';
 import { Utility } from 'src/app/cts/shared/models/utility';
 import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
 import { NewsService } from 'src/app/cts/shared/services/news.service';
+import { News } from 'src/app/cts/shared/models/news';
+import { AppConstants } from 'src/app/cts/app-constants';
 
 @Component({
   selector: 'app-add-news',
@@ -15,7 +17,7 @@ import { NewsService } from 'src/app/cts/shared/services/news.service';
   styleUrls: ['./add-news.component.scss']
 })
 export class AddNewsComponent implements OnInit {
-  newsId: string;
+  newsId: number;
   formType: string;
   pageTitle: string;
   errorMessage: string = "";
@@ -28,6 +30,7 @@ export class AddNewsComponent implements OnInit {
   display: boolean = false;
   editData: any;
   branchids: SelectItem[] = [];
+  querytype:number;
 
 
 
@@ -41,7 +44,7 @@ export class AddNewsComponent implements OnInit {
   ngOnInit(): void {
    //to read url parameters
    this.route.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params => {
-    this.newsId = window.atob(params['id']);
+    this.newsId = Number(window.atob(params['id']));
     this.formType = window.atob(params['type']);
   });
     //to create form with validations
@@ -51,15 +54,18 @@ export class AddNewsComponent implements OnInit {
       this.pageTitle = "Add News";
       this.isDisabled = false;
       this.isRequired = true;
+      this.querytype=1;
     } else if (this.formType == "edit") {
       this.pageTitle = "Edit News";
       this.editControls();
       this.fetchData();
+      this.querytype=2;
     } else {
       this.pageTitle = "View Details";
       this.isDisabled = true;
       this.isRequired = false;
       this.fetchData();
+      this.querytype=2;
     }
 
   }
@@ -80,7 +86,7 @@ export class AddNewsComponent implements OnInit {
   bindEditNewsDetails() {
     let pagingData = new Utility();
     pagingData = JSON.parse(Paginationutil.getDefaultFilter());
-    pagingData.idValue = this.newsId;
+    pagingData.idValue = this.newsId.toString();
     //Get Branches API call
     this.NewsService.getNews(pagingData)
       .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
@@ -109,14 +115,39 @@ export class AddNewsComponent implements OnInit {
   }
 
   addNewsSubmit(): void {
+    // this.errorMessage = "";
+    // this.successMessage = "";
+    // this.formSubmitAttempt = true;
+    // if (this.addNewsForm.valid) {
+    //   this.formSubmitAttempt = false;
+    //   console.log(this.addNewsForm.value);
+    //   this.addNewsForm.reset();
+    //   this.successMessage = "Your changes have been successfully saved";
+    // }
+    
     this.errorMessage = "";
     this.successMessage = "";
     this.formSubmitAttempt = true;
     if (this.addNewsForm.valid) {
       this.formSubmitAttempt = false;
-      console.log(this.addNewsForm.value);
-      this.addNewsForm.reset();
-      this.successMessage = "Your changes have been successfully saved";
+      let customObj = new News();
+      customObj = this.addNewsForm.value;
+      customObj.id = this.newsId;
+      customObj.querytype = this.querytype;
+
+      //AED Branches API call
+      this.NewsService.AEDNews(customObj)
+        .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+          if (result.success) {
+            // this.branches= result.data;    
+            if (this.formType == "create") {
+            this.addNewsForm.reset();
+            }
+            this.successMessage = AppConstants.Messages.successMessage;
+          }else{
+            this.errorMessage = AppConstants.Messages.errorMessage;
+          }
+        });
     }
   }
 

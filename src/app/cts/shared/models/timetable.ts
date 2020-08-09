@@ -1,13 +1,14 @@
 export class Timetable {
-    constructor(
-        public id: number,
-        public classid: number,
-        public subjectid: number,
-        public teacherid: number,
-        public periodfrom: Date,
-        public periodto: Date,
-        public createddate: Date,
-        public createdby: string,
-        public indexId:number
-    ) { }
+
+         id: number;
+         classid: number;
+         subjectid: number;
+         teacherid: number;
+         periodfrom: Date;
+         periodto: Date;
+         createddate: Date;
+         createdby: string;
+         indexId:number;
+        querytype:number;
+    
 }

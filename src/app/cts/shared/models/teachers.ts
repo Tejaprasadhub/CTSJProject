@@ -1,18 +1,16 @@
-export class Teachers {
-    constructor(
+export class Teachers {    
 
-    public id:number,
-    public teachername:string,
-    public dob:Date,
-    public qualifications:string,
-    public email:string,
-    public mobilenumber:string,
-    public image:string,
-    public experience:string,
-    public subjects:string,
-    public classes:string,
-    public sections:string,
-    public indexId:number    
-    ){}
+     id:number;
+     teachername:string;
+     dateofbirth:Date;
+     qualifications:string;
+     email:string;
+     mobilenumber:string;
+     image:string;
+     experience:string;
+     subjects:string;
+     classes:string;
+     sections:string;
+     indexId:number;      
 
 }

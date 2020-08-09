@@ -9,7 +9,7 @@
     <div class="col-md-12 search-box">
         <p-table #dt [columns]="cols" [value]="auditlogs" [lazy]="true" dataKey="indexId" [paginator]="true"
         [responsive]="true" [rows]="numberOfPages" (onLazyLoad)="onPageChange($event)" [totalRecords]="totalcount"
-        [rowsPerPageOptions]="[10,20,30,40,50]" [reorderableColumns]="true" dataKey="firstname">              
+        [rowsPerPageOptions]="[10,20,30,40,50]" [reorderableColumns]="true" dataKey="firstname" (onRowExpand)="rowExpand($event,dt)">              
         <ng-template pTemplate="header" let-columns>
             <tr>
                 <th style="width:2.5em"></th>

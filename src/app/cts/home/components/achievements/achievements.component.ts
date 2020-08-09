@@ -7,6 +7,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AchievementsService } from 'src/app/cts/shared/services/achievements.service';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-achievements',
@@ -146,4 +147,8 @@ loadGrids(pagingData){
     this.filtersForm.reset();
     console.log(this.filtersForm.value);
   }
+  //to get date format
+  getFormat(createddate):string{
+    return moment(createddate).format(Paginationutil.getDefaultFormat())
+   }
 }

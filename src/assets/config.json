@@ -1,6 +1,14 @@
 {
     "api":{
         "security":"http://localhost:64341/api/",
-        "AdminApp":"http://localhost:64371/api/"
+        "AdminApp":"http://localhost:64371/api/"        
+    },
+    "datetimeformat":{
+        "datetimeformat":"MMMM Do YYYY, hh:mm A"
+    },
+    "messages":{
+        "successMessage":"Your changes have been successfully saved",
+        "errorMessage":"Unable to process your request, please try again later"
     }
+    
 } 

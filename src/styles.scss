@@ -189,7 +189,7 @@ width: 100% !important;
 }
 .ui-multiselect .ui-multiselect-panel {
     width: 200px !important;
-    right: 20px !important;
+    // right: 20px !important;
     left: auto !important ;
 }
 
@@ -230,7 +230,11 @@ body .ui-radiobutton .ui-radiobutton-box.ui-state-active,body .ui-accordion .ui-
     border-top: 3px solid #351681;
     background-color: white;
     border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
+    border-top-right-radius: 20px;   
+  }
+  .search-box span:not(.ui-clickable),.ui-table{
+      font-size: 13px !important;
+    //   font-weight: 500 !important;
   }
   .search-buttons{
     padding: 25px 12px 0px 0px;
@@ -406,8 +410,8 @@ body .fc .fc-event {
 
 .tableRowData li{
     display: inline-block;
-    color: #333;
-    border: 2px solid #351681;
+    border: 1px solid #ccc;
+    background: #f5f2f2;
     padding: 2px 10px;
     margin: 3px;
     border-radius: 10px;

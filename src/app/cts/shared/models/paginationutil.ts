@@ -1,4 +1,5 @@
 import { table } from 'console';
+import { AppConstants } from '../../app-constants';
 
 export class Paginationutil {
     static getDefaultFilter() {
@@ -62,4 +63,8 @@ export class Paginationutil {
             "filter": (finalFilterString.trim() != "" ? `(${finalFilterString})` : "")
         };
     }
+
+    static getDefaultFormat() {
+        return AppConstants.DateTimeFormat.datetimeformat;
+     }
 }

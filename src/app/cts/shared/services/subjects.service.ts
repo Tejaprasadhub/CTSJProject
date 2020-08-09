@@ -23,5 +23,16 @@ export class SubjectsService {
                     return response;
                 }));
     }
-    
+    public AEDSubjects(pagingData) {
+        // this.branchesJsonData.next(this.branches);
+        const headers = new HttpHeaders().set("Content-Type", "application/json");
+
+        var loginUrl: string = AppConstants.Api.AdminApp + "Subjects/AEDSubjects"
+
+        return this.httpClient.post
+            (loginUrl, pagingData, { headers: headers, withCredentials: true }).pipe(
+                map((response: any) => {
+                    return response;
+                }));
+    }  
 }

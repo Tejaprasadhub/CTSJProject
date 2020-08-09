@@ -4,6 +4,11 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Location } from '@angular/common';
+import { SubjectsService } from 'src/app/cts/shared/services/subjects.service';
+import { Utility } from 'src/app/cts/shared/models/utility';
+import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
+import { AppConstants } from 'src/app/cts/app-constants';
+import { Subjects } from 'src/app/cts/shared/models/subjects';
 
 @Component({
   selector: 'app-add-subjects',
@@ -12,7 +17,7 @@ import { Location } from '@angular/common';
 })
 export class AddSubjectsComponent implements OnInit {
 
-  subjectId: string;
+  subjectId: number;
   formType: string;
   pageTitle: string;
   errorMessage: string = "";
@@ -24,14 +29,15 @@ export class AddSubjectsComponent implements OnInit {
   isRequired: boolean = false;
   display: boolean = false;
   editData: any;
+  querytype:number;
 
   
-  constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute,private location: Location) { }
+  constructor(private SubjectsService: SubjectsService,private fb: FormBuilder, private router: Router, private route: ActivatedRoute,private location: Location) { }
 
   ngOnInit(): void {// On page load
     //to read url parameters
     this.route.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params => {
-      this.subjectId = window.atob(params['id']);
+      this.subjectId = Number(window.atob(params['id']));
       this.formType = window.atob(params['type']);
     });
     //to create form with validations
@@ -41,15 +47,18 @@ export class AddSubjectsComponent implements OnInit {
       this.pageTitle = "Add Subject";
       this.isDisabled = false;
       this.isRequired = true;
+      this.querytype=1;
     } else if (this.formType == "edit") {
       this.pageTitle = "Edit Subject";
       this.editControls();
       this.fetchData();
+      this.querytype=2;
     } else {
       this.pageTitle = "View Details";
       this.isDisabled = true;
       this.isRequired = false;
       this.fetchData();
+      this.querytype=2;
     }
 
   }
@@ -66,14 +75,20 @@ export class AddSubjectsComponent implements OnInit {
     this.bindEditSubjectDetails();
   }
   bindEditSubjectDetails() {
-    this.editData = {
-      'code': 'ENGH',
-      'name': 'English'
-    }
-    this.addSubjectForm.setValue({
-      'code': this.editData.code,
-      'name': this.editData.name
-    })
+    let pagingData = new Utility();
+    pagingData = JSON.parse(Paginationutil.getDefaultFilter());
+    pagingData.idValue = this.subjectId.toString();
+    //Get Branches API call
+    this.SubjectsService.getSubjects(pagingData)
+      .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+        if (result.success) {
+          this.editData = result.data[0];
+          this.addSubjectForm.setValue({
+            'code': this.editData.code,
+            'name': this.editData.name
+          })
+        }
+      });
   }
 
 
@@ -89,14 +104,39 @@ export class AddSubjectsComponent implements OnInit {
   }
 
   addSubjectSubmit(): void {
+    // this.errorMessage = "";
+    // this.successMessage = "";
+    // this.formSubmitAttempt = true;
+    // if (this.addSubjectForm.valid) {
+    //   this.formSubmitAttempt = false;
+    //   console.log(this.addSubjectForm.value);
+    //   this.addSubjectForm.reset();
+    //   this.successMessage = "Your changes have been successfully saved";
+    // }
+    
     this.errorMessage = "";
     this.successMessage = "";
     this.formSubmitAttempt = true;
     if (this.addSubjectForm.valid) {
       this.formSubmitAttempt = false;
-      console.log(this.addSubjectForm.value);
-      this.addSubjectForm.reset();
-      this.successMessage = "Your changes have been successfully saved";
+      let customObj = new Subjects();
+      customObj = this.addSubjectForm.value;
+      customObj.id = this.subjectId;
+      customObj.querytype = this.querytype;
+
+      //AED Branches API call
+      this.SubjectsService.AEDSubjects(customObj)
+        .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+          if (result.success) {
+            // this.branches= result.data;    
+            if (this.formType == "create") {
+            this.addSubjectForm.reset();
+            }
+            this.successMessage = AppConstants.Messages.successMessage;
+          }else{
+            this.errorMessage = AppConstants.Messages.errorMessage;
+          }
+        });
     }
   }
 

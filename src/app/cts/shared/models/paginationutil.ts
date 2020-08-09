@@ -1,4 +1,5 @@
 import { table } from 'console';
+import { AppConstants } from '../../app-constants';
 
 export class Paginationutil {
     static getDefaultFilter() {
@@ -7,7 +8,9 @@ export class Paginationutil {
             "pageNo": 1,
             "pageSize": 10,
             "group": "",
-            "filter": ""
+            "filter": "",
+            "queryType":0,
+            "idValue":""
         })
     }
 
@@ -55,7 +58,13 @@ export class Paginationutil {
             "pageNo": (isReset ? 1 : pageNumber),
             "pageSize": pageSize,
             "group": "",
+            "queryType":1,
+            "idValue":"",
             "filter": (finalFilterString.trim() != "" ? `(${finalFilterString})` : "")
         };
     }
+
+    static getDefaultFormat() {
+        return AppConstants.DateTimeFormat.datetimeformat;
+     }
 }

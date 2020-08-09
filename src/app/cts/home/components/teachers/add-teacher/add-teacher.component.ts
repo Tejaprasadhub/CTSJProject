@@ -8,7 +8,12 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { element } from 'protractor';
 import { Location } from '@angular/common';
-
+import { DropdownService } from 'src/app/cts/shared/services/dropdown.service';
+import { Teachers } from 'src/app/cts/shared/models/teachers';
+import * as moment from 'moment';
+import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
+import { Utility } from 'src/app/cts/shared/models/utility';
+import { TeachersService } from 'src/app/cts/shared/services/teachers.service';
 
 @Component({
   selector: 'app-add-teacher',
@@ -37,47 +42,27 @@ export class AddTeacherComponent implements OnInit {
   errorMessage: string = "";
   successMessage: string = "";
 
-  constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private location: Location) {
-    this.branches = [
-      { label: 'branch1', value: '1' },
-      { label: 'branch2', value: '2' }
-    ];
-    this.gender = [
-      { label: 'Male', value: 'M' },
-      { label: 'Female', value: 'F' }
-    ];
+  constructor(private teachersService:TeachersService, private dropdownService: DropdownService,private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private location: Location) {
+    
+       //Get Dropdowns API call
+       var dropdowns = ["branches","qualifications","experiences","sections","subjects","classes"];
+       this.dropdownService.getDropdowns(dropdowns)
+       .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+         if (result.success) {
+          this.expertiseIn = result.data.subjects;
+          this.associatedClasses = result.data.classes;
+          this.qualification = result.data.qualifications;
+          this.associatedSections = result.data.sections;
+          this.experience = result.data.experiences;
+          this.branches = result.data.branches;
+         }
+       });  
 
-    this.qualification = [
-      { label: 'B.Ed', value: 'B.Ed' },
-      { label: 'M.Ed', value: 'M.Ed' },
-      { label: 'Other', value: 'OTH' }
-    ];
-    this.experience = [
-      { label: '0-1(yrs)', value: '0-1' },
-      { label: '15-20(yrs)', value: '15-20' },
-      { label: '>20(yrs)', value: '>20' }
-    ];
-    this.expertiseIn = [
-      { label: 'Telugu', value: 'T' },
-      { label: 'Hindi', value: 'H' },
-      { label: 'English', value: 'E' },
-      { label: 'Mathmatics', value: 'M' },
-      { label: 'Science', value: 'S' }
-    ];
-    this.associatedClasses = [
-      { label: '1st Class', value: '1' },
-      { label: '2nd Class', value: '2' },
-      { label: '3rd Class', value: '3' },
-      { label: '4th Class', value: '4' },
-      { label: '5th Class', value: '5' }
-    ];
-    this.associatedSections = [
-      { label: 'A Section', value: 'A' },
-      { label: 'B Section', value: 'B' },
-      { label: 'C Section', value: 'C' },
-      { label: 'D Section', value: 'D' },
-      { label: 'E Section', value: 'E' }
-    ];
+       this.gender=[
+         {"label":"Male","value":"M"},
+         {"label":"Female","value":"F"}        
+       ]
+    
   }
 
   ngOnInit(): void {// On page load
@@ -145,35 +130,65 @@ export class AddTeacherComponent implements OnInit {
   // }
   //to bind data to controllers
   bindEditTeacherDetails() {
-    this.editData = {
-      'teacherName': 'Teja prasad',
-      'branch': '1',
-      'dateofbirth': '4/5/2020',
-      'gender': 'F',
-      'qualification': 'OTH',
-      'experience': '0-1',
-      'mobile': '9640938361',
-      'email': 'tejaprasadbehara@gmail.com',
-      'expertiseIn': ['T', 'M'],
-      'associatedClasses': ['1', '2'],
-      'associatedSections': ['A', 'B']
-    }
 
-    console.log(this.editData.gender)
-    this.addTeacherForm.setValue({
-      'teacherName': this.editData.teacherName,
-      'branch': this.editData.branch,
-      'dateofbirth': this.editData.dateofbirth,
-      'gender': this.editData.gender,
-      'qualification': this.editData.qualification,
-      'experience': this.editData.experience,
-      'mobile': this.editData.mobile,
-      'email': this.editData.email,
-      'expertiseIn': this.editData.expertiseIn,
-      'associatedClasses': this.editData.associatedClasses,
-      'associatedSections': this.editData.associatedSections
-    })
+    let pagingData = new Utility();
+    pagingData = JSON.parse(Paginationutil.getDefaultFilter());
+    pagingData.idValue = this.teacherId.toString();
+    //Get Teachers API call
+    this.teachersService.getTeachers(pagingData)
+      .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+        if (result.success) {
+          this.editData = result.data[0];
+          var strings = this.editData.sections.map((el) => Number(el.value));
+          
+          this.addTeacherForm.setValue({
+            'teacherName': this.editData.teachername,
+            'branch': Number(this.editData.branch),
+            'dateofbirth': new Date(this.editData.dob),
+            'gender': this.editData.gender,
+            'qualification': this.editData.qualifications.map((el) => Number(el.value)),
+            'experience': Number(this.editData.experience),
+            'mobile': this.editData.mobilenumber,
+            'email': this.editData.email,
+            'expertiseIn': this.editData.subjects.map((el) => Number(el.value)),
+            'associatedClasses': this.editData.classes.map((el) => Number(el.value)),
+            'associatedSections': this.editData.sections.map((el) => Number(el.value))
+          })
+        }
+      });
+
+
+    // this.editData = {
+    //   'teacherName': 'Teja prasad',
+    //   'branch': '1',
+    //   'dateofbirth': '4/5/2020',
+    //   'gender': 'F',
+    //   'qualification': 'OTH',
+    //   'experience': '0-1',
+    //   'mobile': '9640938361',
+    //   'email': 'tejaprasadbehara@gmail.com',
+    //   'expertiseIn': ['T', 'M'],
+    //   'associatedClasses': ['1', '2'],
+    //   'associatedSections': ['A', 'B']
+    // }
+
+    // console.log(this.editData.gender)
+    // this.addTeacherForm.setValue({
+    //   'teacherName': this.editData.teacherName,
+    //   'branch': this.editData.branch,
+    //   'dateofbirth': this.editData.dateofbirth,
+    //   'gender': this.editData.gender,
+    //   'qualification': this.editData.qualification,
+    //   'experience': this.editData.experience,
+    //   'mobile': this.editData.mobile,
+    //   'email': this.editData.email,
+    //   'expertiseIn': this.editData.expertiseIn,
+    //   'associatedClasses': this.editData.associatedClasses,
+    //   'associatedSections': this.editData.associatedSections
+    // })
   }
+
+ 
   // Add Teacher method
   addTeacherSubmit(): void {
     this.errorMessage = "";
@@ -181,6 +196,10 @@ export class AddTeacherComponent implements OnInit {
     this.formSubmitAttempt = true;
     if (this.addTeacherForm.valid) {
       this.formSubmitAttempt = false;
+      let customObj = new Teachers();
+      customObj = this.addTeacherForm.value;
+      this.errorMessage = this.getFormat(customObj.dateofbirth);
+      debugger
       console.log(this.addTeacherForm.value);
       this.addTeacherForm.reset();
       this.successMessage = "Your changes have been successfully saved";
@@ -224,7 +243,10 @@ export class AddTeacherComponent implements OnInit {
     let inputChar = String.fromCharCode(event.charCode);
     if (!pattern.test(inputChar)) {
       event.preventDefault();
-
     }
   }
+
+  getFormat(createddate):string{
+    return moment(createddate).format(Paginationutil.getDefaultFormat())
+   }
 }

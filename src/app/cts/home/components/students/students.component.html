@@ -53,7 +53,7 @@
     <div class="col-md-12 search-box">
         <p-table #dt [columns]="cols" [value]="students" [lazy]="true" dataKey="indexId" [paginator]="true"
             [responsive]="true" [rows]="numberOfPages" (onLazyLoad)="onPageChange($event)" [totalRecords]="totalcount"
-            [rowsPerPageOptions]="[10,20,30,40,50]" [reorderableColumns]="true" dataKey="firstname">          
+            [rowsPerPageOptions]="[10,20,30,40,50]" [reorderableColumns]="true" dataKey="firstname" (onRowExpand)="rowExpand($event,dt)">          
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th style="width:2.5em"></th>
@@ -67,7 +67,8 @@
                     <th style="width:5em"></th>
                 </tr>
             </ng-template>
-            <ng-template pTemplate="body" let-rowData let-columns="columns" let-expanded="expanded">
+            <ng-template pTemplate="body" let-rowIndex="rowIndex" let-rowData let-columns="columns" let-expanded="expanded">
+                
                 <tr>
                     <td>
                         <a href="#" [pRowToggler]="rowData">
@@ -75,11 +76,18 @@
                         </a>
                     </td>
                     <td *ngFor="let col of columns">
-                        <a class="bold" (click)="viewStudent(rowData.id)">{{rowData[col.field]}}</a>                        
+                        <div class="" *ngIf="col.field == 'dob'">
+                            <a class="bold" (click)="viewStudent(rowData.id)">{{getFormat(rowData.dob)}}</a>
+                        </div>
+                        <div class="" *ngIf="col.field != 'dob'">
+                            <a class="bold" (click)="viewStudent(rowData.id)">{{rowData[col.field]}}</a>
+                        </div>                     
                     </td>
-                    <td class="d-flex">
+                    <td>
+                        <div class="d-flex">
                         <i class="pi pi-pencil" (click)="editStudent(rowData.id)"></i>&nbsp;
                         <i class="pi pi-trash" (click)="deleteStudent(rowData.id)"></i>
+                    </div>
                     </td>
                 </tr>
             </ng-template>

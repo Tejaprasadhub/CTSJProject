@@ -67,7 +67,12 @@
             <ng-template pTemplate="body" let-rowData let-columns="columns" let-expanded="expanded">
                 <tr>
                     <td *ngFor="let col of columns" >
-                        <a class="bold" (click)="viewAchievement(rowData.id)">{{rowData[col.field]}}</a>
+                        <div class="" *ngIf="col.field == 'createddate'">
+                            <a class="bold" (click)="viewAchievement(rowData.id)">{{getFormat(rowData.createddate)}}</a>
+                        </div>
+                        <div class="" *ngIf="col.field != 'createddate'">
+                            <a class="bold" (click)="viewAchievement(rowData.id)">{{rowData[col.field]}}</a>
+                        </div>
                     </td>
                     <td >
                         <i class="pi pi-pencil" (click)="editAchievement(rowData.id)"></i>&nbsp;

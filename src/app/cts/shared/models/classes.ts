@@ -1,10 +1,11 @@
 export class Classes {
-    constructor(
-        public id: number,
-        public name: string,
-        public noofsections: number,
-        public createddate: Date,
-        public createdby: string,
-        public indexId:number
-    ) { }
+
+         id: number;
+         name: string;
+         noofsections: number;
+         createddate: Date;
+         createdby: string;
+         indexId:number;
+         querytype:number;
+
 }

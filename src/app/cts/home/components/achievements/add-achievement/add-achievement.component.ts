@@ -4,6 +4,11 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Location } from '@angular/common';
+import { Utility } from 'src/app/cts/shared/models/utility';
+import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
+import { AchievementsService } from 'src/app/cts/shared/services/achievements.service';
+import { AppConstants } from 'src/app/cts/app-constants';
+import { Achievements } from 'src/app/cts/shared/models/achievements';
 
 @Component({
   selector: 'app-add-achievement',
@@ -11,7 +16,7 @@ import { Location } from '@angular/common';
   styleUrls: ['./add-achievement.component.scss']
 })
 export class AddAchievementComponent implements OnInit {
-  achievementId: string;
+  achievementId: number;
   formType: string;
   pageTitle: string;
   errorMessage: string = "";
@@ -23,14 +28,22 @@ export class AddAchievementComponent implements OnInit {
   isRequired: boolean = false;
   display: boolean = false;
   editData: any;
+  id:any;
+  querytype:number;
 
-  
-  constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute,private location: Location) { }
+
+  constructor(private AchievementsService: AchievementsService, private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private location: Location) {
+    this.id = [
+      { label: 'branch1', value: '1' },
+      { label: 'branch2', value: '2' },
+      { label: 'branch3', value: '3' },
+    ];
+   }
 
   ngOnInit(): void {// On page load
     //to read url parameters
     this.route.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params => {
-      this.achievementId = window.atob(params['id']);
+      this.achievementId = Number(window.atob(params['id']));
       this.formType = window.atob(params['type']);
     });
     //to create form with validations
@@ -40,15 +53,21 @@ export class AddAchievementComponent implements OnInit {
       this.pageTitle = "Add Achievement";
       this.isDisabled = false;
       this.isRequired = true;
+      this.querytype=1;
+
     } else if (this.formType == "edit") {
       this.pageTitle = "Edit Achievement";
       this.editControls();
       this.fetchData();
+      this.querytype=2;
+
     } else {
       this.pageTitle = "View Details";
       this.isDisabled = true;
       this.isRequired = false;
       this.fetchData();
+      this.querytype=2;
+
     }
 
   }
@@ -56,23 +75,32 @@ export class AddAchievementComponent implements OnInit {
   createForm() {
     this.addAchievementForm = this.fb.group({
       'title': new FormControl('', { validators: [Validators.required, Validators.pattern('^([A-Za-z0-9 _\'-])*$')] }),
-      'date': new FormControl('', { validators: [Validators.required] })
+      'date': new FormControl('', { validators: [Validators.required] }),
+      'branchid':new FormControl('', { validators: [Validators.required] })
     });
   }
 
   private fetchData() {
-    // this.loadGender(this.gender);
+    // this.loadGender(this.gender); 
     this.bindEditAchievementDetails();
   }
   bindEditAchievementDetails() {
-    this.editData = {
-      'title': 'Ganeshchandra',
-      'date': '02/27/2001'
-    }
-    this.addAchievementForm.setValue({
-      'title': this.editData.title,
-      'date': this.editData.date
-    })
+    let pagingData = new Utility();
+    pagingData = JSON.parse(Paginationutil.getDefaultFilter());
+    pagingData.idValue = this.achievementId.toString();
+    //Get Branches API call
+    this.AchievementsService.getAchievements(pagingData)
+      .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+        if (result.success) {
+          this.editData = result.data[0];
+          this.addAchievementForm.setValue({
+            'title': this.editData.title,
+            'date': new Date(this.editData.date),
+            'branchid': this.editData.branch
+
+          })
+        }
+      });
   }
 
 
@@ -88,14 +116,39 @@ export class AddAchievementComponent implements OnInit {
   }
 
   addAchievementSubmit(): void {
+    // this.errorMessage = "";
+    // this.successMessage = "";
+    // this.formSubmitAttempt = true;
+    // if (this.addAchievementForm.valid) {
+    //   this.formSubmitAttempt = false;
+    //   console.log(this.addAchievementForm.value);
+    //   this.addAchievementForm.reset();
+    //   this.successMessage = "Your changes have been successfully saved";
+    // }
+    
     this.errorMessage = "";
     this.successMessage = "";
     this.formSubmitAttempt = true;
     if (this.addAchievementForm.valid) {
       this.formSubmitAttempt = false;
-      console.log(this.addAchievementForm.value);
-      this.addAchievementForm.reset();
-      this.successMessage = "Your changes have been successfully saved";
+      let customObj = new Achievements();
+      customObj = this.addAchievementForm.value;
+      customObj.id = this.achievementId;
+      customObj.querytype = this.querytype;
+
+      //AED Branches API call
+      this.AchievementsService.AEDAchievements(customObj)
+        .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+          if (result.success) {
+            // this.branches= result.data;    
+            if (this.formType == "create") {
+            this.addAchievementForm.reset();
+            }
+            this.successMessage = AppConstants.Messages.successMessage;
+          }else{
+            this.errorMessage = AppConstants.Messages.errorMessage;
+          }
+        });
     }
   }
 

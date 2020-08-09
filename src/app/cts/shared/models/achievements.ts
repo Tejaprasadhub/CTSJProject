@@ -1,10 +1,11 @@
 export class Achievements {
-    constructor(
-        public id: number,
-        public title: string,
-        public date: string,
-        public createddate: Date,
-        public createdby: string,
-        public indexId:number
-    ) { }
+    
+         id: number;
+         title: string;
+         date: string;
+         createddate: Date;
+         createdby: string;
+         indexId:number;
+         querytype:number;
+    
 }

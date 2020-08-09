@@ -1,11 +1,12 @@
 export class News {
-    constructor(
-        public id: number,
-        public title: string,
-        public branchid: number,
-        public description: string,
-        public createddate: Date,
-        public createdby: string,
-        public indexId:number
-    ) { }
+    
+         id: number;
+         title: string;
+         branchid: number;
+         description: string;
+         createddate: Date;
+         createdby: string;
+         indexId:number;
+         querytype:number;
+    
 }

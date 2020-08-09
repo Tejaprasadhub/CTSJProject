@@ -4,6 +4,11 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Location } from '@angular/common';
+import { Utility } from 'src/app/cts/shared/models/utility';
+import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
+import { TimetableService } from 'src/app/cts/shared/services/timetable.service';
+import { AppConstants } from 'src/app/cts/app-constants';
+import { Timetable } from 'src/app/cts/shared/models/timetable';
 
 @Component({
   selector: 'app-add-timetable',
@@ -11,7 +16,7 @@ import { Location } from '@angular/common';
   styleUrls: ['./add-timetable.component.scss']
 })
 export class AddTimetableComponent implements OnInit {
-  timetableId: string;
+  timetableId: number;
   formType: string;
   pageTitle: string;
   errorMessage: string = "";
@@ -26,9 +31,10 @@ export class AddTimetableComponent implements OnInit {
   classid: any[];
   subjectid: any[];
   teacherid: any[];
+  querytype:number;
 
 
-  constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private location: Location) {
+  constructor(private TimetableService: TimetableService, private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private location: Location) {
     this.classid = [
       { label: 'class1', value: '1' },
       { label: 'class2', value: '2' },
@@ -49,7 +55,7 @@ export class AddTimetableComponent implements OnInit {
   ngOnInit(): void {// On page load
     //to read url parameters
     this.route.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params => {
-      this.timetableId = window.atob(params['id']);
+      this.timetableId = Number(window.atob(params['id']));
       this.formType = window.atob(params['type']);
     });
     //to create form with validations
@@ -59,15 +65,21 @@ export class AddTimetableComponent implements OnInit {
       this.pageTitle = "Add Timetable";
       this.isDisabled = false;
       this.isRequired = true;
+      this.querytype=1;
+
     } else if (this.formType == "edit") {
       this.pageTitle = "Edit Timetable";
       this.editControls();
       this.fetchData();
+      this.querytype=2;
+
     } else {
       this.pageTitle = "View Details";
       this.isDisabled = true;
       this.isRequired = false;
       this.fetchData();
+      this.querytype=2;
+
     }
 
   }
@@ -87,22 +99,24 @@ export class AddTimetableComponent implements OnInit {
     this.bindEditTimetableDetails();
   }
   bindEditTimetableDetails() {
-    this.editData = {
-      'classid': '1',
-      'subjectid': '1',
-      'teacherid': '1',
-      'periodfrom': '11/02/2001 00:00',
-      'periodto': '11/02/2001 00:00',
-
-    }
-    this.addTimetableForm.setValue({
-      'classid': this.editData.classid,
-      'subjectid': this.editData.subjectid,
-      'teacherid': this.editData.teacherid,
-      'periodfrom': this.editData.periodfrom,
-      'periodto': this.editData.periodto
-
-    })
+    let pagingData = new Utility();
+    pagingData = JSON.parse(Paginationutil.getDefaultFilter());
+    pagingData.idValue = this.timetableId.toString();
+    //Get Branches API call
+    this.TimetableService.getTimetable(pagingData)
+      .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+        if (result.success) {
+          this.editData = result.data[0];
+          this.addTimetableForm.setValue({
+            'classid': this.editData.class,
+            'subjectid': this.editData.subject,
+            'teacherid': this.editData.teacher,
+            'periodfrom': new Date(this.editData.periodfrom),
+            'periodto': new Date(this.editData.periodto)
+           
+          })
+        }
+      });
   }
 
 
@@ -118,14 +132,39 @@ export class AddTimetableComponent implements OnInit {
   }
 
   addTimetableSubmit(): void {
+    // this.errorMessage = "";
+    // this.successMessage = "";
+    // this.formSubmitAttempt = true;
+    // if (this.addTimetableForm.valid) {
+    //   this.formSubmitAttempt = false;
+    //   console.log(this.addTimetableForm.value);
+    //   this.addTimetableForm.reset();
+    //   this.successMessage = "Your changes have been successfully saved";
+    // }
+    
     this.errorMessage = "";
     this.successMessage = "";
     this.formSubmitAttempt = true;
     if (this.addTimetableForm.valid) {
       this.formSubmitAttempt = false;
-      console.log(this.addTimetableForm.value);
-      this.addTimetableForm.reset();
-      this.successMessage = "Your changes have been successfully saved";
+      let customObj = new Timetable();
+      customObj = this.addTimetableForm.value;
+      customObj.id = this.timetableId;
+      customObj.querytype = this.querytype;
+
+      //AED Branches API call
+      this.TimetableService.AEDTimetable(customObj)
+        .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+          if (result.success) {
+            // this.branches= result.data;    
+            if (this.formType == "create") {
+            this.addTimetableForm.reset();
+            }
+            this.successMessage = AppConstants.Messages.successMessage;
+          }else{
+            this.errorMessage = AppConstants.Messages.errorMessage;
+          }
+        });
     }
   }
 

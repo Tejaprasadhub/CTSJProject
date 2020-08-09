@@ -21,5 +21,7 @@ function loadTextFileAjaxSync(filePath,mimeType){
 
 
 export class AppConstants {
-    public static readonly Api =loadJson("/assets/config.json").api
+    public static readonly Api =loadJson("/assets/config.json").api;
+    public static readonly DateTimeFormat = loadJson("/assets/config.json").datetimeformat;
+    public static readonly Messages = loadJson("/assets/config.json").messages;
 }

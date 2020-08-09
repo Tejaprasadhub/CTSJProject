@@ -1,10 +1,9 @@
-export class Branches {
-    constructor(
-        public id: number,
-        public code: string,
-        public title: string,
-        public createddate: Date,
-        public createdby: string,
-        public indexId:number
-    ) { }
+export class Branches {    
+         id: number;
+         code: string;
+         title: string;
+         createddate: Date;
+         createdby: string;
+         indexId:number;  
+         querytype:number;  
 }

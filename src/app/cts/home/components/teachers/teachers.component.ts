@@ -8,12 +8,12 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
 import { Table } from 'primeng/table';
+import { multiselectObject } from 'src/app/cts/shared/models/multi-select-object';
+import { DropdownService } from 'src/app/cts/shared/services/dropdown.service';
+import * as moment from 'moment';
 
 // import * as angular from "angular";
-export class multiselectObject {
-  key: string;
-  value: string;
-}
+
 
 @Component({
   selector: 'app-teachers',
@@ -55,46 +55,25 @@ export class TeachersComponent implements OnInit {
   @ViewChild(Table, { static: false }) DataTable: Table;
 
 
-  constructor(private teachersService: TeachersService, private router: Router, private route: ActivatedRoute,
+  constructor(private dropdownService: DropdownService,private teachersService: TeachersService, private router: Router, private route: ActivatedRoute,
     private fb: FormBuilder) {
-    this.qualifications = [
-      { label: 'B.Ed', value: '27' },
-      { label: 'M.Ed', value: '28' }
-    ];
-    this.experience = [
-      { label: '0-1(yrs)', value: '0-1' },
-      { label: '15-20(yrs)', value: '15-20' },
-      { label: '>20(yrs)', value: '>20' }
-    ];
-    this.expertise = [
-      { label: 'Telugu', value: 'T' },
-      { label: 'Hindi', value: 'H' },
-      { label: 'English', value: 'E' },
-      { label: 'Mathmatics', value: 'M' },
-      { label: 'Science', value: 'S' }
-    ];
-    this.classes = [
-      { label: '1st Class', value: '1' },
-      { label: '2nd Class', value: '2' },
-      { label: '3rd Class', value: '3' },
-      { label: '4th Class', value: '4' },
-      { label: '5th Class', value: '5' }
-    ];
-    this.sections = [
-      { label: 'A Section', value: 'A' },
-      { label: 'B Section', value: 'B' },
-      { label: 'C Section', value: 'C' },
-      { label: 'D Section', value: 'D' },
-      { label: 'E Section', value: 'E' }
-    ];
+       //Get Dropdowns API call
+     var dropdowns = ["subjects","classes","qualifications","sections","experiences"];
+     this.dropdownService.getDropdowns(dropdowns)
+     .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+       if (result.success) {
+        this.expertise = result.data.subjects;
+        this.classes = result.data.classes;
+        this.qualifications = result.data.qualifications;
+        this.sections = result.data.sections;
+        this.experience = result.data.experiences;
+       }
+     });  
+   
+  
     this.teachers = []
   }
   public ngOnInit() {
-    // this.teachersService.getTeachers();
-    // this.teachersService.teachersJson.pipe(takeUntil(this.ngUnsubscribe)).subscribe(teachers => {
-    //   this.datasource = teachers;
-    //   this.totalRecords = this.datasource.length;
-    // });
     this.cols = [
       { field: 'teachername', header: 'Name' },
       { field: 'dob', header: 'DOB' },
@@ -107,9 +86,10 @@ export class TeachersComponent implements OnInit {
       { field: 'sections', header: 'Sections' }
     ];
     this.loading = true;
+    //to create form with validations   
+    this.createFilterForm(); 
 
-    //to create form with validations
-    this.createFilterForm();
+    
   }
   //Search box toggling
   toggleClass($event: any) {
@@ -241,5 +221,9 @@ export class TeachersComponent implements OnInit {
     this.filtersForm.reset();
     console.log(this.filtersForm.value);
   }
+  //to get date format
+  getFormat(createddate):string{
+    return moment(createddate).format(Paginationutil.getDefaultFormat())
+   }
 
 }

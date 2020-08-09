@@ -24,5 +24,17 @@ export class UsersService {
                 return response;
             }));
 }
+public AEDUsers(pagingData) {
+  // this.branchesJsonData.next(this.branches);
+  const headers = new HttpHeaders().set("Content-Type", "application/json");
+
+  var loginUrl: string = AppConstants.Api.AdminApp + "Users/AEDUsers"
+
+  return this.httpClient.post
+      (loginUrl, pagingData, { headers: headers, withCredentials: true }).pipe(
+          map((response: any) => {
+              return response;
+          }));
+}
 }
 

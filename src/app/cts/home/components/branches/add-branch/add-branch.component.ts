@@ -5,6 +5,12 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Location } from '@angular/common';
+import { Utility } from 'src/app/cts/shared/models/utility';
+import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
+import { BranchesService } from 'src/app/cts/shared/services/branches.service';
+import { Branches } from 'src/app/cts/shared/models/branches';
+import { AppConstants } from 'src/app/cts/app-constants';
+
 
 @Component({
   selector: 'app-add-branch',
@@ -12,7 +18,7 @@ import { Location } from '@angular/common';
   styleUrls: ['./add-branch.component.scss']
 })
 export class AddBranchComponent implements OnInit {
-  branchId: string;
+  branchId: number;
   formType: string;
   pageTitle: string;
   errorMessage: string = "";
@@ -24,15 +30,18 @@ export class AddBranchComponent implements OnInit {
   isRequired: boolean = false;
   display: boolean = false;
   editData: any;
-  sections: SelectItem[] = []; 
+  sections: SelectItem[] = [];
 
-  constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute,private location: Location) { 
+
+  querytype:number;
+
+  constructor(private BranchesService: BranchesService, private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private location: Location) {
   }
 
   ngOnInit(): void {
     //to read url parameters
     this.route.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params => {
-      this.branchId = window.atob(params['id']);
+      this.branchId = Number(window.atob(params['id']));
       this.formType = window.atob(params['type']);
     });
     //to create form with validations
@@ -42,10 +51,12 @@ export class AddBranchComponent implements OnInit {
       this.pageTitle = "Add Branch";
       this.isDisabled = false;
       this.isRequired = true;
+      this.querytype=1;
     } else if (this.formType == "edit") {
       this.pageTitle = "Edit Branch";
       this.editControls();
       this.fetchData();
+      this.querytype=2;
     } else {
       this.pageTitle = "View Details";
       this.isDisabled = true;
@@ -65,20 +76,29 @@ export class AddBranchComponent implements OnInit {
     this.bindEditBranchDetails();
   }
   bindEditBranchDetails() {
-    this.editData = {
-      'code': 'skta',
-      'title': 'srungavarapukota'
-    }
-    this.addBranchForm.setValue({
-      'code': this.editData.code,
-      'title': this.editData.title
-    })
+
+    let pagingData = new Utility();
+    pagingData = JSON.parse(Paginationutil.getDefaultFilter());
+    pagingData.idValue = this.branchId.toString();
+    //Get Branches API call
+    this.BranchesService.getBranches(pagingData)
+      .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+        if (result.success) {
+          this.editData = result.data[0];
+          this.addBranchForm.setValue({
+            'code': this.editData.code,
+            'title': this.editData.title
+          })
+        }
+      });
+
   }
 
   editControls(): void {
     this.isRequired = true;
     this.isDisabled = false;
     this.pageTitle = "Edit Branch";
+    this.querytype=2;
   }
 
   addBranchSubmit(): void {
@@ -87,9 +107,24 @@ export class AddBranchComponent implements OnInit {
     this.formSubmitAttempt = true;
     if (this.addBranchForm.valid) {
       this.formSubmitAttempt = false;
-      console.log(this.addBranchForm.value);
-      this.addBranchForm.reset();
-      this.successMessage = "Your changes have been successfully saved";
+      let customObj = new Branches();
+      customObj = this.addBranchForm.value;
+      customObj.id = this.branchId;
+      customObj.querytype = this.querytype;
+
+      //AED Branches API call
+      this.BranchesService.AEDBranches(customObj)
+        .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+          if (result.success) {
+            // this.branches= result.data;    
+            if (this.formType == "create") {
+            this.addBranchForm.reset();
+            }
+            this.successMessage = AppConstants.Messages.successMessage;
+          }else{
+            this.errorMessage = AppConstants.Messages.errorMessage;
+          }
+        });
     }
   }
 
@@ -102,5 +137,5 @@ export class AddBranchComponent implements OnInit {
     this.location.back();
   }
 
-  }
+}
 

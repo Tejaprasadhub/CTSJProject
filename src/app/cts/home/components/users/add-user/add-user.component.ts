@@ -6,6 +6,10 @@ import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { Utility } from 'src/app/cts/shared/models/utility';
+import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
+import { UsersService } from 'src/app/cts/shared/services/users.service';
+import { AppConstants } from 'src/app/cts/app-constants';
 
 
 @Component({
@@ -19,18 +23,20 @@ export class AddUserComponent implements OnInit {
   status:any;
   id:any;
   private ngUnsubscribe = new Subject();
-  userId: string;
+  userId: number;
   formType: string;
   editData: any;
   pageTitle: string;
   isDisabled: boolean = false;
   isRequired: boolean = false;
   successMessage:string="";
+  errorMessage: string = "";
+  querytype:number;
 
   //to create Teacher From 
   addUserForm: FormGroup;
   formSubmitAttempt: boolean = false;
-  constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private location: Location) {
+  constructor(private UsersService: UsersService,private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private location: Location) {
     this.usertypes = [
       { label: 'Admin', value: 'ADMN' },
       { label: 'DataEntryOperator', value: 'DEOR' },
@@ -50,7 +56,7 @@ export class AddUserComponent implements OnInit {
   ngOnInit(): void {
      //to read url parameters
      this.route.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params => {
-      this.userId = window.atob(params['id']);
+      this.userId = Number(window.atob(params['id']));
       this.formType = window.atob(params['type']);
     });
 
@@ -59,17 +65,20 @@ export class AddUserComponent implements OnInit {
       this.pageTitle = "Add User";
       this.isDisabled = false;
       this.isRequired = true;
+      this.querytype=1;
     }
     else if (this.formType == "edit") {
       this.pageTitle = "Edit User";
       this.editControls();
       this.fetchData();
+      this.querytype=2;
     }
     else {
       this.pageTitle = "View Details";
       this.isDisabled = true;
       this.isRequired = false;
       this.fetchData();
+      this.querytype=2;
     }
 
 
@@ -98,32 +107,58 @@ export class AddUserComponent implements OnInit {
     this.bindEditUserDetails();
   }
   bindEditUserDetails() {
-    this.editData = {
-      'usertype': 'ADMN',
-      'userName': 'teja',
-      'dispName': 'Teja',
-      'password': 'Optum234$',
-      'branchid':'1',
-      'userstatus':'AC'
-    }
-    this.addUserForm.setValue({
-      'usertype': this.editData.usertype,
-      'userName': this.editData.userName,
-      'dispName': this.editData.dispName,
-      'password': this.editData.password,
-      'branchid': this.editData.branchid,
-      'userstatus': this.editData.userstatus
-    })
+    let pagingData = new Utility();
+    pagingData = JSON.parse(Paginationutil.getDefaultFilter());
+    pagingData.idValue = this.userId.toString();
+    //Get Branches API call
+    this.UsersService.getUsers(pagingData)
+      .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+        if (result.success) {
+          this.editData = result.data[0];
+          this.addUserForm.setValue({
+            'usertype': this.editData.usertype,
+            'userName': this.editData.username,
+            'dispName': this.editData.displayname,
+            'branchid': this.editData.branchtitle,
+            'userstatus': this.editData.userstatus,
+            'password': ''
+          })
+        }
+      });
   }
 
 
   addUserSubmit(): void {
+    // this.formSubmitAttempt = true;
+    // this.successMessage="";
+    // if(this.addUserForm.valid){
+    //   this.formSubmitAttempt=false;
+    // this.addUserForm.reset();     
+    //   this.successMessage="Your changes have been successfully saved";
+    // }
+    this.errorMessage = "";
+    this.successMessage = "";
     this.formSubmitAttempt = true;
-    this.successMessage="";
-    if(this.addUserForm.valid){
-      this.formSubmitAttempt=false;
-    this.addUserForm.reset();     
-      this.successMessage="Your changes have been successfully saved";
+    if (this.addUserForm.valid) {
+      this.formSubmitAttempt = false;
+      let customObj = new Users();
+      customObj = this.addUserForm.value;
+      customObj.id = this.userId;
+      customObj.querytype = this.querytype;
+debugger
+      //AED Branches API call
+      this.UsersService.AEDUsers(customObj)
+        .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+          if (result.success) {
+            // this.branches= result.data;    
+            if (this.formType == "create") {
+            this.addUserForm.reset();
+            }
+            this.successMessage = AppConstants.Messages.successMessage;
+          }else{
+            this.errorMessage = AppConstants.Messages.errorMessage;
+          }
+        });
     }
   }
   resetForm(): void {

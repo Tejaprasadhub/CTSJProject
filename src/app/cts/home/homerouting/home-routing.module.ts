@@ -36,6 +36,8 @@ import { SubjectsComponent } from '../components/subjects/subjects.component';
 import { AddSubjectsComponent } from '../components/subjects/add-subjects/add-subjects.component';
 import { QualificationsComponent } from '../components/qualifications/qualifications.component';
 import { AddQualificationComponent } from '../components/qualifications/addqualifications/addqualifications.component';
+import { AddParentComponent } from '../components/parents/add-parent/add-parent.component';
+import { ParentsComponent } from '../components/parents/parents.component';
 
 
 
@@ -176,6 +178,18 @@ const homeRoutes: Routes = [
         component: AddClassComponent,
         canActivate:[AuthenticationGuardService],
         data: { title: 'Add Class' }
+      },
+      {
+        path: 'parents',
+        component: ParentsComponent,
+        canActivate:[AuthenticationGuardService],
+        data: { title: 'Parents List' }
+      },
+      {
+        path: 'parents/add-parent',
+        component: AddParentComponent,
+        canActivate:[AuthenticationGuardService],
+        data: { title: 'Add Parent' }
       },
       {
         path: 'qualifications',

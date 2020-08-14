@@ -30,6 +30,8 @@ import { SubjectsComponent } from './cts/home/components/subjects/subjects.compo
 import { AddSubjectsComponent } from './cts/home/components/subjects/add-subjects/add-subjects.component';
 import { QualificationsComponent } from './cts/home/components/qualifications/qualifications.component';
 import { AddQualificationComponent } from './cts/home/components/qualifications/addqualifications/addqualifications.component';
+import { ParentsComponent } from './cts/home/components/parents/parents.component';
+import { AddParentComponent } from './cts/home/components/parents/add-parent/add-parent.component';
 
 const SessionTimeoutServiceProvider={
   provide:SessionTimeoutService,
@@ -69,7 +71,9 @@ const AuthenticatedHttpInterceptorServiceProvider={
     SubjectsComponent,
     AddSubjectsComponent,
     QualificationsComponent,
-    AddQualificationComponent
+    AddQualificationComponent,
+    ParentsComponent,
+    AddParentComponent
 
   ],
   imports: [

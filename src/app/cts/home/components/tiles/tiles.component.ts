@@ -26,6 +26,7 @@ export class TilesComponent implements OnInit {
       new Tiles(24, 'branches','blue','fa-puzzle-piece'),
       new Tiles(24, 'subjects','blue','fa fa-book'),
       new Tiles(24, 'qualifications','blue','fa fa-book'),
+      new Tiles(24, 'parents','red','fa fa-users')
 
     ];    
 

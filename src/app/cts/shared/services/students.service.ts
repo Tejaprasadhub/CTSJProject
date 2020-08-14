@@ -10,13 +10,26 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class StudentsService {
-  
+
   constructor(private httpClient: HttpClient) { }
   public getStudents(pagingData) {
     // this.branchesJsonData.next(this.branches);
     const headers = new HttpHeaders().set("Content-Type", "application/json");
 
     var loginUrl: string = AppConstants.Api.AdminApp + "Students/GetStudents"
+
+    return this.httpClient.post
+      (loginUrl, pagingData, { headers: headers, withCredentials: true }).pipe(
+        map((response: any) => {
+          return response;
+        }));
+  }
+
+  public AEDStudents(pagingData) {
+    // this.branchesJsonData.next(this.branches);
+    const headers = new HttpHeaders().set("Content-Type", "application/json");
+
+    var loginUrl: string = AppConstants.Api.AdminApp + "Students/AEDStudents"
 
     return this.httpClient.post
         (loginUrl, pagingData, { headers: headers, withCredentials: true }).pipe(

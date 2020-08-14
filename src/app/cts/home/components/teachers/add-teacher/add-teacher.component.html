@@ -104,7 +104,7 @@
             <div class="col-md-4">
                 <span>Name</span><br>
                 <input id="input" class="w-100" maxlength="45" [attr.disabled]="isDisabled ? 'disabled': null"
-                    formControlName="teacherName" type="text" placeholder="Student Name" size="30" pInputText
+                    formControlName="teacherName" type="text" placeholder="Teacher Name" size="30" pInputText
                     [ngClass]="{'error':((!addTeacherForm.controls['teacherName'].valid && addTeacherForm.controls['teacherName'].touched) || (!addTeacherForm.controls['teacherName'].valid && addTeacherForm.controls['teacherName'].untouched && formSubmitAttempt)),'required':(isRequired == true )}">
             </div>
             <div class="col-md-4">
@@ -182,7 +182,7 @@
                 <p-multiSelect [options]="associatedSections" [disabled]="isDisabled"
                     formControlName="associatedSections" class="w-100"
                     [ngClass]="{'error':((!addTeacherForm.controls['associatedSections'].valid && addTeacherForm.controls['associatedSections'].touched) || (!addTeacherForm.controls['associatedSections'].valid && addTeacherForm.controls['associatedSections'].untouched && formSubmitAttempt)),'required':(isRequired == true )}">
-                </p-multiSelect>
+                </p-multiSelect>                
             </div>
             <div class="col-md-4"></div>
             <br>

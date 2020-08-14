@@ -1,16 +1,16 @@
 export class Teachers {    
-
      id:number;
-     teachername:string;
-     dateofbirth:Date;
-     qualifications:string;
+     teacherName:string;
+     dateofbirth:string;
+     qualification:string;
      email:string;
-     mobilenumber:string;
+     mobile:string;
      image:string;
      experience:string;
-     subjects:string;
-     classes:string;
-     sections:string;
-     indexId:number;      
-
+     expertiseIn:string;
+     associatedClasses:string;
+     associatedSections:string;
+     branch:number;
+     gender:string;
+     indexId:number; 
 }

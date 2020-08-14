@@ -13,20 +13,21 @@
         </div>
     </div>
 
-    <form [formGroup]="filtersForm"  (ngSubmit)="filterSubmit()">
+    <form [formGroup]="filtersForm" (ngSubmit)="filterSubmit()">
         <div #myFiltersDiv class="col-md-12 box transform">
             <div class="row search-box search-box-padding">
                 <div class="col-md-3">
                     <span>Teacher Name</span><br>
-                    <input id="name" #tt class="w-100" type="text" formControlName="tName" placeholder="Teacher Name"  size="30"
-                    (keydown)="$event.key === 'Enter' ? dt.filter(tt.value,'teachername',''): ''"
-                    pInputText>
+                    <input id="name" #tt class="w-100" type="text" formControlName="tName" placeholder="Teacher Name"
+                        size="30" (keydown)="$event.key === 'Enter' ? dt.filter(tt.value,'teachername',''): ''"
+                        pInputText>
                 </div>
-                <div class="col-md-3">    
-                        <span>Qualification</span><br>
-                    <p-multiSelect [options]="qualifications"  (onChange)="multiselectSearch($event,'qualification_id')" formControlName="tQualification" placeholder="Select Qualifications"  class="w-100">
-                   
-                   
+                <div class="col-md-3">
+                    <span>Qualification</span><br>
+                    <p-multiSelect [options]="qualifications" (onChange)="multiselectSearch($event,'qualification_id')"
+                        formControlName="tQualification" placeholder="Select Qualifications" class="w-100">
+
+
                     </p-multiSelect>
                 </div>
                 <div class="col-md-3">
@@ -37,41 +38,36 @@
                 <div class="col-md-3">
                     <span>Email</span><br>
                     <input id="email" #em class="w-100" formControlName="tEmail" type="text" placeholder="Enter Email"
-                    (keydown)="$event.key === 'Enter' ? dt.filter(em.value,'email',''): ''"    
-                    size="30" pInputText>
+                        (keydown)="$event.key === 'Enter' ? dt.filter(em.value,'email',''): ''" size="30" pInputText>
                 </div>
                 <div class="col-md-3">
                     <span>Mobile</span><br>
                     <input id="mobile" #mb class="w-100" formControlName="tMobile" type="text"
-                    (keydown)="$event.key === 'Enter' ? dt.filter(mb.value,'mobilenumber',''): ''"    
+                        (keydown)="$event.key === 'Enter' ? dt.filter(mb.value,'mobilenumber',''): ''"
                         placeholder="Enter MobileNumber" size="30" pInputText>
                 </div>
                 <div class="col-md-3">
                     <span>Experience</span><br>
-                        <p-multiSelect [options]="experience"  formControlName="tExperience" placeholder="Select Experience"  
-                        (onChange)="multiselectSearch($event,'experience')"
-                        class="w-100">
+                    <p-multiSelect [options]="experience" formControlName="tExperience" placeholder="Select Experience"
+                        (onChange)="multiselectSearch($event,'experience')" class="w-100">
                     </p-multiSelect>
                 </div>
                 <div class="col-md-3">
                     <span>Expertise</span><br>
-                    <p-multiSelect [options]="expertise"  formControlName="tExpertise" placeholder="Select Subject"  
-                    (onChange)="multiselectSearch($event,'subject_id')"    
-                    class="w-100">
+                    <p-multiSelect [options]="expertise" formControlName="tExpertise" placeholder="Select Subject"
+                        (onChange)="multiselectSearch($event,'subject_id')" class="w-100">
                     </p-multiSelect>
                 </div>
                 <div class="col-md-3">
                     <span>Classes</span><br>
-                    <p-multiSelect [options]="classes"  formControlName="tClasses" placeholder="Select Classes" 
-                    (onChange)="multiselectSearch($event,'class_id')"    
-                    class="w-100">
-                    </p-multiSelect> 
+                    <p-multiSelect [options]="classes" formControlName="tClasses" placeholder="Select Classes"
+                        (onChange)="multiselectSearch($event,'class_id')" class="w-100">
+                    </p-multiSelect>
                 </div>
                 <div class="col-md-3">
                     <span>Sections</span><br>
-                    <p-multiSelect [options]="sections"  formControlName="tSections" placeholder="Select Sections"  
-                    (onChange)="multiselectSearch($event,'section_id')"    
-                    class="w-100">
+                    <p-multiSelect [options]="sections" formControlName="tSections" placeholder="Select Sections"
+                        (onChange)="multiselectSearch($event,'section_id')" class="w-100">
                     </p-multiSelect>
                 </div>
                 <div class="col-md-9 text-right search-buttons">
@@ -81,7 +77,7 @@
                         class="ui-button-secondary table-header-items"></button>
                 </div>
             </div>
-        </div> 
+        </div>
     </form>
 
 
@@ -102,9 +98,10 @@
         <!-- <p-table #dt [columns]="cols" [value]="teachers" [lazy]="true" (onLazyLoad)="loadCarsLazy($event)"
             [paginator]="true" [rows]="10" [totalRecords]="totalRecords" [loading]="loading" [responsive]="true"
             [reorderableColumns]="true" dataKey="firstname"> -->
-            <p-table #dt [columns]="cols" [resizableColumns]="true" [value]="teachers" [lazy]="true" dataKey="indexId" [paginator]="true"
-            [responsive]="true" [rows]="numberOfPages" (onLazyLoad)="onPageChange($event)" [totalRecords]="totalcount"
-            [rowsPerPageOptions]="[10,20,30,40,50]" [reorderableColumns]="true" dataKey="firstname">
+        <p-table #dt [columns]="cols" [resizableColumns]="true" [value]="teachers" [lazy]="true" dataKey="indexId"
+            [paginator]="true" [responsive]="true" [rows]="numberOfPages" (onLazyLoad)="onPageChange($event)"
+            [totalRecords]="totalcount" [rowsPerPageOptions]="[10,20,30,40,50]" [reorderableColumns]="true"
+            dataKey="firstname">
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th *ngFor="let col of columns" [pSortableColumn]="col.field" pReorderableColumn>
@@ -119,7 +116,8 @@
             <ng-template pTemplate="body" let-rowData let-columns="columns" let-expanded="expanded">
                 <tr>
                     <td *ngFor="let col of columns">
-                        <div *ngIf="col.field != 'classes' && col.field != 'sections' && col.field != 'subjects' && col.field != 'qualifications'">
+                        <div
+                            *ngIf="col.field != 'classes' && col.field != 'sections' && col.field != 'subjects' && col.field != 'qualifications'">
                             <!-- <a class="bold" (click)="viewTeacher(rowData.id)">   
                                 {{rowData[col.field]}}  
                             </a> -->
@@ -128,27 +126,32 @@
                             </div>
                             <div class="" *ngIf="col.field != 'dob'">
                                 <a class="bold" (click)="viewTeacher(rowData.id)">{{rowData[col.field]}}</a>
+                                <div class="teacher-container" *ngIf="col.field == 'teachername'">
+                                    <img class="img-fluid teacherlogo" src="./assets/images/avatar.png">
+                                    <a  download="new-filename"><i class="pi pi-pencil"></i></a>
+                                </div>
                             </div>
                         </div>
-                        <div *ngIf="col.field == 'classes' || col.field == 'sections' || col.field == 'subjects' || col.field == 'qualifications'">
+                        <div
+                            *ngIf="col.field == 'classes' || col.field == 'sections' || col.field == 'subjects' || col.field == 'qualifications'">
                             <span class="tableRowData" *ngFor="let datavalue of rowData[col.field]">
-                                    <li>
-                                        {{datavalue.label}}
-                                    </li>
+                                <li>
+                                    {{datavalue.label}}
+                                </li>
                             </span>
-                        </div>                        
+                        </div>
                     </td>
                     <td>
                         <div class="d-flex">
-                        <i class="pi pi-pencil" (click)="editTeacher(rowData.id)"></i>&nbsp;
-                        <i class="pi pi-trash" (click)="deleteTeacher(rowData.id)"></i>
-                    </div>
+                            <i class="pi pi-pencil" (click)="editTeacher(rowData.id)"></i>&nbsp;
+                            <i class="pi pi-trash" (click)="deleteTeacher(rowData.id)"></i>
+                        </div>
                     </td>
                 </tr>
             </ng-template>
         </p-table>
-         <!-- pagination div starts from here -->
-         <div class="col-md-12">
+        <!-- pagination div starts from here -->
+        <div class="col-md-12">
             <div class="pagecount-dropdown">
                 <span class="pagecounting">Items per page</span>
             </div>
@@ -170,4 +173,4 @@
             <button type="button" pButton icon="pi pi-check" label="Yes" (click)="teacherRevoke()"></button>
             <button type="button" pButton icon="pi pi-times" (click)="display=false" label="No"></button>
         </p-footer>
-    </p-dialog> 
+    </p-dialog>

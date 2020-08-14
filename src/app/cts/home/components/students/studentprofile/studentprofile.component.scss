@@ -18,5 +18,18 @@
      padding: 3px !important;
      font-size: 10px;
  }
+
+ .student-container { position: relative; }
+.student-container img { display: block; }
+.student-container .pi-pencil { 
+    position: absolute;
+    bottom: 30px;
+    color: #fff !important;
+    font-size: 25px;
+    background: #007ad9;
+    border-radius: 16px;
+    border: 1px solid #fff;
+    right: 55px;
+}
  
 }

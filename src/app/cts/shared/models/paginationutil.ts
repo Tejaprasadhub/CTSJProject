@@ -67,4 +67,12 @@ export class Paginationutil {
     static getDefaultFormat() {
         return AppConstants.DateTimeFormat.datetimeformat;
      }
+
+    static getServerSideDateFormat(){
+        return AppConstants.DateTimeFormat.serversidedateformat;
+    }
+
+    static getAngularDateFormat(){
+        return AppConstants.DateTimeFormat.angulardateformat;
+    }
 }

@@ -5,6 +5,13 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Location } from '@angular/common';
+import { DropdownService } from 'src/app/cts/shared/services/dropdown.service';
+import { Students } from 'src/app/cts/shared/models/students';
+import * as moment from 'moment';
+import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
+import { StudentsService } from 'src/app/cts/shared/services/students.service';
+import { AppConstants } from 'src/app/cts/app-constants';
+import { Utility } from 'src/app/cts/shared/models/utility';
 
 @Component({
   selector: 'app-add-student',
@@ -24,28 +31,39 @@ export class AddStudentComponent implements OnInit {
   addStudentForm: FormGroup;
   formSubmitAttempt: boolean = false;
   branches: SelectItem[] = [];
+  parents: SelectItem[] = [];
   gender: SelectItem[] = [];
   classes: SelectItem[] = [];
   sections: SelectItem[] = [];
+  countries: SelectItem[] = [];
+  states: SelectItem[] = [];
+  cities: SelectItem[] = [];
   maxDate= new Date();
-  constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute,private location:Location) {
+
+  querytype:number;
+  constructor(private studentsService: StudentsService,private dropdownService: DropdownService,private fb: FormBuilder, private router: Router, private route: ActivatedRoute,private location:Location) {
     this.maxDate.setDate(this.maxDate.getDate()); 
-    this.branches = [
-      { label: 'branch1', value: '1' },
-      { label: 'branch2', value: '2' }
-    ];   
+ 
     this.gender = [
       { label: 'Male', value: 'M' },
       { label: 'Female', value: 'F' }
     ];
-    this.classes = [
-      { label: 'first', value: '1' },
-      { label: 'second', value: '2' }
-    ];
-    this.sections = [
-      { label: 'A-section', value: '1' },
-      { label: 'B-section', value: '2' }
-    ];
+    
+
+     //Get Dropdowns API call
+     var dropdowns = ["branches","sections","classes","countries","states","cities","parents"];
+     this.dropdownService.getDropdowns(dropdowns)
+     .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+       if (result.success) {
+        this.classes = result.data.classes;
+        this.sections = result.data.sections;
+        this.branches = result.data.branches;
+        this.countries = result.data.countries;
+        this.states = result.data.states;
+        this.cities = result.data.cities;
+        this.parents = result.data.parents;
+       }      
+     });  
   }
 
   ngOnInit(): void {    
@@ -61,15 +79,18 @@ export class AddStudentComponent implements OnInit {
       this.pageTitle = "Add Student";
       this.isDisabled = false;
       this.isRequired = true;
+      this.querytype=1;
     } else if (this.formType == "edit") {
       this.pageTitle = "Edit Student";
       this.editControls();
       this.fetchData();
+      this.querytype=2;
     } else {
       this.pageTitle = "View Details";
       this.isDisabled = true;
       this.isRequired = false;
       this.fetchData();
+      this.querytype=2;
     }
   }
 
@@ -79,6 +100,7 @@ export class AddStudentComponent implements OnInit {
       'middleName': new FormControl(''),
       'lastName': new FormControl('', { validators: [Validators.required] }),
       'branch': new FormControl('', { validators: [Validators.required] }),
+      'parent': new FormControl('', { validators: [Validators.required] }),
       'dateofbirth': new FormControl('', { validators: [Validators.required] }),
       'gender': new FormControl('', { validators: [Validators.required] }),
       'joineddate': new FormControl('', { validators: [Validators.required] }),
@@ -89,23 +111,19 @@ export class AddStudentComponent implements OnInit {
       'streetc': new FormControl(''),
       'countryc': new FormControl(''),
       'statec': new FormControl('',{ validators: [Validators.required] }),
-      'districtc': new FormControl(''),
+      'villagec': new FormControl(''),
       'cityc': new FormControl('',{ validators: [Validators.required] }),
-      'pincodec': new FormControl('',{ validators: [Validators.pattern('[0-9]\\d{9}')] }),
+      'pincodec': new FormControl('',{ validators: [Validators.pattern('[0-9]{6}')] }),
       'homephn': new FormControl(''),
       'mblno':  new FormControl('', { validators: [Validators.required,Validators.pattern('[0-9]\\d{9}')] }),
       'd_nop': new FormControl(''),
       'streetp': new FormControl(''),
       'countryp': new FormControl(''),
       'statep': new FormControl('',{ validators: [Validators.required] }),
-      'districtp': new FormControl(''),
+      'villagep': new FormControl(''),
       'cityp': new FormControl('',{ validators: [Validators.required] }),
-      'pincodep': new FormControl('',{ validators: [Validators.pattern('[0-9]\\d{9}')] }),
-      'pfname': new FormControl('',{ validators: [Validators.required] }),
-      'plname': new FormControl('',{ validators: [Validators.required] }),
-      'pmobile':  new FormControl('', { validators: [Validators.required,Validators.pattern('[0-9]\\d{9}')] }),
-      'pemail': new FormControl('',{ validators: [Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")] }),
-      'e1fname': new FormControl(''),
+      'pincodep': new FormControl('',{ validators: [Validators.pattern('[0-9]{6}')] }),
+     'e1fname': new FormControl(''),
       'e1lname': new FormControl(''),
       'e1mobile': new FormControl('', { validators: [Validators.pattern('[0-9]\\d{9}')] }),
       'e1email':new FormControl('',{ validators: [Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")] }),
@@ -127,88 +145,56 @@ export class AddStudentComponent implements OnInit {
     this.bindEditStudentDetails();
   }
 
-  bindEditStudentDetails() {
-    this.editData = {
-      'firstName': "Sindhuja",
-      'middleName': "",
-      'lastName': "Chinchilam",
-      'branch': '1',
-      'dateofbirth': "07/25/1995",
-      'gender': "F",
-      'joineddate': "01/01/2020",
-      'email': "chinchilam@gmail.com",
-      'class': "1",
-      'section': "1",
-      'd_noc': "24/7",
-      'streetc': "padmavathi nagar",
-      'countryc': "india",
-      'statec': "AP",
-      'districtc': "vzm",
-      'cityc': 'vzm',
-      'pincodec': "535002",
-      'homephn': "786876",
-      'mblno': "897882332",
-      'd_nop': "24/7",
-      'streetp': "padmavathi nagar",
-      'countryp':  "india",
-      'statep': "AP",
-      'districtp': "vzm",
-      'cityp': "vzm",
-      'pincodep': "535002",
-      'pfname': "teja",
-      'plname': "behara",
-      'pemail': "teja@gmail.com",
-      'pmobile': "9640938361",
-      'e1fname': "teja",
-      'e1lname': "behara",
-      'e1email': "teja@gmail.com",
-      'e1mobile': "9640938361",
-      'e2fname': "teja",
-      'e2lname': "behara",
-      'e2email': "teja@gmail.com",
-      'e2mobile': "9640938361"
-    }
-
-    this.addStudentForm.setValue({
-      'firstName': this.editData.firstName,
-      'middleName': this.editData.middleName,
-      'lastName': this.editData.lastName,
-      'branch': this.editData.branch,
-      'dateofbirth': this.editData.dateofbirth,
-      'gender': this.editData.gender,
-      'joineddate': this.editData.joineddate,
-      'email': this.editData.email,
-      'class': this.editData.class,
-      'section': this.editData.section,
-      'd_noc': this.editData.d_noc,
-      'streetc': this.editData.streetc,
-      'countryc': this.editData.countryc,
-      'statec': this.editData.statec,
-      'districtc': this.editData.districtc,
-      'cityc': this.editData.cityc,
-      'pincodec': this.editData.pincodec,
-      'homephn': this.editData.homephn,
-      'mblno': this.editData.mblno,
-      'd_nop': this.editData.d_nop,
-      'streetp': this.editData.streetp,
-      'countryp': this.editData.countryp,
-      'statep': this.editData.statep,
-      'districtp': this.editData.districtp,
-      'cityp': this.editData.cityp,
-      'pincodep': this.editData.pincodep,
-      'pfname': this.editData.pfname,
-      'plname': this.editData.plname,
-      'pemail': this.editData.pemail,
-      'pmobile':this.editData.pmobile,
-      'e1fname': this.editData.e1fname,
-      'e1lname': this.editData.e1lname,
-      'e1email': this.editData.e1email,
-      'e1mobile':this.editData.e1mobile,
-      'e2fname': this.editData.e2fname,
-      'e2lname': this.editData.e2lname,
-      'e2email': this.editData.e2email,
-      'e2mobile':this.editData.e2mobile
-    })
+  bindEditStudentDetails() {   
+    let pagingData = new Utility();
+    pagingData = JSON.parse(Paginationutil.getDefaultFilter());
+    pagingData.idValue = this.studentId;
+    // pagingData.queryType = this.querytype;
+    //Get Branches API call
+    this.studentsService.getStudents(pagingData)
+      .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+        if (result.success) {
+          this.editData = result.data[0];
+          this.addStudentForm.setValue({
+            'firstName': this.editData.ctcstudent_firstname,
+            'middleName': this.editData.ctcstudent_middlename,
+            'lastName': this.editData.ctcstudent_lastname,
+            'branch': this.editData.branch_id,
+            'parent':this.editData.ctcparent_id,
+            'dateofbirth': new Date(this.editData.ctcstudent_dob),
+            'gender': this.editData.ctcstudent_gender,
+            'joineddate':new Date(this.editData.ctcstudent_joindate),
+            'email': this.editData.ctcstudent_email,
+            'class': this.editData.ctcstudent_class,
+            'section': this.editData.ctcstudent_section,
+            'd_noc': this.editData.ctcstudent_dno_c,
+            'streetc': this.editData.ctcstudent_street_c,
+            'countryc': this.editData.ctcstudent_country_c,
+            'statec': this.editData.ctcstudent_state_c,
+            'villagec': this.editData.ctcstudent_village_c,
+            'cityc': this.editData.ctcstudent_city_c,
+            'pincodec': this.editData.ctcstudent_pincode_c,
+            'homephn': this.editData.ctcstduent_home_ph_c,
+            'mblno': this.editData.ctcstudent_mobile_ph_c,
+            'd_nop': this.editData.ctcstudent_country_p,
+            'streetp': this.editData.ctcstudent_street_p,
+            'countryp': this.editData.ctcstudent_country_p,
+            'statep': this.editData.ctcstudent_state_p,
+            'villagep': this.editData.ctcstudent_village_p,
+            'cityp': this.editData.ctcstudent_city_p,
+            'pincodep': this.editData.ctcstudent_pincode_p,
+           
+            'e1fname': this.editData.ctce1fname,
+            'e1lname': this.editData.ctce1lname,
+            'e1email': this.editData.ctce1email,
+            'e1mobile':this.editData.ctce1mobile,
+            'e2fname': this.editData.ctce2fname,
+            'e2lname': this.editData.ctce2lname,
+            'e2email': this.editData.ctce2email,
+            'e2mobile':this.editData.ctce2mobile
+          })
+        }
+      });   
   }
   addStudentSubmit(): void {
     this.errorMessage = "";
@@ -216,11 +202,33 @@ export class AddStudentComponent implements OnInit {
     this.formSubmitAttempt = true;
     if (this.addStudentForm.valid) {
       this.formSubmitAttempt = false;
-      console.log(this.addStudentForm.value);
-      this.addStudentForm.reset();
-      this.successMessage = "Your changes have been successfully saved";
+      let customObj = new Students();
+      customObj = this.addStudentForm.value;
+      customObj.dateofbirth = this.getFormat(customObj.dateofbirth);
+      customObj.joineddate = this.getFormat(customObj.joineddate);
+      customObj.id = this.studentId;
+      customObj.querytype = this.querytype;
+      customObj.classs = this.addStudentForm.controls['class'].value;
+      
+      //AED Students API call
+      this.studentsService.AEDStudents(customObj)
+        .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+          if (result.success) {
+            // this.branches= result.data;    
+            if (this.formType == "create") {
+            this.addStudentForm.reset();
+            }
+            this.successMessage = AppConstants.Messages.successMessage;
+          }else{
+            this.errorMessage = AppConstants.Messages.errorMessage;
+          }
+        });
     }
   }
+
+  getFormat(createddate):string{
+    return moment(createddate).format(Paginationutil.getServerSideDateFormat())
+   }
   list(): void {
     // this.router.navigateByUrl("Teachers");
     this.location.back();
@@ -234,7 +242,6 @@ export class AddStudentComponent implements OnInit {
     let inputChar = String.fromCharCode(event.charCode);
     if (!pattern.test(inputChar)) {
         event.preventDefault();
-
     }
 }
 }

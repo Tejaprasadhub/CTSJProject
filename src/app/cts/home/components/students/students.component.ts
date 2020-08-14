@@ -71,6 +71,7 @@ export class StudentsComponent implements OnInit {
   public ngOnInit() {
   
     this.cols = [
+      { field: 'id', header: 'ID' },
       { field: 'firstname', header: 'Name' },
       { field: 'gender', header: 'Gender' },
       { field: 'dob', header: 'Date Of Birth' },
@@ -205,6 +206,6 @@ loadGrids(pagingData){
   }
   //to get date format
   getFormat(createddate):string{
-    return moment(createddate).format(Paginationutil.getDefaultFormat())
+    return moment(createddate).format(Paginationutil.getAngularDateFormat())
    }
 }

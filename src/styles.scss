@@ -370,15 +370,24 @@ body .fc .fc-event {
 //pagination starts from here
 .ui-table .ui-paginator-bottom {
     border-top: 0;
-    margin-top: 0;
+    margin-top: 3px;
     background-color: #fff;
     padding: 0;
     background: linear-gradient(180deg, #fff 0, #fff);
     float: left;
+    .ui-dropdown{
+        border:1px solid #ccc;
+    }
+    .ui-dropdown-trigger{
+        background: none !important;
+        .ui-clickable{
+            margin-top: -0.4em !important;
+        }
+    }
 }
 .pagecount-dropdown{
     float: left;
-    padding-left: 10px;
+    padding-left: 5px;
 }
 .pagecounting{
     color:black;

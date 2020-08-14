@@ -33,7 +33,7 @@ export class AddTeacherComponent implements OnInit {
   isRequired: boolean = false;
   display: boolean = false;
   expertiseIn: SelectItem[];
-  associatedClasses: SelectItem[];
+  associatedClasses: any;
   associatedSections: SelectItem[];
   private ngUnsubscribe = new Subject();
   //to create Teacher From 
@@ -41,6 +41,8 @@ export class AddTeacherComponent implements OnInit {
   formSubmitAttempt: boolean = false;
   errorMessage: string = "";
   successMessage: string = "";
+
+  
 
   constructor(private teachersService:TeachersService, private dropdownService: DropdownService,private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private location: Location) {
     
@@ -56,6 +58,7 @@ export class AddTeacherComponent implements OnInit {
           this.experience = result.data.experiences;
           this.branches = result.data.branches;
          }
+        
        });  
 
        this.gender=[
@@ -64,6 +67,8 @@ export class AddTeacherComponent implements OnInit {
        ]
     
   }
+
+  
 
   ngOnInit(): void {// On page load
     //to read url parameters
@@ -138,9 +143,7 @@ export class AddTeacherComponent implements OnInit {
     this.teachersService.getTeachers(pagingData)
       .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
         if (result.success) {
-          this.editData = result.data[0];
-          var strings = this.editData.sections.map((el) => Number(el.value));
-          
+          this.editData = result.data[0];          
           this.addTeacherForm.setValue({
             'teacherName': this.editData.teachername,
             'branch': Number(this.editData.branch),
@@ -198,7 +201,8 @@ export class AddTeacherComponent implements OnInit {
       this.formSubmitAttempt = false;
       let customObj = new Teachers();
       customObj = this.addTeacherForm.value;
-      this.errorMessage = this.getFormat(customObj.dateofbirth);
+      customObj.dateofbirth = this.getFormat(customObj.dateofbirth);
+      customObj.id = Number(this.teacherId);
       debugger
       console.log(this.addTeacherForm.value);
       this.addTeacherForm.reset();
@@ -247,6 +251,6 @@ export class AddTeacherComponent implements OnInit {
   }
 
   getFormat(createddate):string{
-    return moment(createddate).format(Paginationutil.getDefaultFormat())
+    return moment(createddate).format(Paginationutil.getServerSideDateFormat())
    }
 }

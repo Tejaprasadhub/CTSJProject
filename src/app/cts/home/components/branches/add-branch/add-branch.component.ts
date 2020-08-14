@@ -62,6 +62,7 @@ export class AddBranchComponent implements OnInit {
       this.isDisabled = true;
       this.isRequired = false;
       this.fetchData();
+      this.querytype=2;
     }
   }
   createForm() {

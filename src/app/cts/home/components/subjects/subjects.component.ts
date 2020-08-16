@@ -46,7 +46,8 @@ export class SubjectsComponent implements OnInit {
       { field: 'code', header: 'Code' },
       { field: 'name', header: 'Name' },
       { field: 'createddate', header: 'Created Date' },
-      { field: 'createdby', header: 'Created By' }
+      { field: 'createdby', header: 'Created By' },
+      { field: 'status', header: 'Status' }
     ];
     this.loading = true;
     //to create form with validations

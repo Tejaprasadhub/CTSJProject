@@ -29,6 +29,7 @@ export class AddAchievementComponent implements OnInit {
   display: boolean = false;
   editData: any;
   id:any;
+  status:any;
   querytype:number;
 
 
@@ -37,6 +38,10 @@ export class AddAchievementComponent implements OnInit {
       { label: 'branch1', value: '1' },
       { label: 'branch2', value: '2' },
       { label: 'branch3', value: '3' },
+    ];
+    this.status = [
+      { label: 'Active', value: 'AC' },
+      { label: 'InActive', value: 'NA' }
     ];
    }
 
@@ -76,7 +81,9 @@ export class AddAchievementComponent implements OnInit {
     this.addAchievementForm = this.fb.group({
       'title': new FormControl('', { validators: [Validators.required, Validators.pattern('^([A-Za-z0-9 _\'-])*$')] }),
       'date': new FormControl('', { validators: [Validators.required] }),
-      'branchid':new FormControl('', { validators: [Validators.required] })
+      'branchid':new FormControl('', { validators: [Validators.required] }),
+      'status': new FormControl('', { validators: [Validators.required] })
+
     });
   }
 

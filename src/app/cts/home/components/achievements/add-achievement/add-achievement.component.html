@@ -50,6 +50,12 @@
                             <i class="fa fa-circle"></i>
                             <span *ngIf="(addAchievementForm.controls['branchid'].errors?.required)">Enter "Branch Id"</span>
                         </div>
+                        <div class="col-md-3 error-div"
+                        *ngIf="((!addAchievementForm.controls['status'].valid && addAchievementForm.controls['status'].touched)|| 
+                            (!addAchievementForm.controls['status'].valid && addAchievementForm.controls['status'].untouched && formSubmitAttempt))">
+                        <i class="fa fa-circle"></i>
+                        <span *ngIf="(addAchievementForm.controls['status'].errors?.required)">Enter "Status"</span>
+                    </div>
                     </div>
                 </div>
             </div>
@@ -78,6 +84,15 @@
                     placeholder="Select BranchId" class="required" [disabled]="isDisabled"
                     [ngClass]="{'error':((!addAchievementForm.controls['branchid'].valid && addAchievementForm.controls['branchid'].touched) || (!addAchievementForm.controls['branchid'].valid && addAchievementForm.controls['branchid'].untouched && formSubmitAttempt)),'required':(isRequired == true )}">
                 </p-dropdown>
+        </div>
+        <div class="col-md-4">
+            <span>Status</span><br>
+            <p-dropdown [options]="status" filter="true" formControlName="status" [disabled]="isDisabled"
+                placeholder="Select Status" [ngClass]="{'error':((!addAchievementForm.controls['status'].valid &&
+                addAchievementForm.controls['status'].touched) || 
+            (!addAchievementForm.controls['status'].valid && addAchievementForm.controls['status'].untouched && formSubmitAttempt)),
+            'required':(isRequired == true )}">
+            </p-dropdown>
         </div>
         <br>
         <br>

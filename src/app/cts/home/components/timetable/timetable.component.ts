@@ -67,7 +67,8 @@ export class TimetableComponent implements OnInit {
       { field: 'periodfrom', header: 'Period From' },
       { field: 'periodto', header: 'Period To' },
       { field: 'createddate', header: 'Created Date' },
-      { field: 'createdby', header: 'Created By' }
+      { field: 'createdby', header: 'Created By' },
+      { field: 'status', header: 'Status' }
     ];
     this.loading = true;
     //to create form with validations

@@ -9,6 +9,7 @@ import { Utility } from 'src/app/cts/shared/models/utility';
 import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
 import { Exams } from 'src/app/cts/shared/models/exams';
 import { AppConstants } from 'src/app/cts/app-constants';
+import { SelectItem } from 'primeng/api/selectitem';
 
 @Component({
   selector: 'app-add-exam',
@@ -29,9 +30,15 @@ export class AddExamComponent implements OnInit {
   display: boolean = false;
   editData: any;
   querytype:number;
+  status: SelectItem[] = [];
 
   
-  constructor(private ExamsService: ExamsService,private fb: FormBuilder, private router: Router, private route: ActivatedRoute,private location: Location) { }
+  constructor(private ExamsService: ExamsService,private fb: FormBuilder, private router: Router, private route: ActivatedRoute,private location: Location) { 
+    this.status = [
+      { label: 'Active', value: 'AC' },
+      { label: 'InActive', value: 'NA' }
+    ];
+  }
 
   ngOnInit(): void {// On page load
     //to read url parameters
@@ -65,7 +72,8 @@ export class AddExamComponent implements OnInit {
   createForm() {
     this.addExamForm = this.fb.group({
       'title': new FormControl('', { validators: [Validators.required, Validators.pattern('^([A-Za-z0-9 _\'-])*$')] }),
-      'year': new FormControl('', { validators: [Validators.required] })
+      'year': new FormControl('', { validators: [Validators.required] }),
+      'status': new FormControl('', { validators: [Validators.required] })
     });
   }
 

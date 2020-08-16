@@ -58,6 +58,13 @@
                                 <span *ngIf="(addNewsForm.controls['description'].errors?.required)">Enter
                                     "Description"</span>
                             </div>
+                            <div class="col-md-3 error-div" *ngIf="((!addNewsForm.controls['status'].valid && addNewsForm.controls['status'].touched)|| 
+                                (!addNewsForm.controls['status'].valid && addNewsForm.controls['status'].untouched && 
+                                formSubmitAttempt))">
+                                <i class="fa fa-circle"></i>
+                                <span *ngIf="(addNewsForm.controls['status'].errors?.required)">Enter
+                                    "Status"</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -99,6 +106,15 @@
             addNewsForm.controls['description'].touched) || 
             (!addNewsForm.controls['description'].valid && addNewsForm.controls['description'].untouched && formSubmitAttempt)),
             'required':(isRequired == true )}"></textarea>
+            </div>
+            <div class="col-md-4">
+                <span>Status</span><br>
+                <p-dropdown [options]="status" filter="true" formControlName="status" [disabled]="isDisabled"
+                    placeholder="Select Status" [ngClass]="{'error':((!addNewsForm.controls['status'].valid &&
+                    addNewsForm.controls['status'].touched) || 
+                (!addNewsForm.controls['status'].valid && addNewsForm.controls['status'].untouched && formSubmitAttempt)),
+                'required':(isRequired == true )}">
+                </p-dropdown>
             </div>
             <br>
             <br>

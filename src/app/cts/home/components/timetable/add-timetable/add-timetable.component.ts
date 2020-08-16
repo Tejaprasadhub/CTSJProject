@@ -31,6 +31,7 @@ export class AddTimetableComponent implements OnInit {
   classid: any[];
   subjectid: any[];
   teacherid: any[];
+  status: any[];
   querytype:number;
 
 
@@ -49,6 +50,10 @@ export class AddTimetableComponent implements OnInit {
       { label: 'teacher1', value: '1' },
       { label: 'teacher2', value: '2' },
       { label: 'teacher3', value: '3' }
+    ];
+    this.status = [
+      { label: 'Active', value: 'AC' },
+      { label: 'InActive', value: 'NA' }
     ];
   }
 
@@ -90,7 +95,9 @@ export class AddTimetableComponent implements OnInit {
       'subjectid': new FormControl('', { validators: [Validators.required] }),
       'teacherid': new FormControl('', { validators: [Validators.required] }),
       'periodfrom': new FormControl('', { validators: [Validators.required] }),
-      'periodto': new FormControl('', { validators: [Validators.required] })
+      'periodto': new FormControl('', { validators: [Validators.required] }),
+      'status': new FormControl('', { validators: [Validators.required] })
+
     });
   }
 

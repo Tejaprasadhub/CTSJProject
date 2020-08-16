@@ -44,6 +44,12 @@
                                 <i class="fa fa-circle"></i>
                                 <span *ngIf="(addExamForm.controls['year'].errors?.required)">Enter "Year"</span>
                             </div>
+                            <div class="col-md-3 error-div"
+                                *ngIf="((!addExamForm.controls['status'].valid && addExamForm.controls['status'].touched)|| 
+                            (!addExamForm.controls['status'].valid && addExamForm.controls['status'].untouched && formSubmitAttempt))">
+                                <i class="fa fa-circle"></i>
+                                <span *ngIf="(addExamForm.controls['status'].errors?.required)">Enter "Status"</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -54,8 +60,8 @@
                 <span>
                     Title
                 </span><br>
-                <input id="input" maxlength="45" class="w-100" [attr.disabled]="isDisabled ? 'disabled': null" formControlName="title"
-                    type="text" placeholder="Title" size="30" pInputText [ngClass]="{'error':((!addExamForm.controls['title'].valid && addExamForm.controls['title'].touched) || 
+                <input id="input" maxlength="45" class="w-100" [attr.disabled]="isDisabled ? 'disabled': null"
+                    formControlName="title" type="text" placeholder="Title" size="30" pInputText [ngClass]="{'error':((!addExamForm.controls['title'].valid && addExamForm.controls['title'].touched) || 
                     (!addExamForm.controls['title'].valid && addExamForm.controls['title'].untouched && 
                     formSubmitAttempt)),'required':(isRequired == true )}">
             </div>
@@ -66,6 +72,15 @@
                     [inputStyle]="{'width':'100% !important'}" [showIcon]="true"
                     [ngClass]="{'error':((!addExamForm.controls['year'].valid && addExamForm.controls['year'].touched) || (!addExamForm.controls['year'].valid && addExamForm.controls['year'].untouched && formSubmitAttempt)),'required':(isRequired == true )}">
                 </p-calendar>
+            </div>
+            <div class="col-md-4">
+                <span>Status</span><br>
+                <p-dropdown [options]="status" filter="true" formControlName="status" [disabled]="isDisabled"
+                    placeholder="Select Status" [ngClass]="{'error':((!addExamForm.controls['status'].valid &&
+                    addExamForm.controls['status'].touched) || 
+                (!addExamForm.controls['status'].valid && addExamForm.controls['status'].untouched && formSubmitAttempt)),
+                'required':(isRequired == true )}">
+                </p-dropdown>
             </div>
             <div class="col-md-4"></div>
             <br>

@@ -31,6 +31,7 @@ export class AddClassComponent implements OnInit {
   display: boolean = false;
   editData: any;
   sections: SelectItem[] = [];
+  status: SelectItem[] = [];
   querytype:number;
 
 
@@ -41,6 +42,10 @@ export class AddClassComponent implements OnInit {
       { label: '2-sections', value: 2 },
       { label: '2-sections', value: 3 }
 
+    ];
+    this.status = [
+      { label: 'Active', value: 'AC' },
+      { label: 'InActive', value: 'NA' }
     ];
   }
 
@@ -76,7 +81,9 @@ export class AddClassComponent implements OnInit {
   createForm() {
     this.addClassForm = this.fb.group({
       'class': new FormControl('', { validators: [Validators.required] }),
-      'section': new FormControl('', { validators: [Validators.required] })
+      'section': new FormControl('', { validators: [Validators.required] }),
+      'status': new FormControl('', { validators: [Validators.required] })
+
     });
   }
 

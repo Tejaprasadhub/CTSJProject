@@ -9,6 +9,7 @@ import { Utility } from 'src/app/cts/shared/models/utility';
 import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
 import { AppConstants } from 'src/app/cts/app-constants';
 import { Subjects } from 'src/app/cts/shared/models/subjects';
+import { SelectItem } from 'primeng/api/selectitem';
 
 @Component({
   selector: 'app-add-subjects',
@@ -30,9 +31,15 @@ export class AddSubjectsComponent implements OnInit {
   display: boolean = false;
   editData: any;
   querytype:number;
+  status: SelectItem[] = [];
 
   
-  constructor(private SubjectsService: SubjectsService,private fb: FormBuilder, private router: Router, private route: ActivatedRoute,private location: Location) { }
+  constructor(private SubjectsService: SubjectsService,private fb: FormBuilder, private router: Router, private route: ActivatedRoute,private location: Location) {
+    this.status = [
+      { label: 'Active', value: 'AC' },
+      { label: 'InActive', value: 'NA' }
+    ];
+   }
 
   ngOnInit(): void {// On page load
     //to read url parameters
@@ -66,7 +73,9 @@ export class AddSubjectsComponent implements OnInit {
   createForm() {
     this.addSubjectForm = this.fb.group({
       'code': new FormControl('', { validators: [Validators.required] }),
-      'name': new FormControl('', { validators: [Validators.required] })
+      'name': new FormControl('', { validators: [Validators.required] }),
+      'status': new FormControl('', { validators: [Validators.required] })
+
     });
   }
 

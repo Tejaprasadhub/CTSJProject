@@ -32,9 +32,35 @@ export class StudentsService {
     var loginUrl: string = AppConstants.Api.AdminApp + "Students/AEDStudents"
 
     return this.httpClient.post
-        (loginUrl, pagingData, { headers: headers, withCredentials: true }).pipe(
-            map((response: any) => {
-                return response;
-            }));
-}
+      (loginUrl, pagingData, { headers: headers, withCredentials: true }).pipe(
+        map((response: any) => {
+          return response;
+        }));
+  }
+
+  public GetStudentProfile(pagingData) {
+    // this.branchesJsonData.next(this.branches);
+    const headers = new HttpHeaders().set("Content-Type", "application/json");
+
+    var loginUrl: string = AppConstants.Api.AdminApp + "Students/GetStudentProfile"
+
+    return this.httpClient.post
+      (loginUrl, pagingData, { headers: headers, withCredentials: true }).pipe(
+        map((response: any) => {
+          return response;
+        }));
+  }
+
+  public GetExamWiseSubjectMarks(pagingData) {
+    // this.branchesJsonData.next(this.branches);
+    const headers = new HttpHeaders().set("Content-Type", "application/json");
+
+    var loginUrl: string = AppConstants.Api.AdminApp + "Students/GetExamWiseSubjectMarks"
+
+    return this.httpClient.post
+      (loginUrl, pagingData, { headers: headers, withCredentials: true }).pipe(
+        map((response: any) => {
+          return response;
+        }));
+  }
 }

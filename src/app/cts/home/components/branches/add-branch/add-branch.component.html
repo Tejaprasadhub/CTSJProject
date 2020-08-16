@@ -44,6 +44,15 @@
                                 Enter "Branch Title"
                             </span>
                         </div>
+                        <div class="col-md-3 error-div" *ngIf="((!addBranchForm.controls['status'].valid && 
+                            addBranchForm.controls['status'].touched)|| 
+                            (!addBranchForm.controls['status'].valid && addBranchForm.controls['status'].untouched && 
+                            formSubmitAttempt))">
+                            <i class="fa fa-circle"></i>
+                            <span *ngIf="(addBranchForm.controls['status'].errors?.required)">
+                                Enter "Status"
+                            </span>
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -65,6 +74,15 @@
                 type="text" placeholder="Branch Title" size="30" pInputText [ngClass]="{'error':((!addBranchForm.controls['title'].valid && addBranchForm.controls['title'].touched) || 
                 (!addBranchForm.controls['title'].valid && addBranchForm.controls['title'].untouched && 
                 formSubmitAttempt)),'required':(isRequired == true )}">
+            </div>
+            <div class="col-md-4">
+                <span>Status</span><br>
+                <p-dropdown [options]="status" filter="true" formControlName="status" [disabled]="isDisabled"
+                    placeholder="Select Status" [ngClass]="{'error':((!addBranchForm.controls['status'].valid &&
+                    addBranchForm.controls['status'].touched) || 
+                (!addBranchForm.controls['status'].valid && addBranchForm.controls['status'].untouched && formSubmitAttempt)),
+                'required':(isRequired == true )}">
+                </p-dropdown>
             </div>
             <div class="col-md-4"></div>
             <br>

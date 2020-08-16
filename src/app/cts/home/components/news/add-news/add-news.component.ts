@@ -30,6 +30,7 @@ export class AddNewsComponent implements OnInit {
   display: boolean = false;
   editData: any;
   branchids: SelectItem[] = [];
+  status: SelectItem[] = [];
   querytype:number;
 
 
@@ -38,6 +39,10 @@ export class AddNewsComponent implements OnInit {
     this.branchids = [
       { label: 'skota', value: '1' },
       { label: 'boddam', value: '2' }
+    ];
+    this.status = [
+      { label: 'Active', value: 'AC' },
+      { label: 'InActive', value: 'NA' }
     ];
   }
 
@@ -75,7 +80,9 @@ export class AddNewsComponent implements OnInit {
       'title': new FormControl('', { validators: [Validators.required] }),
       'branchid': new FormControl('', { validators: [Validators.required] }),
       'date': new FormControl('', { validators: [Validators.required] }),
-      'description': new FormControl('', { validators: [Validators.required] })
+      'description': new FormControl('', { validators: [Validators.required] }),
+      'status': new FormControl('', { validators: [Validators.required] })
+
     });
   }
 

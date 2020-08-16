@@ -30,12 +30,16 @@ export class AddBranchComponent implements OnInit {
   isRequired: boolean = false;
   display: boolean = false;
   editData: any;
-  sections: SelectItem[] = [];
+  status: SelectItem[] = [];
 
 
   querytype:number;
 
   constructor(private BranchesService: BranchesService, private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private location: Location) {
+    this.status = [
+      { label: 'Active', value: 'AC' },
+      { label: 'InActive', value: 'NA' }
+    ];
   }
 
   ngOnInit(): void {
@@ -68,7 +72,9 @@ export class AddBranchComponent implements OnInit {
   createForm() {
     this.addBranchForm = this.fb.group({
       'code': new FormControl('', { validators: [Validators.required] }),
-      'title': new FormControl('', { validators: [Validators.required] })
+      'title': new FormControl('', { validators: [Validators.required] }),
+      'status': new FormControl('', { validators: [Validators.required] })
+
     });
   }
 

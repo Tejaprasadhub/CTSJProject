@@ -44,7 +44,8 @@ export class BranchesComponent implements OnInit {
       { field: 'title', header: 'title' },
       { field: 'code', header: 'code' },
       { field: 'createddate', header: 'Created Date' },
-      { field: 'createdby', header: 'Created By' }
+      { field: 'createdby', header: 'Created By' },
+      { field: 'status', header: 'Status' }
     ];
      //to create form with validations
      this.createFilterForm();

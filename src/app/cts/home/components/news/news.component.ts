@@ -49,7 +49,8 @@ export class NewsComponent implements OnInit {
       { field: 'description', header: 'Description' },
       { field: 'branch', header: 'Branch' },
       { field: 'createddate', header: 'Created Date' },
-      { field: 'createdby', header: 'Created By' }
+      { field: 'createdby', header: 'Created By' },
+      { field: 'status', header: 'Status' }
     ];
     this.loading = true;
     //to create form with validations

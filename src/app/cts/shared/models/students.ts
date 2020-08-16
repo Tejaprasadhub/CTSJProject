@@ -48,3 +48,9 @@ export class Students {
      indexId:number;
      querytype:number;
 }
+
+export class SubjectWiseMarks{
+     id:string;
+     classid:number;
+     examid:number;
+}

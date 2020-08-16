@@ -46,7 +46,8 @@ export class QualificationsComponent implements OnInit {
       { field: 'code', header: 'Code' },
       { field: 'title', header: 'Title' },
       { field: 'createddate', header: 'Created Date' },
-      { field: 'createdby', header: 'Created By' }
+      { field: 'createdby', header: 'Created By' },
+      { field: 'status', header: 'Status' }
     ];
     this.loading = true;
     //to create form with validations
@@ -75,7 +76,7 @@ export class QualificationsComponent implements OnInit {
 
     if(this.totalcount != 0){
       this.noOfItems =(currentrows < this.totalcount ? currentrows : this.totalcount);
-    }
+    }  
 
     this.loadGrids(JSON.stringify(pageObject));
 

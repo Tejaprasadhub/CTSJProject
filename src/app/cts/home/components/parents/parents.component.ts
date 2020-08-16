@@ -46,7 +46,8 @@ export class ParentsComponent implements OnInit {
       { field: 'gender', header: 'Gender' },
       { field: 'email', header: 'Email' },
       { field: 'createddate', header: 'Created Date' },
-      { field: 'createdby', header: 'Created By' }
+      { field: 'createdby', header: 'Created By' },
+      { field: 'status', header: 'Status' }
     ];
     this.loading = true;
     //to create form with validations
@@ -131,8 +132,11 @@ loadGrids(pagingData){
    //Create form method to constuct a form with validations
    createFilterForm() {
     this.filtersForm = this.fb.group({
-      'tclass': new FormControl(''),
-      'tsection': new FormControl('')
+      'tfname': new FormControl(''),
+      'tlname': new FormControl(''),
+      'tmobile': new FormControl(''),
+      'tgender': new FormControl(''),
+      'temail': new FormControl('')
     });
   }
 

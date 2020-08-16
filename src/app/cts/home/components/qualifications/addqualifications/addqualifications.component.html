@@ -33,16 +33,26 @@
                                 (!addQualificationForm.controls['code'].valid && addQualificationForm.controls['code'].untouched && 
                                 formSubmitAttempt))">
                                 <i class="fa fa-circle"></i>
-                                <span *ngIf="(addQualificationForm.controls['code'].errors?.required)">Enter "Code"</span>
-            
+                                <span *ngIf="(addQualificationForm.controls['code'].errors?.required)">Enter
+                                    "Code"</span>
+
                             </div>
                             <div class="col-md-3 error-div" *ngIf="((!addQualificationForm.controls['title'].valid && addQualificationForm.controls['title'].touched)|| 
                             (!addQualificationForm.controls['title'].valid && addQualificationForm.controls['title'].untouched && 
                             formSubmitAttempt))">
-                            <i class="fa fa-circle"></i>
-                            <span *ngIf="(addQualificationForm.controls['title'].errors?.required)">Enter "Title"</span>
-        
-                        </div>
+                                <i class="fa fa-circle"></i>
+                                <span *ngIf="(addQualificationForm.controls['title'].errors?.required)">Enter
+                                    "Title"</span>
+
+                            </div>
+                            <div class="col-md-3 error-div" *ngIf="((!addQualificationForm.controls['status'].valid && addQualificationForm.controls['status'].touched)|| 
+                            (!addQualificationForm.controls['status'].valid && addQualificationForm.controls['status'].untouched && 
+                            formSubmitAttempt))">
+                                <i class="fa fa-circle"></i>
+                                <span *ngIf="(addQualificationForm.controls['status'].errors?.required)">Enter
+                                    "Status"</span>
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -53,8 +63,8 @@
                 <span>
                     Code
                 </span><br>
-                <input id="input" maxlength="45" class="w-100" [attr.disabled]="isDisabled ? 'disabled': null" formControlName="code"
-                    type="text" placeholder="Code" size="30" pInputText [ngClass]="{'error':((!addQualificationForm.controls['code'].valid && addQualificationForm.controls['code'].touched) || 
+                <input id="input" maxlength="45" class="w-100" [attr.disabled]="isDisabled ? 'disabled': null"
+                    formControlName="code" type="text" placeholder="Code" size="30" pInputText [ngClass]="{'error':((!addQualificationForm.controls['code'].valid && addQualificationForm.controls['code'].touched) || 
                     (!addQualificationForm.controls['code'].valid && addQualificationForm.controls['code'].untouched && 
                     formSubmitAttempt)),'required':(isRequired == true )}">
             </div>
@@ -62,10 +72,19 @@
                 <span>
                     Title
                 </span><br>
-                <input id="input" maxlength="45" class="w-100" [attr.disabled]="isDisabled ? 'disabled': null" formControlName="title"
-                    type="text" placeholder="Title" size="30" pInputText [ngClass]="{'error':((!addQualificationForm.controls['title'].valid && addQualificationForm.controls['title'].touched) || 
+                <input id="input" maxlength="45" class="w-100" [attr.disabled]="isDisabled ? 'disabled': null"
+                    formControlName="title" type="text" placeholder="Title" size="30" pInputText [ngClass]="{'error':((!addQualificationForm.controls['title'].valid && addQualificationForm.controls['title'].touched) || 
                     (!addQualificationForm.controls['title'].valid && addQualificationForm.controls['title'].untouched && 
                     formSubmitAttempt)),'required':(isRequired == true )}">
+            </div>
+            <div class="col-md-4">
+                <span>Status</span><br>
+                <p-dropdown [options]="status" filter="true" formControlName="status" [disabled]="isDisabled"
+                    placeholder="Select Status" [ngClass]="{'error':((!addQualificationForm.controls['status'].valid &&
+                    addQualificationForm.controls['status'].touched) || 
+                (!addQualificationForm.controls['status'].valid && addQualificationForm.controls['status'].untouched && formSubmitAttempt)),
+                'required':(isRequired == true )}">
+                </p-dropdown>
             </div>
             <div class="col-md-4"></div>
             <br>

@@ -158,11 +158,9 @@ loadGrids(pagingData){
   });
 }
 //API Integration ends here
-
   rowExpand(event, data) {
     this.router.navigate(['student',{ outlets: { detail: ['student-profile'] } }], {relativeTo: this.route});
   }
-
   //Crud events
   addNew($event: any) {
     let id="0";

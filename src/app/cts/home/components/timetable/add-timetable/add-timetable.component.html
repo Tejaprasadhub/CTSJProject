@@ -59,6 +59,12 @@
                                 <i class="fa fa-circle"></i>
                                 <span *ngIf="(addTimetableForm.controls['periodto'].errors?.required)">Enter "Period To"</span>
                             </div>
+                            <div class="col-md-3 error-div" *ngIf="((!addTimetableForm.controls['status'].valid && addTimetableForm.controls['status'].touched)|| 
+                            (!addTimetableForm.controls['status'].valid && addTimetableForm.controls['status'].untouched && 
+                            formSubmitAttempt))">
+                            <i class="fa fa-circle"></i>
+                            <span *ngIf="(addTimetableForm.controls['status'].errors?.required)">Enter "Status"</span>
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -97,6 +103,15 @@
                 <span>Period To</span><br>
                 <p-calendar  [showTime]="true" class="w-100" formControlName="periodto" [disabled]="isDisabled"
                 placeholder="Select Time" [ngClass]="{'error':((!addTimetableForm.controls['periodto'].valid && addTimetableForm.controls['periodto'].touched) || (!addTimetableForm.controls['periodto'].valid && addTimetableForm.controls['periodto'].untouched && formSubmitAttempt)),'required':(isRequired == true )}"></p-calendar>
+            </div>
+            <div class="col-md-4">
+                <span>Status</span><br>
+                <p-dropdown [options]="status" filter="true" formControlName="status" [disabled]="isDisabled"
+                    placeholder="Select Status" [ngClass]="{'error':((!addTimetableForm.controls['status'].valid &&
+                    addTimetableForm.controls['status'].touched) || 
+                (!addTimetableForm.controls['status'].valid && addTimetableForm.controls['status'].untouched && formSubmitAttempt)),
+                'required':(isRequired == true )}">
+                </p-dropdown>
             </div>
             <div class="col-md-4"></div>
             <br>

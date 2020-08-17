@@ -103,7 +103,8 @@ export class AddNewsComponent implements OnInit {
             'title': this.editData.title,
             'date': new Date(this.editData.date),
             'description': this.editData.description,
-            'branchid': this.editData.branch
+            'branchid': this.editData.branch,
+            'status': this.editData.status
           })
         }
       }); 

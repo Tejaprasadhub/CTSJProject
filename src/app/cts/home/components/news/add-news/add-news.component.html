@@ -96,6 +96,15 @@
                     [ngClass]="{'error':((!addNewsForm.controls['date'].valid && addNewsForm.controls['date'].touched) || (!addNewsForm.controls['date'].valid && addNewsForm.controls['date'].untouched && formSubmitAttempt)),'required':(isRequired == true )}">
                 </p-calendar>
             </div>
+            <div class="col-md-4">
+                <span>Status</span><br>
+                <p-dropdown [options]="status" filter="true" formControlName="status" [disabled]="isDisabled"
+                    placeholder="Select Status" [ngClass]="{'error':((!addNewsForm.controls['status'].valid &&
+                    addNewsForm.controls['status'].touched) || 
+                (!addNewsForm.controls['status'].valid && addNewsForm.controls['status'].untouched && formSubmitAttempt)),
+                'required':(isRequired == true )}">
+                </p-dropdown>
+            </div>
             <div class="col-md-12">
 
                 <span>
@@ -106,16 +115,7 @@
             addNewsForm.controls['description'].touched) || 
             (!addNewsForm.controls['description'].valid && addNewsForm.controls['description'].untouched && formSubmitAttempt)),
             'required':(isRequired == true )}"></textarea>
-            </div>
-            <div class="col-md-4">
-                <span>Status</span><br>
-                <p-dropdown [options]="status" filter="true" formControlName="status" [disabled]="isDisabled"
-                    placeholder="Select Status" [ngClass]="{'error':((!addNewsForm.controls['status'].valid &&
-                    addNewsForm.controls['status'].touched) || 
-                (!addNewsForm.controls['status'].valid && addNewsForm.controls['status'].untouched && formSubmitAttempt)),
-                'required':(isRequired == true )}">
-                </p-dropdown>
-            </div>
+            </div>           
             <br>
             <br>
             <br>

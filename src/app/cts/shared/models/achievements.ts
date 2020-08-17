@@ -7,5 +7,6 @@ export class Achievements {
          createdby: string;
          indexId:number;
          querytype:number;
+         status:string;
     
 }

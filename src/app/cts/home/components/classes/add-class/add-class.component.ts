@@ -103,7 +103,9 @@ export class AddClassComponent implements OnInit {
           this.editData = result.data[0];
           this.addClassForm.setValue({
             'class': this.editData.name,
-            'section': this.editData.noofsections
+            'section': this.editData.noofsections,
+            'status': this.editData.status
+
           })
         }
       });

@@ -9,6 +9,7 @@ import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
 import { AchievementsService } from 'src/app/cts/shared/services/achievements.service';
 import { AppConstants } from 'src/app/cts/app-constants';
 import { Achievements } from 'src/app/cts/shared/models/achievements';
+import { DropdownService } from 'src/app/cts/shared/services/dropdown.service';
 
 @Component({
   selector: 'app-add-achievement',
@@ -28,17 +29,20 @@ export class AddAchievementComponent implements OnInit {
   isRequired: boolean = false;
   display: boolean = false;
   editData: any;
-  id:any;
+  branches:any;
   status:any;
   querytype:number;
 
 
-  constructor(private AchievementsService: AchievementsService, private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private location: Location) {
-    this.id = [
-      { label: 'branch1', value: '1' },
-      { label: 'branch2', value: '2' },
-      { label: 'branch3', value: '3' },
-    ];
+  constructor(private dropdownService: DropdownService,private AchievementsService: AchievementsService, private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private location: Location) {
+      //Get Dropdowns API call
+      var dropdowns = ["branches"];
+      this.dropdownService.getDropdowns(dropdowns)
+      .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+        if (result.success) {
+         this.branches = result.data.branches;     
+        }
+      });  
     this.status = [
       { label: 'Active', value: 'AC' },
       { label: 'InActive', value: 'NA' }
@@ -103,7 +107,8 @@ export class AddAchievementComponent implements OnInit {
           this.addAchievementForm.setValue({
             'title': this.editData.title,
             'date': new Date(this.editData.date),
-            'branchid': this.editData.branch
+            'branchid': this.editData.branch,
+            'status':this.editData.status
 
           })
         }
@@ -122,16 +127,7 @@ export class AddAchievementComponent implements OnInit {
     this.pageTitle = "Edit Achievement";
   }
 
-  addAchievementSubmit(): void {
-    // this.errorMessage = "";
-    // this.successMessage = "";
-    // this.formSubmitAttempt = true;
-    // if (this.addAchievementForm.valid) {
-    //   this.formSubmitAttempt = false;
-    //   console.log(this.addAchievementForm.value);
-    //   this.addAchievementForm.reset();
-    //   this.successMessage = "Your changes have been successfully saved";
-    // }
+  addAchievementSubmit(): void {   
     
     this.errorMessage = "";
     this.successMessage = "";

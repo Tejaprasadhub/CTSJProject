@@ -113,7 +113,10 @@ export class AddParentComponent implements OnInit {
             'lname': this.editData.lname,
             'mobile': this.editData.mobile,
             'gender': this.editData.gender,
-            'email': this.editData.email
+            'email': this.editData.email,
+            'status': this.editData.status,
+
+
             
           })
         }

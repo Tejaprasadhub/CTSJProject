@@ -8,5 +8,6 @@ export class News {
          createdby: string;
          indexId:number;
          querytype:number;
+         status:string;
     
 }

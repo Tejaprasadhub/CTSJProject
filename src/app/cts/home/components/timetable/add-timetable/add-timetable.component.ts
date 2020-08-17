@@ -119,7 +119,9 @@ export class AddTimetableComponent implements OnInit {
             'subjectid': this.editData.subject,
             'teacherid': this.editData.teacher,
             'periodfrom': new Date(this.editData.periodfrom),
-            'periodto': new Date(this.editData.periodto)
+            'periodto': new Date(this.editData.periodto),
+            'status': this.editData.status
+
            
           })
         }

@@ -111,16 +111,7 @@ export class AddExamComponent implements OnInit {
   }
 
   addExamSubmit(): void {
-    // this.errorMessage = "";
-    // this.successMessage = "";
-    // this.formSubmitAttempt = true;
-    // if (this.addExamForm.valid) {
-    //   this.formSubmitAttempt = false;
-    //   console.log(this.addExamForm.value);
-    //   this.addExamForm.reset();
-    //   this.successMessage = "Your changes have been successfully saved";
-    // }
-    
+   
     this.errorMessage = "";
     this.successMessage = "";
     this.formSubmitAttempt = true;

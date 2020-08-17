@@ -7,5 +7,6 @@ export class Qualifications {
          createdby: string;
          indexId:number;
          querytype:number;
+         status:string;
    
 }

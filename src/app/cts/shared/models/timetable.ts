@@ -10,5 +10,6 @@ export class Timetable {
          createdby: string;
          indexId:number;
         querytype:number;
+        status:string;
     
 }

@@ -70,8 +70,11 @@
                         <div class="" *ngIf="col.field == 'createddate'">
                             <a class="bold" (click)="viewAchievement(rowData.id)">{{getFormat(rowData.createddate)}}</a>
                         </div>
-                        <div class="" *ngIf="col.field != 'createddate'">
+                        <div class="" *ngIf="col.field != 'createddate' && col.field != 'date'">
                             <a class="bold" (click)="viewAchievement(rowData.id)">{{rowData[col.field]}}</a>
+                        </div>
+                        <div class="" *ngIf="col.field == 'date'">
+                            <a class="bold" (click)="viewAchievement(rowData.id)">{{getFormat(rowData.date)}}</a>
                         </div>
                     </td>
                     <td >

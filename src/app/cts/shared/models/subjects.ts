@@ -7,5 +7,6 @@ export class Subjects {
          createdby: string;
          indexId:number;
          querytype:number;
+         status:string;
     
 }

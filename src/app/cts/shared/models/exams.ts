@@ -7,5 +7,6 @@ export class Exams {
          createdby: string;
          indexId:number;
         querytype:number;
+        status:string;
     
 }

@@ -143,5 +143,5 @@ export class BranchesComponent implements OnInit {
   getFormat(createddate):string{
    return moment(createddate).format(Paginationutil.getDefaultFormat())
   }
-
+ 
 }

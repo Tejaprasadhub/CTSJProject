@@ -94,7 +94,10 @@ export class AddQualificationComponent implements OnInit {
           this.editData = result.data[0];
           this.addQualificationForm.setValue({
             'code': this.editData.code,
-            'title': this.editData.title
+            'title': this.editData.title,
+            'status': this.editData.status,
+
+
           })
         }
       });

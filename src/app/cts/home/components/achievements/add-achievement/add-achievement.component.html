@@ -80,7 +80,7 @@
         </div>
         <div class="col-md-4">
             <span>Branch Id</span><br>
-                    <p-dropdown [options]="id" filter="true" formControlName="branchid"
+                    <p-dropdown [options]="branches" filter="true" formControlName="branchid"
                     placeholder="Select BranchId" class="required" [disabled]="isDisabled"
                     [ngClass]="{'error':((!addAchievementForm.controls['branchid'].valid && addAchievementForm.controls['branchid'].touched) || (!addAchievementForm.controls['branchid'].valid && addAchievementForm.controls['branchid'].untouched && formSubmitAttempt)),'required':(isRequired == true )}">
                 </p-dropdown>
@@ -94,6 +94,8 @@
             'required':(isRequired == true )}">
             </p-dropdown>
         </div>
+        <div class="col-md-4"></div>
+        <div class="col-md-4"></div>
         <br>
         <br>
         <br>

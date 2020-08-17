@@ -94,7 +94,9 @@ export class AddBranchComponent implements OnInit {
           this.editData = result.data[0];
           this.addBranchForm.setValue({
             'code': this.editData.code,
-            'title': this.editData.title
+            'title': this.editData.title,
+            'status': this.editData.status
+
           })
         }
       });

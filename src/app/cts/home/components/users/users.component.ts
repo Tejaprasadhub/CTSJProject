@@ -84,6 +84,7 @@ viewUser(id):void{
   }
   userRevoke():void{
     this.display=false;
+    
   }
 
   public ngOnInit() {   

@@ -94,7 +94,9 @@ export class AddSubjectsComponent implements OnInit {
           this.editData = result.data[0];
           this.addSubjectForm.setValue({
             'code': this.editData.code,
-            'name': this.editData.name
+            'name': this.editData.name,
+            'status': this.editData.status
+
           })
         }
       });

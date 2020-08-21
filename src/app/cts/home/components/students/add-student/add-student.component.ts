@@ -38,6 +38,8 @@ export class AddStudentComponent implements OnInit {
   countries: SelectItem[] = [];
   states: SelectItem[] = [];
   cities: SelectItem[] = [];
+  status: SelectItem[] = [];
+
   maxDate= new Date();
 
   querytype:number;
@@ -49,7 +51,10 @@ export class AddStudentComponent implements OnInit {
       { label: 'Female', value: 'F' }
     ];
     
-
+    this.status = [
+      { label: 'Active', value: 'AC' }, 
+      { label: 'Not Active', value: 'NA' }
+    ];
      //Get Dropdowns API call
      var dropdowns = ["branches","sections","classes","countries","states","cities","parents"];
      this.dropdownService.getDropdowns(dropdowns)
@@ -131,6 +136,7 @@ export class AddStudentComponent implements OnInit {
       'e2lname': new FormControl(''),
       'e2mobile': new FormControl('', { validators: [Validators.pattern('[0-9]\\d{9}')] }),
       'e2email': new FormControl('',{ validators: [Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")] }),
+      'status': new FormControl('',{ validators: [Validators.required] }),
     });
   }
 
@@ -182,8 +188,7 @@ export class AddStudentComponent implements OnInit {
             'statep': this.editData.ctcstudent_state_p,
             'villagep': this.editData.ctcstudent_village_p,
             'cityp': this.editData.ctcstudent_city_p,
-            'pincodep': this.editData.ctcstudent_pincode_p,
-           
+            'pincodep': this.editData.ctcstudent_pincode_p,           
             'e1fname': this.editData.ctce1fname,
             'e1lname': this.editData.ctce1lname,
             'e1email': this.editData.ctce1email,
@@ -191,7 +196,9 @@ export class AddStudentComponent implements OnInit {
             'e2fname': this.editData.ctce2fname,
             'e2lname': this.editData.ctce2lname,
             'e2email': this.editData.ctce2email,
-            'e2mobile':this.editData.ctce2mobile
+            'e2mobile':this.editData.ctce2mobile,
+            'status':this.editData.status
+
           })
         }
       });   

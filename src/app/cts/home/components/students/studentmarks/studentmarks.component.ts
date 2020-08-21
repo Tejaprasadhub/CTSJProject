@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
+import { StudentsService } from 'src/app/cts/shared/services/students.service';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-studentmarks',
@@ -7,8 +10,9 @@ import { FormGroup, Validators, FormControl } from '@angular/forms';
   styleUrls: ['./studentmarks.component.scss']
 })
 export class StudentmarksComponent implements OnInit {
-  years: any;
-  exams:any;
+  private ngUnsubscribe = new Subject();
+  classes: any;
+  exams: any;
   radioButtonValue: string;
   disabled: boolean = true;
   formSubmitAttempt: boolean = false;
@@ -16,142 +20,38 @@ export class StudentmarksComponent implements OnInit {
   isRequired: boolean = true;
   errorMessage: string = "";
   successMessage: string = "";
+  classDropDownValue: any;
+  examDropDownValue: any;
+  studentID: any;
+  classID:any = 0;
   formObj: any;
+  validateForm:boolean = false;
   name = 'Angular';
-  fields = [
-    {
-      type: "input",
-      label: "Telugu",
-      inputType: "text",
-      name: "name",
-      securedMarks:10,
-      total:50,
-      validations: [
-        {
-          name: "required",
-          validator: "required",
-          message: "Name Required"
-        }
-      ]
-    }, 
-    {
-      type: "input",
-      label: "English",
-      inputType: "text",
-      name: "name",
-      securedMarks:25,
-      total:50,
-      validations: [
-        {
-          name: "required",
-          validator: "required",
-          message: "name Required"
-        }
-      ]
-    },
-    {
-      type: "input",
-      label: "English",
-      inputType: "text",
-      name: "name",
-      securedMarks:25,
-      total:50,
-      validations: [
-        {
-          name: "required",
-          validator: "required",
-          message: "name Required"
-        }
-      ]
-    },
-    {
-      type: "input",
-      label: "English",
-      inputType: "text",
-      name: "name",
-      securedMarks:25,
-      total:50,
-      validations: [
-        {
-          name: "required",
-          validator: "required",
-          message: "name Required"
-        }
-      ]
-    },
-    {
-      type: "input",
-      label: "English",
-      inputType: "text",
-      name: "name",
-      securedMarks:25,
-      total:50,
-      validations: [
-        {
-          name: "required",
-          validator: "required",
-          message: "name Required"
-        }
-      ]
-    },
-    {
-      type: "input",
-      label: "English",
-      inputType: "text",
-      name: "name",
-      securedMarks:25,
-      total:50,
-      validations: [
-        {
-          name: "required",
-          validator: "required",
-          message: "name Required"
-        }
-      ]
-    }
-  ];
+  fields: any[];
+
   dynamicForm: FormGroup;
-  constructor() {
-    this.years = [
-      { label: '1st Class', value: '1' },
-      { label: '2nd Class', value: '2' },
-      { label: '3rd Class', value: '3' }
-    ];
+  constructor(private studentsService: StudentsService) {
 
-    this.exams=[
-      {label:"Exam1", value:"1"},
-      {label:"Exam2", value:"2"},
-      {label:"Exam3", value:"3"}
-    ]
+    this.studentID = "VSKP00001";
 
-    const controls = {};
-    this.fields.forEach(res => {
-      const validationsArray = [];
-      res.validations.forEach(val => {
-        if (val.name === 'required') {
-          validationsArray.push(
-            Validators.required
-          );
-        }
-        if (val.name === 'pattern') {
-          validationsArray.push(
-            Validators.pattern(val.validator)
-          );
+
+    //Get Dropdowns API call
+    let jsonData = JSON.stringify({
+      dropdownfor :"classes",
+      id: this.studentID,
+      classid:this.classID
+    })
+    this.studentsService.getDropdowns(jsonData)
+      .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+        if (result.success) {
+          this.classes = result.data.classes;
         }
       });
-      controls[res.label] = new FormControl('', validationsArray);
-    });
-    this.dynamicForm = new FormGroup(
-      controls
-    );
+
+
   }
   ngOnInit(): void {
     this.radioButtonValue = 'P';
-    var object = {};
-    this.fields.forEach(function (value) {
-      object[value.label] = value.securedMarks;
-  });
-  this.dynamicForm.setValue(object)
   }
 
   editControls(): void {
@@ -176,9 +76,67 @@ export class StudentmarksComponent implements OnInit {
     const pattern = /[0-9]/;
     let inputChar = String.fromCharCode(event.charCode);
     if (!pattern.test(inputChar)) {
-        event.preventDefault();
+      event.preventDefault();
     }
-}
+  }
+  classesdropdownChange(event): void {
+    this.classDropDownValue = event.value;
+     //Get Dropdowns API call
+     let jsonData = JSON.stringify({
+      dropdownfor :"exams",
+      id: this.studentID,
+      classid:this.classDropDownValue 
+    })
+    this.studentsService.getDropdowns(jsonData)
+      .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+        if (result.success) {
+          this.exams = result.data.exams;
+        }
+      });
+    this.GetStudentClassWiseExamMarks(this.classDropDownValue, this.examDropDownValue);
+  }
+  examsdropdownChange(event): void {
+    this.examDropDownValue = event.value;
+    this.GetStudentClassWiseExamMarks(this.classDropDownValue, this.examDropDownValue);
+  }
+  GetStudentClassWiseExamMarks(classvalue, examvalue) {
+    this.validateForm = false;
+    if (classvalue > 0 && examvalue > 0) {
+      let jsonData = JSON.stringify({
+        classid: classvalue,
+        examid: examvalue,
+        id: this.studentID
+      })
+      this.studentsService.GetStudentClassWiseExamMarks(jsonData)
+        .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+          if (result.success) {
+            
+            if(result.data.length > 0){
+              this.validateForm= true;
+            this.fields = result.data;
+            const controls = {};
+            this.fields.forEach(res => {
+              const validationsArray = [];
+              validationsArray.push(
+                Validators.required
+              );
+
+              controls[res.label] = new FormControl('', validationsArray);
+            });
+            this.dynamicForm = new FormGroup(
+              controls
+            );
+            var object = {};
+            this.fields.forEach(function (value) {
+              object[value.label] = value.securedMarks;
+            });
+            this.dynamicForm.setValue(object)
+          }
+
+          }
+        });
+    }
+  }
 
 
 }

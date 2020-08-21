@@ -8,6 +8,7 @@ import { AchievementsService } from 'src/app/cts/shared/services/achievements.se
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
 import * as moment from 'moment';
+import { AppConstants } from 'src/app/cts/app-constants';
 
 @Component({
   selector: 'app-achievements',
@@ -28,6 +29,7 @@ export class AchievementsComponent implements OnInit {
   position: string;
 //to create Teacher From 
 filtersForm: FormGroup;
+toBeDeletedId:any;
 
  //pagination and api integration starts from here
  numberOfPages:number =10;
@@ -124,11 +126,22 @@ loadGrids(pagingData){
   deleteAchievement(id):void{
     this.position="top";
     this.display=true;
-    this.successMessage="";
+    this.toBeDeletedId = id;
   }
   achievementRevoke():void{
     this.display=false;
-    this.successMessage="Achievement deleted successfully"
+    let customObj = new Achievements();
+    customObj.id = this.toBeDeletedId;
+    customObj.querytype = 3;
+     //AED Branches API call
+     this.AchievementsService.AEDAchievements(customObj)
+     .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+       if (result.success) {       
+         this.successMessage = AppConstants.Messages.successMessage;
+       }else{
+         this.errorMessage = AppConstants.Messages.errorMessage;
+       }
+     }); 
   }
 //Filters code starts from here
    //Create form method to constuct a form with validations

@@ -71,8 +71,17 @@
                             <a class="bold" (click)="viewAchievement(rowData.id)">{{getFormat(rowData.createddate)}}</a>
                         </div>
                         <div class="" *ngIf="col.field != 'createddate' && col.field != 'date'">
-                            <a class="bold" (click)="viewAchievement(rowData.id)">{{rowData[col.field]}}</a>
-                        </div>
+                            <div class="class" *ngIf="col.field != 'status'">
+                                <a class="bold" (click)="viewAchievement(rowData.id)">{{rowData[col.field]}}</a>
+                            </div>
+                            <div class="class" *ngIf="col.field == 'status'">
+                                <div class=""  *ngIf="rowData.status == 'AC'">
+                                    <button class="btn btn-success">Active</button>
+                                </div>
+                                <div class=""  *ngIf="rowData.status == 'NA'">
+                                    <button class="btn btn-danger">Not Active</button>
+                                </div>
+                            </div>                        </div>
                         <div class="" *ngIf="col.field == 'date'">
                             <a class="bold" (click)="viewAchievement(rowData.id)">{{getFormat(rowData.date)}}</a>
                         </div>

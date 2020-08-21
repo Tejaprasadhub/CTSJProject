@@ -9,6 +9,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
 import * as moment from 'moment';
+import { AppConstants } from 'src/app/cts/app-constants';
 
 @Component({
   selector: 'app-students',
@@ -39,6 +40,8 @@ export class StudentsComponent implements OnInit {
   colors: SelectItem[];
   gender: any[];
   classes: any[];
+  toBeDeletedId:any;
+
    //to create Teacher From 
    filtersForm: FormGroup;
    //pagination and api integration starts from here
@@ -78,7 +81,8 @@ export class StudentsComponent implements OnInit {
       { field: 'email', header: 'Email' },
       { field: 'classs', header: 'Class' },
       { field: 'branch', header: 'Branch ' },
-      { field: 'createdby', header: 'Createdby' }
+      { field: 'createdby', header: 'Createdby' },
+      { field: 'status', header: 'Status' }
     ];
     this.loading = true;
 
@@ -173,13 +177,24 @@ loadGrids(pagingData){
     this.router.navigate(['add-student'],{relativeTo: this.route,queryParams: { type: window.btoa('view'), id: window.btoa(id) }});
   }
   deleteStudent(id): void {
-    this.position = "top";
-    this.display = true;
-    this.successMessage = "";
+    this.position="top";
+    this.display=true;
+    this.toBeDeletedId = id;
   }
   studentRevoke(): void {
-    this.display = false;
-    this.successMessage = "Student deleted successfully"
+    this.display=false;
+    let customObj = new Students();
+    customObj.id = this.toBeDeletedId;
+    customObj.querytype = 3;
+     //AED Branches API call
+     this.StudentsService.AEDStudents(customObj)
+     .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+       if (result.success) {       
+         this.successMessage = AppConstants.Messages.successMessage;
+       }else{
+         this.errorMessage = AppConstants.Messages.errorMessage;
+       }
+     }); 
   }
  //Filters code starts from here
    //Create form method to constuct a form with validations

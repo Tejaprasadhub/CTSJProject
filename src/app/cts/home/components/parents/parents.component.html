@@ -59,6 +59,18 @@
             </div>
         </div>
     </form>
+    <div class="col-md-12 error-block animated fadeIn" *ngIf="errorMessage">
+        <div class="col-md-12">
+            <i class="fa fa-exclamation-circle"></i>
+            <b>{{errorMessage}}</b>
+        </div>
+    </div>
+    <div class="col-md-12 success-block animated fadeIn" *ngIf="successMessage">
+        <div class="col-md-12">
+            <i class="fa fa-check"></i>
+            <b>{{successMessage}}</b>
+        </div>
+    </div>
     <div class="col-md-12 search-box">
         <p-table #dt [columns]="cols" [value]="parents" [lazy]="true" dataKey="indexId" [paginator]="true"
             [responsive]="true" [rows]="numberOfPages" (onLazyLoad)="onPageChange($event)" [totalRecords]="totalcount"
@@ -82,8 +94,17 @@
                             <a class="bold" (click)="viewParent(rowData.id)">{{getFormat(rowData.createddate)}}</a>
                         </div>
                         <div class="" *ngIf="col.field != 'createddate'">
-                            <a class="bold" (click)="viewParent(rowData.id)">{{rowData[col.field]}}</a>
-                        </div>
+                            <div class="class" *ngIf="col.field != 'status'">
+                                <a class="bold" (click)="viewParent(rowData.id)">{{rowData[col.field]}}</a>
+                            </div>
+                            <div class="class" *ngIf="col.field == 'status'">
+                                <div class=""  *ngIf="rowData.status == 'AC'">
+                                    <button class="btn btn-success">Active</button>
+                                </div>
+                                <div class=""  *ngIf="rowData.status == 'NA'">
+                                    <button class="btn btn-danger">Not Active</button>
+                                </div>
+                            </div>                        </div>
                     </td>
                     <td>
                         <div class="d-flex">

@@ -47,6 +47,7 @@ export class Students {
 
      indexId:number;
      querytype:number;
+     status:string;
 }
 
 export class SubjectWiseMarks{

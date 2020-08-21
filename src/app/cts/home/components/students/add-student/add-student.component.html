@@ -111,6 +111,15 @@
                                     Enter "Section"
                                 </span>
                             </div>
+                            <div class="col-md-3 error-div" *ngIf="((!addStudentForm.controls['status'].valid && 
+                                addStudentForm.controls['status'].touched)|| 
+                                (!addStudentForm.controls['status'].valid && addStudentForm.controls['status'].untouched && 
+                                formSubmitAttempt))">
+                                <i class="fa fa-circle"></i>
+                                <span *ngIf="(addStudentForm.controls['status'].errors?.required)">
+                                    Enter "Status"
+                                </span>
+                            </div>
                             <div class="col-md-3 error-div" *ngIf="((!addStudentForm.controls['mblno'].valid && addStudentForm.controls['mblno'].touched)||
                                  (!addStudentForm.controls['mblno'].valid && addStudentForm.controls['mblno'].untouched &&
                                   formSubmitAttempt))">
@@ -292,6 +301,15 @@
                     'required':(isRequired == true )}">
                 </p-dropdown>
             </div>
+            <div class="col-md-4">
+                <span>Status</span><br>
+                <p-dropdown [options]="status" filter="true" formControlName="status" [disabled]="isDisabled"
+                    placeholder="Select Status" [ngClass]="{'error':((!addStudentForm.controls['status'].valid &&
+                    addStudentForm.controls['status'].touched) || 
+                (!addStudentForm.controls['status'].valid && addStudentForm.controls['status'].untouched && formSubmitAttempt)),
+                'required':(isRequired == true )}">
+                </p-dropdown>
+            </div>  
             <div class="col-md-12 header">
                 Address Details
             </div>
@@ -480,7 +498,7 @@
                     formControlName="e1email" type="text" placeholder="Enter Email" size="30" pInputText [ngClass]="{'error':((!addStudentForm.controls['e1email'].valid && 
                     addStudentForm.controls['e1email'].touched) || (!addStudentForm.controls['e1email'].valid && 
                     addStudentForm.controls['e1email'].untouched && formSubmitAttempt))}">
-            </div>
+            </div>             
 
             <div class="col-md-12 sub-details-div">
                 <div class="col-md-12">

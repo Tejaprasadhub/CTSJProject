@@ -1,13 +1,10 @@
 export class Addauditlog {
-    constructor(
-
-        public id:number,
-        public date:Date,
-        public fieldname:string,
-        public action:string,
-        public oldvalue:string,
-        public newvalue:string,
-        public user:string   
-        ){}
-    
+         id:number;
+         date:Date;
+         fieldname:string;
+         action:string;
+         oldvalue:string;
+         newvalue:string;
+         user:string;
+         indexId:number;    
 }

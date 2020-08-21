@@ -171,9 +171,9 @@
                     </tr>
                 </tbody>
               </table> -->
-          <p-table #dt [columns]="cols" [value]="academic" [lazy]="true" [paginator]="true" [responsive]="true"
-            [rows]="numberOfPages" [totalRecords]="totalcount" 
-            [reorderableColumns]="true" dataKey="firstname" (onRowExpand)="rowExpand($event,dt)">
+          <p-table #dt [columns]="cols" [value]="academic" [lazy]="true" rowExpandMode="single" [paginator]="true"
+            [responsive]="true" [rows]="numberOfPages" [totalRecords]="totalcount" [reorderableColumns]="true"
+            dataKey="classname" (onRowExpand)="rowExpand($event,dt)">
             <ng-template pTemplate="header" let-columns>
               <tr>
                 <th style="width:2.5em"></th>
@@ -203,48 +203,47 @@
               <tr class="expansion-div">
                 <td [attr.colspan]="columns.length + 1">
                   <div class="ui-fluid">
-                    <div class="col-md-12">
-                    <div *ngFor="let subject of examwisesubjects">                      
-                        <div class="col-md-6">
-                          <label>{{subject.subject}}:</label><br>
-                          <div class="row col-md-12 labelstyles">
-                            <div class="col-md-3">
-                              Total
-                            </div>
-                            <div class="col-md-3">
-                              Cutoff
-                            </div>
-                            <div class="col-md-3">
-                              Secured
-                            </div>
-                            <div class="col-md-3">
-                              Status
-                            </div>
+                    <div class="row">                    
+                     <div class="col-md-6" *ngFor="let subject of examwisesubjects">
+                      <fieldset class="fieldset">
+                        <legend class="legend">{{subject.subject}}:</legend>
+                        <div class="row col-md-12 labelstyles">
+                          <div class="col-md-3">
+                            Total
                           </div>
-                          <div class="row col-md-12 marksstyles">
-                            <div class="col-md-3">
-                              <b>{{subject.totalmarks}}</b>
+                          <div class="col-md-3">
+                            Cutoff
+                          </div>
+                          <div class="col-md-3">
+                            Secured
+                          </div>
+                          <div class="col-md-3">
+                            Status
+                          </div>
+                        </div>
+                        <div class="row col-md-12 marksstyles">
+                          <div class="col-md-3">
+                            <b>{{subject.totalmarks}}</b>
+                          </div>
+                          <div class="col-md-3">
+                            <b>{{subject.cutoffmarks}}</b>
+                          </div>
+                          <div class="col-md-3">
+                            <b>{{subject.obtainedmarks}}</b>
+                          </div>
+                          <div class="col-md-3">
+                            <div *ngIf="subject.status =='1'">
+                              <button class="btn btn-danger">Fail</button>
                             </div>
-                            <div class="col-md-3">
-                              <b>{{subject.cutoffmarks}}</b>
-                            </div>
-                            <div class="col-md-3">
-                              <b>{{subject.obtainedmarks}}</b>
-                            </div>
-                            <div class="col-md-3">
-                              <div *ngIf="subject.status =='1'">
-                                <button class="btn btn-danger">Fail</button>
-                                
-                              </div>
-                              <div *ngIf="subject.status =='0'">
-                                <button class="btn btn-success">Pass</button>
-                                
-                              </div>
+                            <div *ngIf="subject.status =='0'">
+                              <button class="btn btn-success">Pass</button>
+
                             </div>
                           </div>
                         </div>
-                      </div>
-                    </div>                   
+                      </fieldset>
+                     </div>     
+                    </div>
                   </div>
                 </td>
               </tr>
@@ -302,7 +301,7 @@
                 <th scope="row">Village</th>
                 <td>{{this.address.ctcstudent_village_c}}</td>
                 <th scope="row">City</th>
-                <td>{{this.address.ctcstudent_city_c}}</td>                
+                <td>{{this.address.ctcstudent_city_c}}</td>
               </tr>
               <tr>
                 <th scope="row">State</th>

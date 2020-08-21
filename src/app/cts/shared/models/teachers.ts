@@ -13,4 +13,5 @@ export class Teachers {
      branch:number;
      gender:string;
      indexId:number; 
+     status:string
 }

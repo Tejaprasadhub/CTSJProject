@@ -8,6 +8,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
 import * as moment from 'moment';
+import { AppConstants } from 'src/app/cts/app-constants';
 
 
 @Component({
@@ -28,6 +29,7 @@ export class SubjectsComponent implements OnInit {
   display:boolean=false;
   position: string;
   filtersForm: FormGroup;
+  toBeDeletedId:any;
 
   //pagination and api integration starts from here
   numberOfPages:number =10;
@@ -125,11 +127,22 @@ viewSubject(id):void{
   deleteSubject(id):void{
     this.position="top";
     this.display=true;
-    this.successMessage="";
+    this.toBeDeletedId = id;
   }
   subjectRevoke():void{
     this.display=false;
-    this.successMessage="Subject deleted successfully"
+    let customObj = new Subjects();
+    customObj.id = this.toBeDeletedId;
+    customObj.querytype = 3;
+     //AED Branches API call
+     this.SubjectsService.AEDSubjects(customObj)
+     .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+       if (result.success) {       
+         this.successMessage = AppConstants.Messages.successMessage;
+       }else{
+         this.errorMessage = AppConstants.Messages.errorMessage;
+       }
+     }); 
   }
 
   //Filters code starts from here

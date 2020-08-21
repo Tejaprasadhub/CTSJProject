@@ -10,6 +10,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
 import * as moment from 'moment';
+import { AppConstants } from 'src/app/cts/app-constants';
 
 
 @Component({
@@ -32,6 +33,9 @@ export class UsersComponent implements OnInit {
   loading: boolean;
   status:any;
   filtersForm: FormGroup;
+  toBeDeletedId:any;
+  errorMessage: string = "";
+  successMessage: string = "";
   //pagination and api integration starts from here
   numberOfPages:number =10;
   totalcount:number=0;
@@ -81,9 +85,22 @@ viewUser(id):void{
   deleteUser(id):void{
     this.position="top";
     this.display=true;
+    this.toBeDeletedId = id;
   }
   userRevoke():void{
     this.display=false;
+    let customObj = new Users();
+    customObj.id = this.toBeDeletedId;
+    customObj.querytype = 3;
+     //AED Branches API call
+     this.UsersService.AEDUsers(customObj)
+     .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+       if (result.success) {       
+         this.successMessage = AppConstants.Messages.successMessage;
+       }else{
+         this.errorMessage = AppConstants.Messages.errorMessage;
+       }
+     }); 
     
   }
 

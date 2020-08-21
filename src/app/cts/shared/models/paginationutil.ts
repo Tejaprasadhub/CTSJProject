@@ -10,7 +10,8 @@ export class Paginationutil {
             "group": "",
             "filter": "",
             "queryType":0,
-            "idValue":""
+            "idValue":"",
+            "tablecode":""
         })
     }
 
@@ -60,6 +61,7 @@ export class Paginationutil {
             "group": "",
             "queryType":1,
             "idValue":"",
+            "tablecode":"",
             "filter": (finalFilterString.trim() != "" ? `(${finalFilterString})` : "")
         };
     }

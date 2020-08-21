@@ -5,6 +5,10 @@ import { AddauditlogService } from 'src/app/cts/shared/services/addauditlog.serv
 import { LazyLoadEvent, SelectItem } from 'primeng/api/public_api';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import * as moment from 'moment';
+import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
+import { AuditlogsService } from 'src/app/cts/shared/services/auditlogs.service';
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-add-auditlog',
   templateUrl: './add-auditlog.component.html',
@@ -12,7 +16,7 @@ import { Subject } from 'rxjs';
 })
 export class AddAuditlogComponent implements OnInit {
   private ngUnsubscribe = new Subject();
-  addauditlog: Addauditlog[];
+  auditLogs: Addauditlog[];
   datasource: Addauditlog[];
   totalRecords: number;
   filtersForm: FormGroup;
@@ -20,9 +24,20 @@ export class AddAuditlogComponent implements OnInit {
   users: any[];
   cols: any[];
   loading: boolean;
+  tablecode:any;
   @ViewChild('myFiltersDiv') myFiltersDiv: ElementRef;
 
-  constructor(private fb: FormBuilder,private addauditlogService: AddauditlogService) {
+    //pagination and api integration starts from here
+    numberOfPages:number =10;
+    totalcount:number=0;
+    noOfItems=10;
+    advancedFilterValue:string ="";
+    currentPage:number = 1;
+    pageCount:number;
+    moment: any = moment;
+    AppConstants:any;
+
+  constructor(private auditLogService:AuditlogsService,private route: ActivatedRoute,private fb: FormBuilder,private addauditlogService: AddauditlogService) {
     this.actions = [
       { label: 'Insert', value: 'Insert' },
       { label: 'Delete', value: 'Delete' },
@@ -41,12 +56,12 @@ export class AddAuditlogComponent implements OnInit {
     this.myFiltersDiv.nativeElement.classList.add('transform-active')
   }
   ngOnInit(): void {
-    this.addauditlogService.getAddauditlog();
-    this.addauditlogService.addauditlogJson.pipe(takeUntil(this.ngUnsubscribe)).subscribe(Addauditlog => {
-      this.datasource = Addauditlog;
-      this.totalRecords = this.datasource.length;
+    this.route.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params => {     
+      this.tablecode = window.atob(params['type']);
     });
+   
     this.cols = [
+      { field: 'id', header: 'Id' },
       { field: 'date', header: 'Date' },
       { field: 'fieldname', header: 'Fieldname' },
       { field: 'action', header: 'Action' },
@@ -57,7 +72,6 @@ export class AddAuditlogComponent implements OnInit {
     this.loading = true;
 
     //to create form with validations
-    this.createFilterForm();
     this.createFilterForm();
   }
   createFilterForm() {
@@ -74,14 +88,53 @@ export class AddAuditlogComponent implements OnInit {
   resetForm(): void {
     this.filtersForm.reset();
   }
-  loadCarsLazy(event: LazyLoadEvent) {
-    this.loading = true;
-    setTimeout(() => {
-      if (this.datasource) {
-        this.addauditlog = this.datasource.slice(event.first, (event.first + event.rows));
-        this.loading = false;
-      }
-    }, 1000);
+ //Api Integration Starts from here
+ onPageChange(event:LazyLoadEvent){
+  let pageObject = Paginationutil.getGridFilters(event,this.advancedFilterValue);
+  pageObject.tablecode='USER';
+  this.currentPage = pageObject.currentPage;
+
+  let isinitialload = this.pageCount == undefined || this.pageCount == null;
+  this.pageCount = pageObject.pageCount;
+
+  let currentrows = event.rows * pageObject.pageNo;
+
+  if(this.totalcount != 0){
+    this.noOfItems =(currentrows < this.totalcount ? currentrows : this.totalcount);
   }
+
+  this.loadGrids(JSON.stringify(pageObject));
+
+}
+
+loadGrids(pagingData){
+  let paging = JSON.parse(pagingData);
+  //Get Branches API call
+  
+  this.auditLogService.AuditlogTableDetails(pagingData)
+  .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result =>{  
+    if(result.success){
+    this.auditLogs= result.data;
+    //pagination starts from here
+    this.totalcount = parseInt(result.total);    
+
+    if(this.totalcount <= paging.pageSize){
+      this.noOfItems = this.totalcount;
+    }else{
+      this.noOfItems = (JSON.parse(pagingData)).pageSize;
+    }
+
+    if(this.auditLogs != null && this.auditLogs != undefined){
+      this.auditLogs = this.auditLogs.map(function(el,i){
+        var o = Object.assign({},el);
+        o.indexId = i;
+        return o;
+      });
+    }
+    let currentrows = (this.currentPage * this.numberOfPages);
+  }
+  });
+}
+//API Integration ends here
 
 }

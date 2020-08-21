@@ -8,6 +8,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
 import * as moment from 'moment';
+import { AppConstants } from 'src/app/cts/app-constants';
 
 
 @Component({
@@ -31,6 +32,8 @@ export class TimetableComponent implements OnInit {
   classid: any[];
   subjectid: any[];
   teacherid: any[];
+  toBeDeletedId:any;
+
    //pagination and api integration starts from here
    numberOfPages:number =10;
    totalcount:number=0;
@@ -143,11 +146,22 @@ viewTimetable(id):void{
   deleteTimetable(id):void{
     this.position="top";
     this.display=true;
-    this.successMessage="";
+    this.toBeDeletedId = id;
   }
   timetableRevoke():void{
     this.display=false;
-    this.successMessage="Timetable deleted successfully"
+    let customObj = new Timetable();
+    customObj.id = this.toBeDeletedId;
+    customObj.querytype = 3;
+     //AED Branches API call
+     this.TimetableService.AEDTimetable(customObj)
+     .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+       if (result.success) {       
+         this.successMessage = AppConstants.Messages.successMessage;
+       }else{
+         this.errorMessage = AppConstants.Messages.errorMessage;
+       }
+     }); 
   }
 
   //Filters code starts from here

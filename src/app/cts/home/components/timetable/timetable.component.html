@@ -12,18 +12,18 @@
             </div>
         </div>
     </div>
-    <form [formGroup]="filtersForm"  (ngSubmit)="filterSubmit()">
+    <form [formGroup]="filtersForm" (ngSubmit)="filterSubmit()">
         <div #myFiltersDiv class="col-md-12 box transform">
             <div class="row search-box search-box-padding">
                 <div class="col-md-3">
                     <span>Class Id</span><br>
-                    <p-dropdown [options]="classid" class="w-100" formControlName="tclassid"
-                        placeholder="Select Class"  ></p-dropdown>
+                    <p-dropdown [options]="classid" class="w-100" formControlName="tclassid" placeholder="Select Class">
+                    </p-dropdown>
                 </div>
                 <div class="col-md-3">
                     <span>Subject Id</span><br>
                     <p-dropdown [options]="subjectid" class="w-100" formControlName="tsubjectid"
-                        placeholder="Select Subject"  ></p-dropdown>
+                        placeholder="Select Subject"></p-dropdown>
                 </div>
                 <div class="col-md-3">
                     <span>Teacher Id</span><br>
@@ -32,13 +32,13 @@
                 </div>
                 <div class="col-md-3">
                     <span>Period From</span><br>
-                    <p-calendar  [showTime]="true" class="w-100" formControlName="tperiodfrom"
-                    placeholder="Select Time"></p-calendar>
+                    <p-calendar [showTime]="true" class="w-100" formControlName="tperiodfrom" placeholder="Select Time">
+                    </p-calendar>
                 </div>
                 <div class="col-md-3">
                     <span>Period To</span><br>
-                    <p-calendar  [showTime]="true" class="w-100" formControlName="tperiodto"
-                    placeholder="Select Time"></p-calendar>
+                    <p-calendar [showTime]="true" class="w-100" formControlName="tperiodto" placeholder="Select Time">
+                    </p-calendar>
                 </div>
                 <div class="col-md-3"></div>
                 <div class="col-md-3"></div>
@@ -66,8 +66,8 @@
 
     <div class="col-md-12 search-box">
         <p-table #dt [columns]="cols" [value]="timetable" [lazy]="true" dataKey="indexId" [paginator]="true"
-        [responsive]="true" [rows]="numberOfPages" (onLazyLoad)="onPageChange($event)" [totalRecords]="totalcount"
-        [rowsPerPageOptions]="[10,20,30,40,50]" [reorderableColumns]="true" dataKey="firstname">
+            [responsive]="true" [rows]="numberOfPages" (onLazyLoad)="onPageChange($event)" [totalRecords]="totalcount"
+            [rowsPerPageOptions]="[10,20,30,40,50]" [reorderableColumns]="true" dataKey="firstname">
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th *ngFor="let col of columns" [pSortableColumn]="col.field" pReorderableColumn
@@ -83,8 +83,26 @@
             <ng-template pTemplate="body" let-rowData let-columns="columns" let-expanded="expanded">
                 <tr>
                     <td *ngFor="let col of columns">
-                        <a class="bold" (click)="viewTimetable(rowData.id)">{{rowData[col.field]}}</a>
-                    </td> 
+                        <div class="" *ngIf="col.field == 'createddate'">
+                            <a class="bold" (click)="viewTimetable(rowData.id)">{{getFormat(rowData.createddate)}}</a>
+                        </div>
+                        <div class="" *ngIf="col.field != 'createddate'">
+                            <div class="class" *ngIf="col.field != 'status'">
+                                <a class="bold" (click)="viewTimetable(rowData.id)">{{rowData[col.field]}}</a>
+                            </div>
+                            <div class="class" *ngIf="col.field == 'status'">
+                                <div class="" *ngIf="rowData.status == 'AC'">
+                                    <button class="btn btn-success">Active</button>
+                                </div>
+                                <div class="" *ngIf="rowData.status == 'NA'">
+                                    <button class="btn btn-danger">Not Active</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="" *ngIf="col.field == 'date'">
+                            <a class="bold" (click)="viewTimetable(rowData.id)">{{getFormat(rowData.date)}}</a>
+                        </div>
+                    </td>
                     <td>
                         <i class="pi pi-pencil" (click)="editTimetable(rowData.id)"></i>&nbsp;
                         <i class="pi pi-trash" (click)="deleteTimetable(rowData.id)"></i>
@@ -117,4 +135,3 @@
             <button type="button" pButton icon="pi pi-times" (click)="display=false" label="No"></button>
         </p-footer>
     </p-dialog>
-

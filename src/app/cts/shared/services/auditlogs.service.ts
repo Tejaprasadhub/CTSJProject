@@ -8,9 +8,9 @@ import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
-}) 
-export class AuditlogsService { 
-  
+})
+export class AuditlogsService {
+
   constructor(private httpClient: HttpClient) { }
   public getAuditlogs(pagingData) {
     // this.auditlogsJsonData.next(this.auditlogs);
@@ -19,10 +19,22 @@ export class AuditlogsService {
     var loginUrl: string = AppConstants.Api.AdminApp + "AuditLogs/GetAuditLogTables"
 
     return this.httpClient.post
-        (loginUrl, pagingData, { headers: headers, withCredentials: true }).pipe(
-            map((response: any) => {
-                return response;
-            }));
-}
+      (loginUrl, pagingData, { headers: headers, withCredentials: true }).pipe(
+        map((response: any) => {
+          return response;
+        }));
+  }
+  public AuditlogTableDetails(pagingData) {
+    // this.auditlogsJsonData.next(this.auditlogs);
+    const headers = new HttpHeaders().set("Content-Type", "application/json");
+
+    var loginUrl: string = AppConstants.Api.AdminApp + "AuditLogs/AuditlogTableDetails"
+
+    return this.httpClient.post
+      (loginUrl, pagingData, { headers: headers, withCredentials: true }).pipe(
+        map((response: any) => {
+          return response;
+        }));
+  }
 
 }

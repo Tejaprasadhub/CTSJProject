@@ -63,4 +63,31 @@ export class StudentsService {
           return response;
         }));
   }
+
+  public getDropdowns(jsonData) {
+    // this.branchesJsonData.next(this.branches);
+    const headers = new HttpHeaders().set("Content-Type", "application/json");
+
+    var Url: string = AppConstants.Api.AdminApp + "Students/GetExamWiseClassesDropdowns"
+
+    return this.httpClient.post
+      (Url, jsonData, { headers: headers, withCredentials: true }).pipe(
+        map((response: any) => {
+          return response;
+        }));
+  }
+
+  public GetStudentClassWiseExamMarks(requestData) {
+    // this.branchesJsonData.next(this.branches);
+    const headers = new HttpHeaders().set("Content-Type", "application/json");
+
+    var Url: string = AppConstants.Api.AdminApp + "Students/GetStudentClassWiseExamMarks"
+
+    return this.httpClient.post
+      (Url, requestData, { headers: headers, withCredentials: true }).pipe(
+        map((response: any) => {
+          return response;
+        }));
+  }
+  
 }

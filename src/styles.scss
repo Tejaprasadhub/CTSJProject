@@ -420,6 +420,14 @@ body .fc .fc-event {
 .ui-paginator{
     border-bottom:none !important;
 }
+.student-profile-container .ui-table .ui-paginator-bottom {
+    border-top: 0 !important;
+    margin-top: 3px !important;
+    background-color: #fff !important;
+    padding-left: 0px !important;
+    float: inherit !important;
+    background: linear-gradient(180deg, #efefee 0, #efefee) !important;
+}
 
 
 .tableRowData li{

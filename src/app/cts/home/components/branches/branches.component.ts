@@ -23,6 +23,9 @@ export class BranchesComponent implements OnInit {
   display:boolean=false;
   position: string;
   filtersForm: FormGroup;
+  errorMessage: string = "";
+  successMessage: string = "";
+  toBeDeletedId:any;
 
   //pagination and api integration starts from here
   numberOfPages:number =10;
@@ -33,6 +36,7 @@ export class BranchesComponent implements OnInit {
   pageCount:number;
   moment: any = moment;
   AppConstants:any;
+ 
 
   constructor(private BranchesService: BranchesService, private router: Router, private route: ActivatedRoute,private fb: FormBuilder) {
     this.branches = [];
@@ -119,9 +123,22 @@ export class BranchesComponent implements OnInit {
   deleteBranch(id):void{
     this.position="top";
     this.display=true;
+    this.toBeDeletedId = id;
   }
   branchRevoke():void{
     this.display=false;
+    let customObj = new Branches();
+    customObj.id = this.toBeDeletedId;
+    customObj.querytype = 3;
+     //AED Branches API call
+     this.BranchesService.AEDBranches(customObj)
+     .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+       if (result.success) {       
+         this.successMessage = AppConstants.Messages.successMessage;
+       }else{
+         this.errorMessage = AppConstants.Messages.errorMessage;
+       }
+     }); 
   }
  //Filters code starts from here
    //Construct Filter Form

@@ -51,9 +51,9 @@
     </div>
     </form>
     <div class="col-md-12 search-box">
-        <p-table #dt [columns]="cols" [value]="students" [lazy]="true" dataKey="indexId" [paginator]="true"
+        <p-table #dt [columns]="cols" [value]="students" [lazy]="true" dataKey="id" [paginator]="true" rowExpandMode="single"
             [responsive]="true" [rows]="numberOfPages" (onLazyLoad)="onPageChange($event)" [totalRecords]="totalcount"
-            [rowsPerPageOptions]="[10,20,30,40,50]" [reorderableColumns]="true" dataKey="firstname" (onRowExpand)="rowExpand($event,dt)">          
+            [rowsPerPageOptions]="[10,20,30,40,50]" [reorderableColumns]="true" (onRowExpand)="rowExpand($event,dt)" >          
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th style="width:2.5em"></th>
@@ -80,7 +80,18 @@
                             <a class="bold" (click)="viewStudent(rowData.id)">{{getFormat(rowData.dob)}}</a>
                         </div>
                         <div class="" *ngIf="col.field != 'dob'">
-                            <a class="bold" (click)="viewStudent(rowData.id)">{{rowData[col.field]}}</a>
+                            <div class="class" *ngIf="col.field != 'status'">
+                                <a class="bold" (click)="viewStudent(rowData.id)">{{rowData[col.field]}}</a>
+                            </div>
+                            <div class="class" *ngIf="col.field == 'status'">
+                                <div class=""  *ngIf="rowData.status == 'AC'">
+                                    <button class="btn btn-success">Active</button>
+                                </div>
+                                <div class=""  *ngIf="rowData.status == 'NA'">
+                                    <button class="btn btn-danger">Not Active</button>
+                                </div>
+                            </div>
+                            <!-- <a class="bold" (click)="viewStudent(rowData.id)">{{rowData[col.field]}}</a> -->
                         </div>                     
                     </td>
                     <td>

@@ -8,6 +8,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
 import * as moment from 'moment';
+import { AppConstants } from 'src/app/cts/app-constants';
 
 @Component({
   selector: 'app-news',
@@ -25,6 +26,9 @@ export class NewsComponent implements OnInit {
   display: boolean = false;
   position: string;
   branchids: SelectItem[] = [];
+  toBeDeletedId:any;
+  errorMessage: string = "";
+  successMessage: string = "";
   //to create Teacher From 
   filtersForm: FormGroup;
   //pagination and api integration starts from here
@@ -125,11 +129,24 @@ export class NewsComponent implements OnInit {
     this.router.navigate(['add-news'], { relativeTo: this.route, queryParams: { type: window.btoa('view'), id: window.btoa(id) } });
   }
   deleteNews(id): void {
-    this.position = "top";
-    this.display = true;
+    this.position="top";
+    this.display=true;
+    this.toBeDeletedId = id;
   }
   newsRevoke(): void {
-    this.display = false;
+    this.display=false;
+    let customObj = new News();
+    customObj.id = this.toBeDeletedId;
+    customObj.querytype = 3;
+     //AED Branches API call
+     this.NewsService.AEDNews(customObj)
+     .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+       if (result.success) {       
+         this.successMessage = AppConstants.Messages.successMessage;
+       }else{
+         this.errorMessage = AppConstants.Messages.errorMessage;
+       }
+     }); 
   }
   //Filters code starts from here
   //Create form method to constuct a form with validations

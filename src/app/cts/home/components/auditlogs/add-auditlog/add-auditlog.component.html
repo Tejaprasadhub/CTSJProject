@@ -55,12 +55,12 @@
                 </div>
             </div>
         </div>
-    </form>
+    </form> 
     <div class="row search-box">
     <div class="col-md-12 ">
-        <p-table #dt [columns]="cols" [value]="addauditlog" [lazy]="true" (onLazyLoad)="loadCarsLazy($event)"
-            [paginator]="true" [rows]="10" [totalRecords]="totalRecords" [loading]="loading" [responsive]="true"
-            [reorderableColumns]="true" dataKey="firstname">
+        <p-table #dt [columns]="cols" [value]="auditLogs" [lazy]="true" dataKey="indexId" [paginator]="true"
+            [responsive]="true" [rows]="numberOfPages" (onLazyLoad)="onPageChange($event)" [totalRecords]="totalcount"
+            [rowsPerPageOptions]="[10,20,30,40,50]" [reorderableColumns]="true" dataKey="firstname">
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <th *ngFor="let col of columns" [pSortableColumn]="col.field" pReorderableColumn
@@ -70,16 +70,32 @@
                             <p-sortIcon [field]="col.field" style="float:right"></p-sortIcon>
                         </div>
                     </th>
-                    
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-rowData let-columns="columns" let-expanded="expanded">
                 <tr>
                     <td *ngFor="let col of columns">
-                    {{rowData[col.field]}}
-                    </td>                   
+                        <div class="">
+                            <a class="bold" href="#">{{rowData[col.field]}}</a>
+                        </div>    
+                    </td>                  
                 </tr>
             </ng-template>
         </p-table>
+        <!-- pagination div starts from here -->
+        <div class="col-md-12">
+            <div class="pagecount-dropdown">
+                <span class="pagecounting">Items per page</span>
+            </div>
+            <div class="pagecount">
+                <div *ngIf="dt.totalRecords != 0">
+                    {{dt.first+1}}-{{((dt.first+dt.rows)>dt.totalRecords)?dt.totalRecords:(dt.first+dt.rows)}} of
+                    {{dt.totalRecords}}
+                    Items
+                </div>
+                <div *ngIf="dt == undefined || dt.totalRecords==0">No Items to Display</div>
+            </div>
+        </div>
+        <!-- pagination div ends here -->
     </div>
 </div>

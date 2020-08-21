@@ -8,6 +8,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
 import * as moment from 'moment';
+import { AppConstants } from 'src/app/cts/app-constants';
 
 @Component({
   selector: 'app-parents',
@@ -26,6 +27,10 @@ export class ParentsComponent implements OnInit {
   position: string;
   filtersForm: FormGroup;
   sections: SelectItem[] = [];
+  toBeDeletedId:any;
+  errorMessage:string="";
+  successMessage:string="";
+
   //pagination and api integration starts from here
   numberOfPages:number =10;
   totalcount:number=0;
@@ -123,10 +128,23 @@ loadGrids(pagingData){
   }
   deleteParent(id):void{
     this.position="top";
-    this.display=true; 
+    this.display=true;
+    this.toBeDeletedId = id;
   }
   parentRevoke():void{
     this.display=false;
+    let customObj = new Parents();
+    customObj.id = this.toBeDeletedId;
+    customObj.querytype = 3;
+     //AED Branches API call
+     this.ParentsService.AEDParents(customObj)
+     .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+       if (result.success) {       
+         this.successMessage = AppConstants.Messages.successMessage;
+       }else{
+         this.errorMessage = AppConstants.Messages.errorMessage;
+       }
+     }); 
   }
  //Filters code starts from here
    //Create form method to constuct a form with validations

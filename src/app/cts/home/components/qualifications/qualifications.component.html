@@ -74,8 +74,17 @@
                             <a class="bold" (click)="viewQualification(rowData.id)">{{getFormat(rowData.createddate)}}</a>
                         </div>
                         <div class="" *ngIf="col.field != 'createddate'">
-                            <a class="bold" (click)="viewQualification(rowData.id)">{{rowData[col.field]}}</a>
-                        </div>
+                            <div class="class" *ngIf="col.field != 'status'">
+                                <a class="bold" (click)="viewQualification(rowData.id)">{{rowData[col.field]}}</a>
+                            </div>
+                            <div class="class" *ngIf="col.field == 'status'">
+                                <div class=""  *ngIf="rowData.status == 'AC'">
+                                    <button class="btn btn-success">Active</button>
+                                </div>
+                                <div class=""  *ngIf="rowData.status == 'NA'">
+                                    <button class="btn btn-danger">Not Active</button>
+                                </div>
+                            </div>                        </div>
                     </td>
                     <td>
                         <i class="pi pi-pencil" (click)="editQualification(rowData.id)"></i>&nbsp;

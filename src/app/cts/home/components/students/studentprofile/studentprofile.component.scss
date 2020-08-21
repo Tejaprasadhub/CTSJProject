@@ -15,8 +15,7 @@
      border-radius: 100px;
  }
  .btn{
-     padding: 3px !important;
-     font-size: 10px;
+    font-size: 12px;
  }
 
  .student-container { position: relative; }
@@ -42,6 +41,18 @@
     color: #929292;
     margin-bottom: 0px !important;
 }
- 
- 
+.fieldset {
+    border: 1px solid #d3d3d3;
+    padding: 6px;
+    margin: 10px;
+}
+.legend {
+    font-size: 14px;
+    width: inherit;
+    padding: 0px 5px;
+    border-bottom: none;
+    margin-bottom: 3px;
+    font-weight: bold;
+} 
+
 }

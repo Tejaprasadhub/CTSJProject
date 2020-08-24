@@ -10,6 +10,7 @@ import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
 import { Exams } from 'src/app/cts/shared/models/exams';
 import { AppConstants } from 'src/app/cts/app-constants';
 import { SelectItem } from 'primeng/api/selectitem';
+import { DropdownService } from 'src/app/cts/shared/services/dropdown.service';
 
 @Component({
   selector: 'app-add-exam',
@@ -31,9 +32,21 @@ export class AddExamComponent implements OnInit {
   editData: any;
   querytype:number;
   status: SelectItem[] = [];
-
+  cols: any[];
+  examwisesubjects: any[] = [];
+  myobject: any[];
+  loading: boolean;
+  classes:any[]=[];
   
-  constructor(private ExamsService: ExamsService,private fb: FormBuilder, private router: Router, private route: ActivatedRoute,private location: Location) { 
+  constructor(private dropdownService: DropdownService,private ExamsService: ExamsService,private fb: FormBuilder, private router: Router, private route: ActivatedRoute,private location: Location) { 
+     //Get Dropdowns API call
+     var dropdowns = ["classes"];
+     this.dropdownService.getDropdowns(dropdowns)
+     .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+       if (result.success) {
+        this.classes = result.data.classes;
+       }      
+     });  
     this.status = [
       { label: 'Active', value: 'AC' },
       { label: 'InActive', value: 'NA' }
@@ -66,14 +79,15 @@ export class AddExamComponent implements OnInit {
       this.fetchData();
       this.querytype=2;
     }
-
+  
   }
 
   createForm() {
     this.addExamForm = this.fb.group({
       'title': new FormControl('', { validators: [Validators.required, Validators.pattern('^([A-Za-z0-9 _\'-])*$')] }),
       'year': new FormControl('', { validators: [Validators.required] }),
-      'status': new FormControl('', { validators: [Validators.required] })
+      'status': new FormControl('', { validators: [Validators.required] }),
+      'classes': new FormControl('', { validators: [Validators.required] }),
     });
   }
 
@@ -90,9 +104,12 @@ export class AddExamComponent implements OnInit {
       .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
         if (result.success) {
           this.editData = result.data[0];
+          this.examwisesubjects = this.editData.subjects;
           this.addExamForm.setValue({
             'year': new Date(this.editData.year),
-            'title': this.editData.title
+            'title': this.editData.title,
+            'status': this.editData.status,
+            'classes':this.editData.classes.map((el) => Number(el.value))
           })
         }
       });
@@ -111,7 +128,6 @@ export class AddExamComponent implements OnInit {
   }
 
   addExamSubmit(): void {
-   
     this.errorMessage = "";
     this.successMessage = "";
     this.formSubmitAttempt = true;
@@ -142,9 +158,11 @@ export class AddExamComponent implements OnInit {
     this.addExamForm.reset();
     this.successMessage = "";
   }
-
   list(): void {
     this.location.back();
   }
-
+  getArray(array: any[]) {
+      this.examwisesubjects = array;
+  }
+  
 }

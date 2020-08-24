@@ -31,6 +31,9 @@ import {RadioButtonModule} from 'primeng/radiobutton';
 import {InputTextareaModule} from 'primeng/inputtextarea';
 import {PasswordModule} from 'primeng/password'
 import {DialogModule} from 'primeng/dialog';
+import { AuthorizationGuard } from 'src/app/core/security/authorization-guard';
+import { AUTHZ_SERVICE } from 'src/app/core/security/authorization.service';
+import { AuthorizationService } from '../services/authorization.service';
 //Chaitanya Section Starts
 
 //Chaitanya Section Ends
@@ -77,6 +80,10 @@ import {DialogModule} from 'primeng/dialog';
     InputTextareaModule,
     PasswordModule,
     DialogModule
+  ],
+  providers:[
+    AuthorizationGuard,
+    {provide:AUTHZ_SERVICE,useClass:AuthorizationService}
   ]
 })
 export class SharedroutingModule { }

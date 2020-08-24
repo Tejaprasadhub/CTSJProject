@@ -131,11 +131,6 @@
             </div>
             <div class="col-md-4">
                 <span>Qualification</span><br>
-                <!-- <p-dropdown [options]="qualification" filter="true" [disabled]="isDisabled"
-                    formControlName="qualification" class="w-100" placeholder="Select Qualification"
-                    [ngClass]="{'error':((!addTeacherForm.controls['qualification'].valid && addTeacherForm.controls['qualification'].touched) || (!addTeacherForm.controls['qualification'].valid && addTeacherForm.controls['qualification'].untouched && formSubmitAttempt)),'required':(isRequired == true )}">
-                </p-dropdown> -->
-
                 <p-multiSelect [options]="qualification" [disabled]="isDisabled" formControlName="qualification"
                 class="w-100"
                 [ngClass]="{'error':((!addTeacherForm.controls['qualification'].valid && addTeacherForm.controls['qualification'].touched) || (!addTeacherForm.controls['qualification'].valid && addTeacherForm.controls['qualification'].untouched && formSubmitAttempt)),'required':(isRequired == true )}">
@@ -184,7 +179,9 @@
                     [ngClass]="{'error':((!addTeacherForm.controls['associatedSections'].valid && addTeacherForm.controls['associatedSections'].touched) || (!addTeacherForm.controls['associatedSections'].valid && addTeacherForm.controls['associatedSections'].untouched && formSubmitAttempt)),'required':(isRequired == true )}">
                 </p-multiSelect>                
             </div>
-            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <app-add-teacher-class-section></app-add-teacher-class-section>
+            </div>
             <br>
             <br>
             <br>

@@ -32,6 +32,7 @@ import { QualificationsComponent } from './cts/home/components/qualifications/qu
 import { AddQualificationComponent } from './cts/home/components/qualifications/addqualifications/addqualifications.component';
 import { ParentsComponent } from './cts/home/components/parents/parents.component';
 import { AddParentComponent } from './cts/home/components/parents/add-parent/add-parent.component';
+import { AuthorizationGuard } from './core/security/authorization-guard';
 
 const SessionTimeoutServiceProvider={
   provide:SessionTimeoutService,
@@ -91,6 +92,7 @@ const AuthenticatedHttpInterceptorServiceProvider={
     AuthenticatedHttpInterceptorServiceProvider,
     LoadingHttpInterceptorProvider,
     LoadingHttpInterceptorFactoryProvider,
+    AuthorizationGuard
     // LocalstoragetokenServiceProvider
     
   ],

@@ -38,6 +38,7 @@ import { QualificationsComponent } from '../components/qualifications/qualificat
 import { AddQualificationComponent } from '../components/qualifications/addqualifications/addqualifications.component';
 import { AddParentComponent } from '../components/parents/add-parent/add-parent.component';
 import { ParentsComponent } from '../components/parents/parents.component';
+import { AuthorizationGuard } from 'src/app/core/security/authorization-guard';
 
 
 

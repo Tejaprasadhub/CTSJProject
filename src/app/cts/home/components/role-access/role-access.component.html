@@ -33,7 +33,10 @@
                         </tr>
                         <tr>
                             <td>{{rowData.featureOption}}</td>
-                            <td></td>
+                            <td>
+                                <p-radioButton label="Show" value='Y' class="p-2" [(ngModel)]="rowData.status"></p-radioButton>
+                                <p-radioButton label="Hide" value='N' [(ngModel)]="rowData.status"></p-radioButton>                               
+                            </td>
                         </tr>
                     </ng-template>
                 </p-table>

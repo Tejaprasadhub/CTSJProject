@@ -104,8 +104,8 @@
             </ng-template>
             <ng-template pTemplate="rowexpansion"  let-rowData let-columns="columns">
                 <tr class="expansion-div">
-                    <td [attr.colspan]="columns.length + 1">
-                        <div class="ui-fluid">
+                    <td [attr.colspan]="columns.length + 2">
+                        <div class="ui-fluid" [@rowExpansionTrigger]="'active'">
                             <router-outlet></router-outlet>                            
                         </div>
                     </td>

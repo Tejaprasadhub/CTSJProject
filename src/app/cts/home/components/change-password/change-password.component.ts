@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { CustomPasswordValidator } from './custom-password-validator';
 
 @Component({
   selector: 'app-change-password',
@@ -14,14 +15,28 @@ export class ChangePasswordComponent implements OnInit {
   errorMessage:string="";
   successMessage:string="";
   isRequired:boolean=false;
+  oldPassword:  FormControl;
+  newPassword: FormControl;
+  confirmPassword: FormControl;
 
   constructor(private fb: FormBuilder, private router: Router) { }
 
   ngOnInit(): void {
-    this.changePasswordForm = this.fb.group({
-      'oldPassword': new FormControl('', { validators: [Validators.required]}),
-      'newPassword': new FormControl('', { validators: [Validators.required] }),
-      'confirmPassword': new FormControl('', { validators: [Validators.required] })
+    this.createFormControls();
+    this.createForm();
+  }
+
+  createFormControls(){
+    this.oldPassword = new FormControl('', { validators: [Validators.required],updateOn:'change'});
+    this.newPassword =  new FormControl('', { validators: [Validators.required],updateOn:'change' }),
+    this.confirmPassword = new FormControl('', { validators: [Validators.required,CustomPasswordValidator.MatchPassword],updateOn:'change' })
+  }
+
+  createForm(){
+    this.changePasswordForm = new FormGroup({
+      oldPassword:this.oldPassword,
+      newPassword:this.newPassword,
+      confirmPassword:this.confirmPassword
     });
   }
 

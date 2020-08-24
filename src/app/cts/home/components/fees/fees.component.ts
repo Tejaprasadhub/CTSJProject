@@ -42,7 +42,7 @@ export class FeesComponent implements OnInit {
 
   ngOnInit(): void {
     this.cols = [
-      { field: 'subject', header: 'Subject' },
+      { field: 'subjectid', header: 'Subject' },
       { field: 'cutoff', header: 'Cutoff Marks' },
       { field: 'total', header: 'Total Marks' }
     ];
@@ -51,7 +51,7 @@ export class FeesComponent implements OnInit {
   }
   createForm() {
     this.examForm = this.fb.group({
-      'subject': new FormControl('', { validators: [Validators.required] }),
+      'subjectid': new FormControl('', { validators: [Validators.required] }),
       'cutoff': new FormControl('', { validators: [Validators.required] }),
       'total': new FormControl('', { validators: [Validators.required] })
     });
@@ -74,7 +74,6 @@ export class FeesComponent implements OnInit {
   }
 
   removeRow($event: any) {
-    debugger
     const index: number = this.examwisesubjects.indexOf($event);
     if (index !== -1) {
         this.examwisesubjects.splice(index, 1);
@@ -87,5 +86,9 @@ export class FeesComponent implements OnInit {
     if (!pattern.test(inputChar)) {
       event.preventDefault();
     }
+  }
+
+  getSubjectName(id):string{  
+   return this.subject.filter(item => item.value == id)[0].label;   
   }
 }

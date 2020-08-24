@@ -23,18 +23,18 @@
             <span>
                 Subject
             </span><br>
-            <p-dropdown [options]="subject" filter="true" formControlName="subject" [disabled]="isDisabled"
-            placeholder="Select subject" [ngClass]="{'error':((!examForm.controls['subject'].valid &&
-            examForm.controls['subject'].touched) || 
-        (!examForm.controls['subject'].valid && examForm.controls['subject'].untouched && formSubmitAttempt)),
+            <p-dropdown [options]="subject" filter="true" formControlName="subjectid" [disabled]="isDisabled"
+            placeholder="Select subject" [ngClass]="{'error':((!examForm.controls['subjectid'].valid &&
+            examForm.controls['subjectid'].touched) || 
+        (!examForm.controls['subjectid'].valid && examForm.controls['subjectid'].untouched && formSubmitAttempt)),
         'required':(isRequired == true )}">
         </p-dropdown>
-            <div class="col-md-12 error-block" *ngIf="((!examForm.controls['subject'].valid && examForm.controls['subject'].touched)|| 
-                    (!examForm.controls['subject'].valid && examForm.controls['subject'].untouched && 
+            <div class="col-md-12 error-block" *ngIf="((!examForm.controls['subjectid'].valid && examForm.controls['subjectid'].touched)|| 
+                    (!examForm.controls['subjectid'].valid && examForm.controls['subjectid'].untouched && 
                     formSubmitAttempt))">
                 <div class="col-md-12 error-div">
                     <i class="fa fa-circle"></i>
-                    <span *ngIf="(examForm.controls['subject'].errors?.required)">Enter "Subject"</span>
+                    <span *ngIf="(examForm.controls['subjectid'].errors?.required)">Enter "Subject"</span>
                 </div>
             </div>
         </div>
@@ -94,8 +94,13 @@
             </ng-template>
             <ng-template pTemplate="body" let-rowData let-columns="columns" let-expanded="expanded">
                 <tr>
-                    <td *ngFor="let col of columns">
-                        {{rowData[col.field]}} 
+                    <td *ngFor="let col of columns">                        
+                        <div class="" *ngIf="col.field == 'subjectid'">
+                            <a class="bold">{{getSubjectName(rowData.subjectid)}}</a>
+                        </div>
+                        <div class="" *ngIf="col.field != 'subjectid'"> 
+                            {{rowData[col.field]}} 
+                        </div>
                     </td>     
                     <td>
                         <button class="btn btn-danger" (click)="removeRow(rowData)"><i class="fa fa-times"></i> Remove</button>                       

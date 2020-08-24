@@ -13,5 +13,11 @@ export class Teachers {
      branch:number;
      gender:string;
      indexId:number; 
-     status:string
+     status:string;
+     // teacherclasssections:TeacherClassSections;
 }
+
+// export class TeacherClassSections{
+//      class:string;
+//      sections:string;
+// }

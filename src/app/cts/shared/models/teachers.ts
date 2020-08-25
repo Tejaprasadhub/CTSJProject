@@ -2,18 +2,23 @@ export class Teachers {
      id:number;
      teacherName:string;
      dateofbirth:string;
-     qualification:string;
+     qualification:any[];
+     qualifications:string;
      email:string;
      mobile:string;
      image:string;
      experience:string;
-     expertiseIn:string;
-     associatedClasses:string;
-     associatedSections:string;
+     expertiseIn:any[];
+     associatedClasses:any[];
+     associatedSections:any[];
+     subjects:string;
+     classes:string;
+     sections:string;
      branch:number;
      gender:string;
      indexId:number; 
      status:string;
+     querytype:number;
      // teacherclasssections:TeacherClassSections;
 }
 

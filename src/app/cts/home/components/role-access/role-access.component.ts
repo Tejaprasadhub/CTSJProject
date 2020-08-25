@@ -69,5 +69,9 @@ updateRowGroupMetaData() {
     }
 }
 
+onSubmit(permissionData){
+  console.log(this.userFeatures)
+}
+
 
 }

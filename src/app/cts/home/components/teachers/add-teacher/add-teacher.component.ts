@@ -14,6 +14,7 @@ import * as moment from 'moment';
 import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
 import { Utility } from 'src/app/cts/shared/models/utility';
 import { TeachersService } from 'src/app/cts/shared/services/teachers.service';
+import { AppConstants } from 'src/app/cts/app-constants';
 
 @Component({
   selector: 'app-add-teacher',
@@ -41,6 +42,8 @@ export class AddTeacherComponent implements OnInit {
   formSubmitAttempt: boolean = false;
   errorMessage: string = "";
   successMessage: string = "";
+
+  querytype:number;
 
   
 
@@ -83,15 +86,18 @@ export class AddTeacherComponent implements OnInit {
       this.pageTitle = "Add Teacher";
       this.isDisabled = false;
       this.isRequired = true;
+      this.querytype=1;
     } else if (this.formType == "edit") {
       this.pageTitle = "Edit Teacher";
       this.editControls();
       this.fetchData();
+      this.querytype=2;
     } else {
       this.pageTitle = "View Details";
       this.isDisabled = true;
       this.isRequired = false;
       this.fetchData();
+      this.querytype=2;
     }
 
   }
@@ -202,11 +208,26 @@ export class AddTeacherComponent implements OnInit {
       let customObj = new Teachers();
       customObj = this.addTeacherForm.value;
       customObj.dateofbirth = this.getFormat(customObj.dateofbirth);
+      customObj.classes = customObj.associatedClasses.join();
+      customObj.sections = customObj.associatedSections.join();
+      customObj.subjects = customObj.expertiseIn.join();
+      customObj.qualifications = customObj.qualification.join();
       customObj.id = Number(this.teacherId);
-      debugger
-      console.log(this.addTeacherForm.value);
-      this.addTeacherForm.reset();
-      this.successMessage = "Your changes have been successfully saved";
+      customObj.querytype = this.querytype;
+      
+      //AED Branches API call
+      this.teachersService.AEDTeachers(customObj)
+        .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+          if (result.success) {
+            // this.branches= result.data;    
+            if (this.formType == "create") {
+            this.addTeacherForm.reset();
+            }
+            this.successMessage = AppConstants.Messages.successMessage;
+          }else{
+            this.errorMessage = AppConstants.Messages.errorMessage;
+          }
+        });
     }
   }
   //Reset form method
@@ -219,6 +240,7 @@ export class AddTeacherComponent implements OnInit {
     this.isRequired = true;
     this.isDisabled = false;
     this.pageTitle = "Edit Teacher";
+    this.querytype=2;
   }
   //navigating to Teachers list page
   list(): void {

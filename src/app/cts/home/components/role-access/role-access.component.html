@@ -17,7 +17,7 @@
             <div class="col-md-4"></div>
             <br>
             <br>
-            <div class="col-md-12">
+            <div class="col-md-12 clienttable">
                 <p-table [value]="userFeatures" sortField="brand" sortMode="single" (onSort)="onSort()">
                     <ng-template pTemplate="header">
                         <tr>
@@ -27,19 +27,26 @@
                     </ng-template>
                     <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
                         <tr class="ui-widget-header" *ngIf="rowGroupMetadata[rowData.featureTitle].index === rowIndex">
-                            <td colspan="2">
-                                <span style="font-weight:bold">{{rowData.featureTitle}}</span>
+                            <td colspan="2" style="background-color: #d3c9ee;">
+                                <span style="font-weight:bold;font-size: 15px;">{{rowData.featureTitle}}</span>
                             </td>
                         </tr>
                         <tr>
                             <td>{{rowData.featureOption}}</td>
                             <td>
+                                <!-- <p-checkbox  label="Show" value='Y' class="p-2" [(ngModel)]="rowData.status"></p-checkbox>
+<p-checkbox   label="Hide" value='N' [(ngModel)]="rowData.status"></p-checkbox> -->
+
                                 <p-radioButton label="Show" value='Y' class="p-2" [(ngModel)]="rowData.status"></p-radioButton>
                                 <p-radioButton label="Hide" value='N' [(ngModel)]="rowData.status"></p-radioButton>                               
                             </td>
                         </tr>
                     </ng-template>
                 </p-table>
+            </div>
+            <div class="col-md-12 mt-3 text-right">
+                <button pButton type="button" icon="pi pi-check" label="Submit" 
+                    class="ui-button-secondary table-header-items" (click)="onSubmit($event)"></button>
             </div>
         </div>
 

@@ -11,6 +11,7 @@ import { Table } from 'primeng/table';
 import { multiselectObject } from 'src/app/cts/shared/models/multi-select-object';
 import { DropdownService } from 'src/app/cts/shared/services/dropdown.service';
 import * as moment from 'moment';
+import { AppConstants } from 'src/app/cts/app-constants';
 
 // import * as angular from "angular";
 
@@ -38,6 +39,7 @@ export class TeachersComponent implements OnInit {
   classes: any[];
   sections: any[];
 
+  toBeDeletedId:any;
 
   loading: boolean;
   //to create Teacher From 
@@ -55,7 +57,7 @@ export class TeachersComponent implements OnInit {
   @ViewChild(Table, { static: false }) DataTable: Table;
 
 
-  constructor(private dropdownService: DropdownService,private teachersService: TeachersService, private router: Router, private route: ActivatedRoute,
+  constructor(private dropdownService: DropdownService,private TeachersService: TeachersService, private router: Router, private route: ActivatedRoute,
     private fb: FormBuilder) {
        //Get Dropdowns API call
      var dropdowns = ["subjects","classes","qualifications","sections","experiences"];
@@ -119,7 +121,7 @@ export class TeachersComponent implements OnInit {
   loadGrids(pagingData) {
     let paging = JSON.parse(pagingData);
     //Get Branches API call
-    this.teachersService.getTeachers(pagingData)
+    this.TeachersService.getTeachers(pagingData)
       .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
         if (result.success) {
           this.teachers = result.data;
@@ -156,13 +158,24 @@ export class TeachersComponent implements OnInit {
     this.router.navigate(['add-teacher'], { relativeTo: this.route, queryParams: { type: window.btoa('view'), id: window.btoa(id) } });
   }
   deleteTeacher(id): void {
-    this.position = "top";
-    this.display = true;
-    this.successMessage = "";
+    this.position="top";
+    this.display=true;
+    this.toBeDeletedId = id;
   }
   teacherRevoke(): void {
-    this.display = false;
-    this.successMessage = "Teacher deleted successfully"
+    this.display=false;
+    let customObj = new Teachers();
+    customObj.id = this.toBeDeletedId;
+    customObj.querytype = 3;
+     //AED Branches API call
+     this.TeachersService.AEDTeachers(customObj)
+     .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+       if (result.success) {       
+         this.successMessage = AppConstants.Messages.successMessage;
+       }else{
+         this.errorMessage = AppConstants.Messages.errorMessage;
+       }
+     }); 
   }
   //Filters code starts from here
   //Create form method to constuct a form with validations

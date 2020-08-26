@@ -69,7 +69,7 @@
                         <div class="" *ngIf="col.field == 'createddate'">
                             <a class="bold" (click)="viewNews(rowData.id)">{{getFormat(rowData.createddate)}}</a>
                         </div>
-                        <div class="" *ngIf="col.field != 'createddate'">
+                        <div class="" *ngIf="col.field != 'createddate'&& col.field != 'date'">
                             <div class="class" *ngIf="col.field != 'status'">
                                 <a class="bold" (click)="viewNews(rowData.id)">{{rowData[col.field]}}</a>
                             </div>
@@ -86,7 +86,7 @@
                             <a class="bold" (click)="viewNews(rowData.id)">{{getFormat(rowData.date)}}</a>
                         </div>
                     </td>
-                    <td class="d-flex">
+                    <td>
                         <i class="pi pi-pencil" (click)="editNews(rowData.id)"></i>&nbsp;
                         <i class="pi pi-trash" (click)="deleteNews(rowData.id)"></i>
                     </td>

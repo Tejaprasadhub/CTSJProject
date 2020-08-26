@@ -10,8 +10,8 @@ abstract authorizeRouteAccess(route:string):Observable<AuthorizationResult>;
 }
 
 export class AuthorizationResult{
-  authorized:boolean;
-  denialReason:DenialReason;
+  status:string;
+  featureOptions:any[];
 }
 
 export enum DenialReason{

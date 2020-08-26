@@ -7,36 +7,37 @@ import { StudentreportsComponent } from '../studentreports/studentreports.compon
 import { StudentmarksComponent } from '../studentmarks/studentmarks.component';
 import { StudentmoreComponent } from '../studentmore/studentmore.component';
 import { AuthenticationGuardService } from 'src/app/core/security/authentication-guard.service';
+import { AuthorizationGuard } from 'src/app/core/security/authorization-guard';
 
 const studentDetailsRoutes:Routes=[
   {
     path:'student-profile',
     component:StudentprofileComponent,
-    canActivate:[AuthenticationGuardService],
+    canActivate:[AuthenticationGuardService,AuthorizationGuard],
     outlet:'detail'
   },
   {
     path:'student-edit',
     component:StudenteditComponent,
-    canActivate:[AuthenticationGuardService],
+    canActivate:[AuthenticationGuardService,AuthorizationGuard],
     outlet:'detail'
   },
   {
     path:'student-reports',
     component:StudentreportsComponent,
-    canActivate:[AuthenticationGuardService],
+    canActivate:[AuthenticationGuardService,AuthorizationGuard],
     outlet:'detail'
   },
   {
     path:'student-marks',
     component:StudentmarksComponent,
-    canActivate:[AuthenticationGuardService],
+    canActivate:[AuthenticationGuardService,AuthorizationGuard],
     outlet:'detail'
   },
   {
     path:'student-more',
     component:StudentmoreComponent,
-    canActivate:[AuthenticationGuardService],
+    canActivate:[AuthenticationGuardService,AuthorizationGuard],
     outlet:'detail'
   }
 ]

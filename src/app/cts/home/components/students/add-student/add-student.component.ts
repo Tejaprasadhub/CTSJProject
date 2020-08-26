@@ -197,7 +197,7 @@ export class AddStudentComponent implements OnInit {
             'e2lname': this.editData.ctce2lname,
             'e2email': this.editData.ctce2email,
             'e2mobile':this.editData.ctce2mobile,
-            'status':this.editData.status
+            'status':this.editData.ctcstudent_status
 
           })
         }

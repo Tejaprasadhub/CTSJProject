@@ -13,7 +13,7 @@ export class AuthorizationService extends AuthorizationServiceBase {
    }
 
    authorizeRouteAccess(route:string): Observable<AuthorizationResult>{
-     const url= AppConstants.Api.security + 'moduleaccess/authorizeroute/';
+     const url= AppConstants.Api.security + 'accesstoken/authorizeroute/';
      return this.httpClient.post(url,{routeUrl:route}).pipe(
        map((response:AuthorizationResult) => {
          return response;

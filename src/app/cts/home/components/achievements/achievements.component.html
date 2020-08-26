@@ -73,7 +73,7 @@
                         <div class="" *ngIf="col.field != 'createddate' && col.field != 'date'">
                             <div class="class" *ngIf="col.field != 'status'">
                                 <a class="bold" (click)="viewAchievement(rowData.id)">{{rowData[col.field]}}</a>
-                            </div>
+                             </div>
                             <div class="class" *ngIf="col.field == 'status'">
                                 <div class=""  *ngIf="rowData.status == 'AC'">
                                     <button class="btn btn-success">Active</button>

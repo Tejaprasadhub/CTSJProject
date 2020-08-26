@@ -11,9 +11,10 @@ export class AuthorizationGuard  implements CanActivate, CanActivateChild,CanLoa
     constructor(private router:Router,private httpClient:HttpClient,@Inject(AUTHZ_SERVICE) private authorizationService:AuthorizationServiceBase){}
 
     canActivate(route:ActivatedRouteSnapshot,state:RouterStateSnapshot): Observable<boolean> | boolean{
+        
         return this.authorizationService.authorizeRouteAccess(state.url).pipe(
             map(result =>{
-                if(result.authorized) return true;
+                if(result.status) return true;                
             })
         )
     }

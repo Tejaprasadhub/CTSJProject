@@ -50,7 +50,7 @@ const homeRoutes: Routes = [
       {
         path: 'students',
         component: StudentsComponent,
-        canActivate:[AuthenticationGuardService],
+        canActivate:[AuthenticationGuardService,AuthorizationGuard],
         data: { title: 'Students List' },
         children: [
           {
@@ -69,157 +69,157 @@ const homeRoutes: Routes = [
       {
         path: 'students/add-student',
         component: AddStudentComponent,
-        canActivate:[AuthenticationGuardService],
+        canActivate:[AuthenticationGuardService,AuthorizationGuard],
         data: { title: 'Add Student' }
       },
       {
         path: 'events',
         component: EventsComponent,
-        canActivate:[AuthenticationGuardService],
+        canActivate:[AuthenticationGuardService,AuthorizationGuard],
         data: { title: 'Events List' }
       },
       {
         path: 'events/add-event',
         component: AddEventComponent,
-        canActivate:[AuthenticationGuardService],
+        canActivate:[AuthenticationGuardService,AuthorizationGuard],
         data: { title: 'Add Event' }
       }, 
       {
         path: 'users',
         component: UsersComponent,
-        canActivate:[AuthenticationGuardService],
+        canActivate:[AuthenticationGuardService,AuthorizationGuard],
         data: { title: 'Users List' }
       },
       {
         path: 'users/add-user',
         component: AddUserComponent,
-        canActivate:[AuthenticationGuardService],
+        canActivate:[AuthenticationGuardService,AuthorizationGuard],
         data: { title: 'Add User' }
       },
       {
         path: 'branches',
         component: BranchesComponent,
-        canActivate:[AuthenticationGuardService],
+        canActivate:[AuthenticationGuardService,AuthorizationGuard],
         data: { title: 'Branches' }
       },
       {
         path: 'branches/add-branch',
         component: AddBranchComponent,
-        canActivate:[AuthenticationGuardService],
+        canActivate:[AuthenticationGuardService,AuthorizationGuard],
         data: { title: 'Add Branch' }
       },
       {
         path: 'subjects',
         component: SubjectsComponent,
-        canActivate:[AuthenticationGuardService],
+        canActivate:[AuthenticationGuardService,AuthorizationGuard],
         data: { title: 'Subjects' }
       },
       {
         path: 'subjects/add-subject',
         component: AddSubjectsComponent,
-        canActivate:[AuthenticationGuardService],
+        canActivate:[AuthenticationGuardService,AuthorizationGuard],
         data: { title: 'Add Subject' }
       },
       {
         path: 'news',
         component: NewsComponent,
-        canActivate:[AuthenticationGuardService],
+        canActivate:[AuthenticationGuardService,AuthorizationGuard],
         data: { title: 'News' }
       },
       {
         path: 'news/add-news',
         component: AddNewsComponent,
-        canActivate:[AuthenticationGuardService],
+        canActivate:[AuthenticationGuardService,AuthorizationGuard],
         data: { title: 'Add News' }
       },
       {
         path: 'achivements',
         component: AchievementsComponent,
-        canActivate:[AuthenticationGuardService],
+        canActivate:[AuthenticationGuardService,AuthorizationGuard],
         data: { title: 'Achievement' }
       },
       {
         path: 'achivements/add-achievement',
         component: AddAchievementComponent,
-        canActivate:[AuthenticationGuardService],
+        canActivate:[AuthenticationGuardService,AuthorizationGuard],
         data: { title: 'Add achievement' }
       },
       {
         path: 'timetable',
         component: TimetableComponent,
-        canActivate:[AuthenticationGuardService],
+        canActivate:[AuthenticationGuardService,AuthorizationGuard],
         data: { title: 'Timetable' }
       },
       {
         path: 'timetable/add-timetable',
         component: AddTimetableComponent,
-        canActivate:[AuthenticationGuardService],
+        canActivate:[AuthenticationGuardService,AuthorizationGuard],
         data: { title: 'Add timetable' }
       },
       {
         path: 'exams',
         component: ExamsComponent,
-        canActivate:[AuthenticationGuardService],
+        canActivate:[AuthenticationGuardService,AuthorizationGuard],
         data: { title: 'Exams List' }
       },
       {
         path: 'exams/add-exam',
         component: AddExamComponent,
-        canActivate:[AuthenticationGuardService],
+        canActivate:[AuthenticationGuardService,AuthorizationGuard],
         data: { title: 'Add Exam' }
       },
       {
         path: 'classes',
         component: ClassesComponent,
-        canActivate:[AuthenticationGuardService],
+        canActivate:[AuthenticationGuardService,AuthorizationGuard],
         data: { title: 'Classes List' }
       },
       {
         path: 'classes/add-class',
         component: AddClassComponent,
-        canActivate:[AuthenticationGuardService],
+        canActivate:[AuthenticationGuardService,AuthorizationGuard],
         data: { title: 'Add Class' }
       },
       {
         path: 'parents',
         component: ParentsComponent,
-        canActivate:[AuthenticationGuardService],
+        canActivate:[AuthenticationGuardService,AuthorizationGuard],
         data: { title: 'Parents List' }
       },
       {
         path: 'parents/add-parent',
         component: AddParentComponent,
-        canActivate:[AuthenticationGuardService],
+        canActivate:[AuthenticationGuardService,AuthorizationGuard],
         data: { title: 'Add Parent' }
       },
       {
         path: 'qualifications',
         component: QualificationsComponent,
-        canActivate:[AuthenticationGuardService],
+        canActivate:[AuthenticationGuardService,AuthorizationGuard],
         data: { title: 'Qualifications List' }
       },
       {
         path: 'qualifications/add-qualification',
         component: AddQualificationComponent,
-        canActivate:[AuthenticationGuardService],
+        canActivate:[AuthenticationGuardService,AuthorizationGuard],
         data: { title: 'Add Qualification' }
       },
       {
         path: 'roleaccess',
         component: RoleAccessComponent,
-        canActivate:[AuthenticationGuardService],
+        canActivate:[AuthenticationGuardService,AuthorizationGuard],
         data: { title: 'Role Access List' }
       },
       {
         path: 'auditlogs',
         component: AuditlogsComponent,
-        canActivate:[AuthenticationGuardService],
+        canActivate:[AuthenticationGuardService,AuthorizationGuard],
         data: { title: 'Audit logs List' },
         children: [
           {
             path: 'add-auditlog',
             component: AddAuditlogComponent,
-            canActivate:[AuthenticationGuardService]
+            canActivate:[AuthenticationGuardService,AuthorizationGuard]
           }
         ]
       },     
@@ -227,25 +227,25 @@ const homeRoutes: Routes = [
       {
         path: 'sections',
         component: SectionsComponent,
-        canActivate:[AuthenticationGuardService],
+        canActivate:[AuthenticationGuardService,AuthorizationGuard],
         data: { title: 'Sections List' }
       },
       {
         path: 'changePassword',
         component: ChangePasswordComponent,
-        canActivate:[AuthenticationGuardService],
+        canActivate:[AuthenticationGuardService,AuthorizationGuard],
         data: { title: 'Change Password' }
       },
       {
         path: 'dashboard',
         component: DashboardComponent,
-        canActivate:[AuthenticationGuardService],
+        canActivate:[AuthenticationGuardService,AuthorizationGuard],
         data: { title: 'Dashboard' }
       },
       {
         path: 'settings',
         component: SettingsComponent,
-        canActivate:[AuthenticationGuardService],
+        canActivate:[AuthenticationGuardService,AuthorizationGuard],
         data: { title: 'Settings' }
       }
     ]

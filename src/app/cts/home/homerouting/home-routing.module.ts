@@ -39,6 +39,8 @@ import { AddQualificationComponent } from '../components/qualifications/addquali
 import { AddParentComponent } from '../components/parents/add-parent/add-parent.component';
 import { ParentsComponent } from '../components/parents/parents.component';
 import { AuthorizationGuard } from 'src/app/core/security/authorization-guard';
+import { ErrorComponent } from '../components/error/error.component';
+
 
 
 
@@ -247,9 +249,13 @@ const homeRoutes: Routes = [
         component: SettingsComponent,
         canActivate:[AuthenticationGuardService,AuthorizationGuard],
         data: { title: 'Settings' }
+      },
+      {
+        path:'app-error',
+        component:ErrorComponent
       }
     ]
-  }
+  } 
    
 ];
 @NgModule({

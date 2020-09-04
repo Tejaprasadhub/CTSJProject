@@ -131,8 +131,11 @@ export class AddBranchComponent implements OnInit {
             }
             this.successMessage = AppConstants.Messages.successMessage;
           }else{
-            this.errorMessage = AppConstants.Messages.errorMessage;
+            this.errorMessage = "Branch code or Title already exists";
           }
+        },
+        error =>{  
+          this.router.navigate(['/admin/app-error'], {  queryParams: { message: window.btoa(error.message)} });     
         });
     }
   }

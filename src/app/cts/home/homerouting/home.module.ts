@@ -50,6 +50,8 @@ import { AddEventComponent } from '../../home/components/events/add-event/add-ev
 import { AddFeeComponent } from '../../home/components/fees/add-fee/add-fee.component';
 import { AddNewsComponent } from '../../home/components/news/add-news/add-news.component';
 import { LayoutComponent } from '../components/layout/layout.component';
+import { ErrorComponent } from '../components/error/error.component';
+
 
 
 
@@ -92,7 +94,8 @@ import { LayoutComponent } from '../components/layout/layout.component';
     AddAchievementComponent,
     AddEventComponent,
     AddFeeComponent,
-    AddNewsComponent
+    AddNewsComponent,
+    ErrorComponent
     
   ],
   imports: [

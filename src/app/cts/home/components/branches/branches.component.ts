@@ -9,6 +9,7 @@ import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
 import * as moment from 'moment';
 import { AppConstants } from 'src/app/cts/app-constants';
+import { AuthorizationGuard } from 'src/app/core/security/authorization-guard';
 
 @Component({
   selector: 'app-branches',
@@ -36,10 +37,15 @@ export class BranchesComponent implements OnInit {
   pageCount:number;
   moment: any = moment;
   AppConstants:any;
+
+  hasAdd:boolean=false;
+  hasEdit:boolean=false;
+  hasDelete:boolean=false;
  
 
   constructor(private BranchesService: BranchesService, private router: Router, private route: ActivatedRoute,private fb: FormBuilder) {
     this.branches = [];
+   
    }
 
   ngOnInit(): void {
@@ -53,6 +59,10 @@ export class BranchesComponent implements OnInit {
     ];
      //to create form with validations
      this.createFilterForm();
+     //Form permissions     
+     this.hasAdd = this.checkPermissions('ADD');
+     this.hasEdit = this.checkPermissions('EDIT');
+     this.hasDelete = this.checkPermissions('DELETE');
   }
   //Search box toggling
   toggleBranch($event: any) {
@@ -160,5 +170,10 @@ export class BranchesComponent implements OnInit {
   getFormat(createddate):string{
    return moment(createddate).format(Paginationutil.getDefaultFormat())
   }
+
+
+  checkPermissions(permissionValue){
+    return  AuthorizationGuard.checkPermission(permissionValue);
+   }
  
 }

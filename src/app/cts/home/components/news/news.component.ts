@@ -9,6 +9,7 @@ import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
 import * as moment from 'moment';
 import { AppConstants } from 'src/app/cts/app-constants';
+import { AuthorizationGuard } from 'src/app/core/security/authorization-guard';
 
 @Component({
   selector: 'app-news',
@@ -169,6 +170,9 @@ export class NewsComponent implements OnInit {
 //to get date format
 getFormat(createddate):string{
   return moment(createddate).format(Paginationutil.getDefaultFormat())
+ }
+ checkPermissions(permissionValue){
+  return  AuthorizationGuard.checkPermission(permissionValue);
  }
 }
 

@@ -99,7 +99,11 @@ export class AddBranchComponent implements OnInit {
 
           })
         }
+      },
+      error =>{  
+        this.router.navigate(['/admin/app-error'], {  queryParams: { message: window.btoa(error.message)} });     
       });
+      
 
   }
 

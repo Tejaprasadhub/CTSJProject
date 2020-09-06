@@ -77,11 +77,16 @@ export class StudentsService {
         }));
   }
 
-  public GetStudentClassWiseExamMarks(requestData) {
+  public GetStudentClassWiseExamMarks(requestData, type) {
     // this.branchesJsonData.next(this.branches);
+    
     const headers = new HttpHeaders().set("Content-Type", "application/json");
-
-    var Url: string = AppConstants.Api.AdminApp + "Students/GetStudentClassWiseExamMarks"
+    if (type == "MARKS") {
+      var Url: string = AppConstants.Api.AdminApp + "Students/GetStudentClassWiseExamMarks"
+    }
+    else {
+      var Url: string = AppConstants.Api.AdminApp + "Students/GetStudentClassWiseExamReports"
+    }
 
     return this.httpClient.post
       (Url, requestData, { headers: headers, withCredentials: true }).pipe(
@@ -89,5 +94,40 @@ export class StudentsService {
           return response;
         }));
   }
-  
+
+  public StudentProfilePicUpload(requestData) {
+    // const headers = new HttpHeaders().set("Content-Type", 'multipart/form-data');
+
+    const headers:HttpHeaders = new HttpHeaders();
+    headers.append("Content-Type", 'multipart/form-data');
+    headers.append("Redirect-On-Request-Failure", 'true');
+
+    var Url: string = AppConstants.Api.AdminApp + "Upload/UploadStudentProfilePic"
+
+    return this.httpClient.post
+      (Url, requestData,
+        {
+          headers: headers, 
+          // withCredentials: true,
+          reportProgress: true, observe: 'events'
+        }
+      ).pipe(
+        map((response: any) => {
+          return response;
+        }));
+  }
+
+  public SubmitStudentClassWiseExamMarks(requestData) {
+    // this.branchesJsonData.next(this.branches);
+    const headers = new HttpHeaders().set("Content-Type", "application/json");
+
+    var Url: string = AppConstants.Api.AdminApp + "Students/SubmitStudentClassWiseExamMarks"
+
+    return this.httpClient.post
+      (Url, requestData, { headers: headers, withCredentials: true }).pipe(
+        map((response: any) => {
+          return response;
+        }));
+  }
+
 }

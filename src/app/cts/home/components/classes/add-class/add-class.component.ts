@@ -142,9 +142,12 @@ export class AddClassComponent implements OnInit {
     if (this.addClassForm.valid) {
       this.formSubmitAttempt = false;
       let customObj = new Classes();
+
       customObj = this.addClassForm.value;
+      debugger
       customObj.id = this.classId;
       customObj.querytype = this.querytype;
+      customObj.name = customObj.class;
 
       //AED Branches API call
       this.ClassesService.AEDClasses(customObj)
@@ -156,8 +159,11 @@ export class AddClassComponent implements OnInit {
             }
             this.successMessage = AppConstants.Messages.successMessage;
           }else{
-            this.errorMessage = AppConstants.Messages.errorMessage;
+            this.errorMessage = "Class name already exists";
           }
+        },
+        error =>{  
+          this.router.navigate(['/admin/app-error'], {  queryParams: { message: window.btoa(error.message)} });     
         });
     }
   }

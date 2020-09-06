@@ -29,10 +29,11 @@ export class AuthenticatedHttpInterceptorService implements HttpInterceptor {
       token = currentUser && currentUser.token;
     }
 
-    let errorRedirectPage = "/app-error";
+    let errorRedirectPage = "/admin/app-error";
 
     let headers = null;
-    if(req.headers.has('Content-Type') == false && req.headers.has('No-Content-Type') == false){
+    if(req.headers.has('Content-Type') == false && req.headers.has('No-Content-Type') == false
+    && req.url.indexOf('Upload/UploadStudentProfilePic') < 0){
       headers = req.headers.set('Authorization',`Bearer ${token}`).set('Content-Type','application/json');
     }else{
       headers = req.headers.set('Authorization',`Bearer ${token}`);

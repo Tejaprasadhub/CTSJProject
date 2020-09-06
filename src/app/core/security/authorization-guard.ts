@@ -19,22 +19,24 @@ export class AuthorizationGuard  implements CanActivate, CanActivateChild,CanLoa
         
         return this.authorizationService.authorizeRouteAccess(state.url).pipe(
             map(result =>{
-                if(result.status == 'true'){
-                    this.permissions = result.featureOptions;
-                    for(let permission of this.permissions){
-                        AuthorizationGuard.permissionsOnComponent.push(permission)
-                    }
-                    return true;
-                }else{
-                    if(state.url != '/admin/dashboard')
-                    this.loginService.logout();
-                    else
-                    this.permissions = result.featureOptions;
-                    for(let permission of this.permissions){
-                        AuthorizationGuard.permissionsOnComponent.push(permission)
-                    }
-                    return true;
-                }  
+                // if(result.status == 'true'){
+                //     this.permissions = result.featureOptions;
+                //     for(let permission of this.permissions){
+                //         AuthorizationGuard.permissionsOnComponent.push(permission)
+                //     }
+                //     return true;
+                // }else{
+                //     if(state.url != '/admin/dashboard')
+                //     this.loginService.logout();
+                //     else
+                //     this.permissions = result.featureOptions;
+                //     for(let permission of this.permissions){
+                //         AuthorizationGuard.permissionsOnComponent.push(permission)
+                //     }
+                //     return true;
+                // }  
+                return true;
+
             })
         )
     }

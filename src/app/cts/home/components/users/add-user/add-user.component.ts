@@ -156,8 +156,11 @@ debugger
             }
             this.successMessage = AppConstants.Messages.successMessage;
           }else{
-            this.errorMessage = AppConstants.Messages.errorMessage;
+            this.errorMessage = "Usertype already exists";
           }
+        },
+        error =>{  
+          this.router.navigate(['/admin/app-error'], {  queryParams: { message: window.btoa(error.message)} });     
         });
     }
   }
@@ -175,4 +178,5 @@ debugger
     this.location.back();
     // this.router.navigate(['/Teachers'], {relativeTo: this.route});
   }
+  
 }

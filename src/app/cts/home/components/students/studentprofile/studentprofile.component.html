@@ -6,13 +6,26 @@
     <table class="table table-sm table-bordered table-striped ">
       <thead>
         <tr>
-          <th scope="col" colspan="2" class="image-div student-container">
-            <img _ngcontent-vsp-c92="" src="./assets/images/avatar.png" class="img-fluid image-logo">
-            <a download="new-filename"><i class="pi pi-pencil"></i></a>
+          <th scope="col" colspan="2" class="image-div student-container">            
+            <img _ngcontent-vsp-c92="" src=".\H:\Temp\3d3b0e17-0461-4fe0-bac3-bb0957afbf89\Attendance.jpg" class="img-fluid image-logo">
+            <input type="file" #file placeholder="Choose file" (change)="uploadFile(file.files)" style="display:none;">
+            <a download="new-filename"><i class="pi pi-pencil" (click)="file.click()"></i></a>
           </th>
         </tr>
       </thead>
       <tbody>
+        <tr *ngIf="progress > 0 || message">
+          <th>   
+            <span class="upload">
+              {{progress}}%
+            </span>        
+          </th>
+          <td>
+            <span class="upload">
+              {{message}}
+            </span>
+          </td>
+        </tr>
         <tr>
           <th scope="row">Student Id</th>
           <td>{{this.basic.id}}</td>
@@ -39,7 +52,14 @@
         </tr>
         <tr>
           <th scope="row">Status</th>
-          <td><button class="btn btn-success">{{this.basic.status}}</button></td>
+          <td>
+            <div class=""  *ngIf="this.basic.status == 'AC'">
+              <button class="btn btn-success">Active</button>
+          </div>
+          <div class=""  *ngIf="this.basic.status == 'NA'">
+              <button class="btn btn-danger">Not Active</button>
+          </div>
+          </td>
         </tr>
       </tbody>
     </table>

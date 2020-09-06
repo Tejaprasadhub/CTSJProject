@@ -19,3 +19,11 @@ export class examswisesubject{
     cutoff:number;
     total:number;
 }
+
+export class examclasswisesubjectmarks{
+    studentId:string;
+    classId:number;
+    examId:number;
+    subjectId:number;
+    marks:string;
+}

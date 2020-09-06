@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, EventEmitter, Output } from '@angular/core';
 import { DropdownService } from 'src/app/cts/shared/services/dropdown.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -7,6 +7,7 @@ import { StudentsService } from 'src/app/cts/shared/services/students.service';
 import { LazyLoadEvent } from 'primeng/api';
 import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
 import { SubjectWiseMarks } from 'src/app/cts/shared/models/students';
+import { HttpEventType } from '@angular/common/http';
 
 @Component({
   selector: 'app-studentprofile',
@@ -34,6 +35,10 @@ export class StudentprofileComponent implements OnInit {
   pageCount: number;
   totalRecords: number;
   cols: any[];
+
+  public progress: number;
+  public message: string;
+  @Output() public onUploadFinished = new EventEmitter();
   constructor(private studentsService: StudentsService) {
     //Get Dropdowns API call
     var studentProfileOptions = ["Basic", "Personal","Address","Gaurdian"];
@@ -98,6 +103,40 @@ export class StudentprofileComponent implements OnInit {
         }
       });
 
+  }
+
+
+  public uploadFile = (files) => {
+    if (files.length === 0) {
+      return;
+    }
+    let fileToUpload = <File>files[0];
+    const formData = new FormData();
+    formData.append('file', fileToUpload, fileToUpload.name);
+
+    this.studentsService.StudentProfilePicUpload(formData)
+    .pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+      event => {
+        if (event.type === HttpEventType.UploadProgress)
+          this.progress = Math.round(100 * event.loaded / event.total);
+        else if (event.type === HttpEventType.Response) {
+          this.message = 'Upload success.';
+          this.onUploadFinished.emit(event.body);
+        }
+      }
+    );
+
+
+
+    // this.http.post('https://localhost:5001/api/upload', formData, {reportProgress: true, observe: 'events'})
+    //   .subscribe(event => {
+    //     if (event.type === HttpEventType.UploadProgress)
+    //       this.progress = Math.round(100 * event.loaded / event.total);
+    //     else if (event.type === HttpEventType.Response) {
+    //       this.message = 'Upload success.';
+    //       this.onUploadFinished.emit(event.body);
+    //     }
+    //   });
   }
 
 

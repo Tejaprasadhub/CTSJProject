@@ -3,6 +3,8 @@ import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { StudentsService } from 'src/app/cts/shared/services/students.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { examclasswisesubjectmarks } from 'src/app/cts/shared/models/exams';
+import { AppConstants } from 'src/app/cts/app-constants';
 
 @Component({
   selector: 'app-studentmarks',
@@ -62,11 +64,31 @@ export class StudentmarksComponent implements OnInit {
     this.errorMessage = "";
     this.successMessage = "";
     this.formSubmitAttempt = true;
+    let marksArray=[];
     if (this.dynamicForm.valid) {
-      this.formSubmitAttempt = false;
-      console.log(this.dynamicForm.value);
+      this.formSubmitAttempt = false;    
+       for(let object of this.fields){
+        var key = object.label;
+        var formObject = this.dynamicForm.value;
+        let customObj = new examclasswisesubjectmarks();
+        customObj.classId = this.classDropDownValue;
+        customObj.examId = this.examDropDownValue;
+        customObj.studentId=this.studentID;
+        customObj.subjectId =object.id;
+        customObj.marks = formObject[key];
+        marksArray.push(customObj);
+      }
+      this.studentsService.SubmitStudentClassWiseExamMarks(marksArray)
+      .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+        if (result.success) {
+          this.successMessage = AppConstants.Messages.successMessage;
+        }else{
+          this.errorMessage = AppConstants.Messages.errorMessage;
+        }
+      });
     }
   }
+   
   resetForm(): void {
     this.dynamicForm.reset();
     this.successMessage = "";
@@ -80,6 +102,8 @@ export class StudentmarksComponent implements OnInit {
     }
   }
   classesdropdownChange(event): void {
+    this.errorMessage = "";
+    this.successMessage = "";
     this.classDropDownValue = event.value;
      //Get Dropdowns API call
      let jsonData = JSON.stringify({
@@ -96,6 +120,8 @@ export class StudentmarksComponent implements OnInit {
     this.GetStudentClassWiseExamMarks(this.classDropDownValue, this.examDropDownValue);
   }
   examsdropdownChange(event): void {
+    this.errorMessage = "";
+    this.successMessage = "";
     this.examDropDownValue = event.value;
     this.GetStudentClassWiseExamMarks(this.classDropDownValue, this.examDropDownValue);
   }
@@ -105,9 +131,10 @@ export class StudentmarksComponent implements OnInit {
       let jsonData = JSON.stringify({
         classid: classvalue,
         examid: examvalue,
-        id: this.studentID
+        id: this.studentID,        
+        type:"MARKS"
       })
-      this.studentsService.GetStudentClassWiseExamMarks(jsonData)
+      this.studentsService.GetStudentClassWiseExamMarks(jsonData,"MARKS")
         .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
           if (result.success) {
             

@@ -171,8 +171,11 @@ export class AddTimetableComponent implements OnInit {
             }
             this.successMessage = AppConstants.Messages.successMessage;
           }else{
-            this.errorMessage = AppConstants.Messages.errorMessage;
+            this.errorMessage = "classid already exists";
           }
+        },
+        error =>{  
+          this.router.navigate(['/admin/app-error'], {  queryParams: { message: window.btoa(error.message)} });     
         });
     }
   }

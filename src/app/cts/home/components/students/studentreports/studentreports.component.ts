@@ -5,6 +5,7 @@ import { LazyLoadEvent, SelectItem } from 'primeng/api/public_api';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Studentreports } from 'src/app/cts/shared/models/studentreports';
+import { StudentsService } from 'src/app/cts/shared/services/students.service';
 
 
 
@@ -16,38 +17,89 @@ import { Studentreports } from 'src/app/cts/shared/models/studentreports';
 export class StudentreportsComponent implements OnInit {
   private ngUnsubscribe = new Subject();
   studentreports: Studentreports[];
-  years: any;
-  exams:any;
+  classes: any;
+  exams: any;
   cols: any[];
   datasource: Studentreports[];
   totalRecords: number;
   loading: boolean;
-  constructor(private fb: FormBuilder,private studentreportsService: StudentreportsService) {
-    this.years = [
-      { label: '1st Class', value: '1' },
-      { label: '2nd Class', value: '2' },
-      { label: '3rd Class', value: '3' }
-    ];
+  studentID: any;
+  classID:any = 0;  
+  errorMessage: string = "";
+  successMessage: string = "";  
+  classDropDownValue: any;
+  examDropDownValue: any;
+  reportsData:any;
+  subjects:any[]=[];
+  constructor(private fb: FormBuilder,private studentreportsService: StudentreportsService,private studentsService: StudentsService) {
+    this.studentID = "VSKP00001";
 
-    this.exams=[
-      {label:"Exam1", value:"1"},
-      {label:"Exam2", value:"2"},
-      {label:"Exam3", value:"3"}
-    ]
+
+    //Get Dropdowns API call
+    let jsonData = JSON.stringify({
+      dropdownfor :"classes",
+      id: this.studentID,
+      classid:this.classID
+    })
+    this.studentsService.getDropdowns(jsonData)
+      .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+        if (result.success) {
+          this.classes = result.data.classes;
+        }
+      });
+
    }
 
-  ngOnInit(): void {
-    this.studentreportsService.getStudentreports();
-    this.studentreportsService.studentreportsJson.pipe(takeUntil(this.ngUnsubscribe)).subscribe(Studentreports => {
-      this.datasource = Studentreports;
-      this.totalRecords = this.datasource.length;
-    });
+  ngOnInit(): void {   
     this.cols = [
       { field: 'subject', header: 'Subject' },
-      { field: 'marksobtained', header: 'Marks Obtained' },
-      { field: 'totalmarks', header: 'Total Marks' },
+      { field: 'obtained', header: 'Marks Obtained' },
+      { field: 'cutoff', header: 'Cut Off' },
+      { field: 'total', header: 'Total Marks' },
       { field: 'status', header: 'Status' }
     ];    
     this.loading = true;
+  }
+
+  classesdropdownChange(event): void {
+    this.errorMessage = "";
+    this.successMessage = "";
+    this.classDropDownValue = event.value;
+     //Get Dropdowns API call
+     let jsonData = JSON.stringify({
+      dropdownfor :"exams",
+      id: this.studentID,
+      classid:this.classDropDownValue 
+    })
+    this.studentsService.getDropdowns(jsonData)
+      .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+        if (result.success) {
+          this.exams = result.data.exams;
+        }
+      });
+    this.GetStudentClassWiseExamMarks(this.classDropDownValue, this.examDropDownValue);
+  }
+  examsdropdownChange(event): void {
+    this.errorMessage = "";
+    this.successMessage = "";
+    this.examDropDownValue = event.value;
+    this.GetStudentClassWiseExamMarks(this.classDropDownValue, this.examDropDownValue);
+  }
+  GetStudentClassWiseExamMarks(classvalue, examvalue) {
+    if (classvalue > 0 && examvalue > 0) {
+      let jsonData = JSON.stringify({
+        classid: classvalue,
+        examid: examvalue,
+        id: this.studentID,
+        type:"REPTS"
+      })
+      this.studentsService.GetStudentClassWiseExamMarks(jsonData,"REPTS")
+        .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+          if (result.success) {         
+           this.reportsData = result.data[0];
+           this.subjects = result.data[0].subjects;
+          }
+        });
+    }
   }
 }

@@ -5,6 +5,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { examclasswisesubjectmarks } from 'src/app/cts/shared/models/exams';
 import { AppConstants } from 'src/app/cts/app-constants';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-studentmarks',
@@ -32,13 +33,16 @@ export class StudentmarksComponent implements OnInit {
   fields: any[];
 
   dynamicForm: FormGroup;
-  constructor(private studentsService: StudentsService) {
+  constructor(private studentsService: StudentsService,private route: ActivatedRoute) {    
+   
+  }
+  ngOnInit(): void {
+    this.route.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params => {     
+      this.studentID = window.atob(params['id']);      
+    });
 
-    this.studentID = "VSKP00001";
-
-
-    //Get Dropdowns API call
-    let jsonData = JSON.stringify({
+     //Get Dropdowns API call
+     let jsonData = JSON.stringify({
       dropdownfor :"classes",
       id: this.studentID,
       classid:this.classID
@@ -49,10 +53,6 @@ export class StudentmarksComponent implements OnInit {
           this.classes = result.data.classes;
         }
       });
-
-
-  }
-  ngOnInit(): void {
     this.radioButtonValue = 'P';
   }
 

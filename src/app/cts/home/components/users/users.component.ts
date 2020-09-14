@@ -13,7 +13,12 @@ import * as moment from 'moment';
 import { AppConstants } from 'src/app/cts/app-constants';
 import { AuthorizationGuard } from 'src/app/core/security/authorization-guard';
 
-
+enum UserTypes {
+  'PART' = "Parent",
+  'TCHR' = "Teacher",
+  'DEOP' = "Data Entry Operator",
+  'ADMN' = "Admin"
+}
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
@@ -48,23 +53,16 @@ export class UsersComponent implements OnInit {
   constructor(private UsersService: UsersService, private router: Router,private route:ActivatedRoute, private fb: FormBuilder) {
     this.usertypes = [
       { label: 'Admin', value: 'ADMN' },
-      { label: 'DataEntryOperator', value: 'DEOR' },
-      { label: 'Teacher', value: 'TCHR' }
+      { label: 'DataEntryOperator', value: 'DEOP' },
+      { label: 'Teacher', value: 'TCHR' },
+      { label: 'Parent', value: 'PART' }
     ];
     this.status = [
       { label: 'Active', value: 'AC' },
-      { label: 'InActive', value: 'NA' },
+      { label: 'In Active', value: 'NA' },
     ];
     this.users = []
   }
-
-
-
-
-
-
-
-
 
   toggleClass($event: any) {
     if (this.myFiltersDiv.nativeElement.classList.contains('transform-active'))

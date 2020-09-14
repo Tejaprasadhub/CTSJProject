@@ -177,7 +177,11 @@ loadGrids(pagingData){
 }
 //API Integration ends here
   rowExpand(event, data) {
-    this.router.navigate(['student',{ outlets: { detail: ['student-profile'] } }], {relativeTo: this.route});
+    // this.router.navigate(['student',{ outlets: { detail: ['student-profile'] } }], {relativeTo: this.route});
+    this.router.navigate(['student',{ outlets: { detail: ['student-profile'] } }], { relativeTo: this.route,
+      queryParams: { 
+        id: window.btoa(event.data.id) }
+     });
   }
   //Crud events
   addNew($event: any) {

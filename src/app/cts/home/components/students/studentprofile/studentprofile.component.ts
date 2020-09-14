@@ -8,6 +8,7 @@ import { LazyLoadEvent } from 'primeng/api';
 import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
 import { SubjectWiseMarks } from 'src/app/cts/shared/models/students';
 import { HttpEventType } from '@angular/common/http';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-studentprofile',
@@ -35,22 +36,13 @@ export class StudentprofileComponent implements OnInit {
   pageCount: number;
   totalRecords: number;
   cols: any[];
+  studentId:string;
 
   public progress: number;
   public message: string;
   @Output() public onUploadFinished = new EventEmitter();
-  constructor(private studentsService: StudentsService) {
-    //Get Dropdowns API call
-    var studentProfileOptions = ["Basic", "Personal","Address","Gaurdian"];
-    this.studentsService.GetStudentProfile(studentProfileOptions)
-      .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
-        if (result.success) {
-          this.basic = result.data.Basic[0];
-          this.personal = result.data.Personal[0];
-          this.address = result.data.Address[0];
-          this.gaurdian = result.data.Gaurdian[0];
-        }
-      });
+  constructor(private studentsService: StudentsService,private route: ActivatedRoute) {
+   
   }
 
   ngOnInit(): void {
@@ -60,6 +52,22 @@ export class StudentprofileComponent implements OnInit {
       { field: 'marks', header: 'Marks' },
       { field: 'status', header: 'Status' }
     ];
+
+    this.route.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params => {     
+      this.studentId = window.atob(params['id']);      
+    });
+
+     //Get Student Profile Details
+     var studentProfileOptions = ["Basic", "Personal","Address","Gaurdian"];
+     this.studentsService.GetStudentProfile(studentProfileOptions,this.studentId)
+       .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+         if (result.success) {
+           this.basic = result.data.Basic[0];
+           this.personal = result.data.Personal[0];
+           this.address = result.data.Address[0];
+           this.gaurdian = result.data.Gaurdian[0];
+         }
+       });
   }
 
   tabChange($event) {
@@ -72,7 +80,7 @@ export class StudentprofileComponent implements OnInit {
     //Get Dropdowns API call  
     var tabPanels = [];
     tabPanels.push(tabPanel)
-    this.studentsService.GetStudentProfile(tabPanels)
+    this.studentsService.GetStudentProfile(tabPanels,this.studentId)
       .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
         if (result.success) {
           if (tabPanel == "Academic") {

@@ -6,6 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Studentreports } from 'src/app/cts/shared/models/studentreports';
 import { StudentsService } from 'src/app/cts/shared/services/students.service';
+import { ActivatedRoute } from '@angular/router';
 
 
 
@@ -31,22 +32,8 @@ export class StudentreportsComponent implements OnInit {
   examDropDownValue: any;
   reportsData:any;
   subjects:any[]=[];
-  constructor(private fb: FormBuilder,private studentreportsService: StudentreportsService,private studentsService: StudentsService) {
-    this.studentID = "VSKP00001";
-
-
-    //Get Dropdowns API call
-    let jsonData = JSON.stringify({
-      dropdownfor :"classes",
-      id: this.studentID,
-      classid:this.classID
-    })
-    this.studentsService.getDropdowns(jsonData)
-      .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
-        if (result.success) {
-          this.classes = result.data.classes;
-        }
-      });
+  constructor(private route: ActivatedRoute,private fb: FormBuilder,private studentreportsService: StudentreportsService,private studentsService: StudentsService) {
+    
 
    }
 
@@ -59,6 +46,23 @@ export class StudentreportsComponent implements OnInit {
       { field: 'status', header: 'Status' }
     ];    
     this.loading = true;
+
+    this.route.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params => {     
+      this.studentID = window.atob(params['id']);      
+    });
+
+     //Get Dropdowns API call
+     let jsonData = JSON.stringify({
+      dropdownfor :"classes",
+      id: this.studentID,
+      classid:this.classID
+    })
+    this.studentsService.getDropdowns(jsonData)
+      .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+        if (result.success) {
+          this.classes = result.data.classes;
+        }
+      });
   }
 
   classesdropdownChange(event): void {

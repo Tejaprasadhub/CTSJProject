@@ -7,10 +7,11 @@ import { Subject } from 'rxjs';
 import { Location } from '@angular/common';
 import { Utility } from 'src/app/cts/shared/models/utility';
 import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
-import { Exams } from 'src/app/cts/shared/models/exams';
+import { Exams, examclasswisesubjects } from 'src/app/cts/shared/models/exams';
 import { AppConstants } from 'src/app/cts/app-constants';
 import { SelectItem } from 'primeng/api/selectitem';
 import { DropdownService } from 'src/app/cts/shared/services/dropdown.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-add-exam',
@@ -134,10 +135,27 @@ export class AddExamComponent implements OnInit {
     if (this.addExamForm.valid) {
       this.formSubmitAttempt = false;
       let customObj = new Exams();
-      customObj = this.addExamForm.value;
       customObj.id = this.examId;
       customObj.querytype = this.querytype;
+      customObj.year = this.getFormat(this.addExamForm.value['year']);
+      customObj.title = this.addExamForm.value['title'];
+      customObj.status = this.addExamForm.value['status'];
 
+      let classWiseSubjectsArray=[];
+      for(let classObject of this.addExamForm.value['classes']){
+        for(let object of  this.examwisesubjects){
+          let customObj = new examclasswisesubjects();
+          customObj.classid = classObject;
+          customObj.subjectid =object.subjectid;
+          customObj.cutoff =object.cutoff;
+          customObj.total =object.total;
+          classWiseSubjectsArray.push(customObj);
+        }
+      }
+
+      customObj.subjects = classWiseSubjectsArray;
+      console.log(customObj)
+      
       //AED Branches API call
       this.ExamsService.AEDExams(customObj)
         .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
@@ -145,6 +163,7 @@ export class AddExamComponent implements OnInit {
             // this.branches= result.data;    
             if (this.formType == "create") {
             this.addExamForm.reset();
+            this.examwisesubjects = [];
             }
             this.successMessage = AppConstants.Messages.successMessage;
           }else{
@@ -153,6 +172,10 @@ export class AddExamComponent implements OnInit {
         });
     }
   }
+
+  getFormat(createddate):string{
+    return moment(createddate).format(Paginationutil.getServerSideYearFormat())
+   }
 
   resetForm(): void {
     this.addExamForm.reset();

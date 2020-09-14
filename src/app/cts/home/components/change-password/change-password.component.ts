@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 import { CustomPasswordValidator } from './custom-password-validator';
 
 @Component({
@@ -15,11 +16,12 @@ export class ChangePasswordComponent implements OnInit {
   errorMessage:string="";
   successMessage:string="";
   isRequired:boolean=false;
+  matchPassword:boolean=false;
   oldPassword:  FormControl;
   newPassword: FormControl;
   confirmPassword: FormControl;
 
-  constructor(private fb: FormBuilder, private router: Router) { }
+  constructor(private fb: FormBuilder, private router: Router, private location: Location) { }
 
   ngOnInit(): void {
     this.createFormControls();
@@ -27,9 +29,9 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   createFormControls(){
-    this.oldPassword = new FormControl('', { validators: [Validators.required],updateOn:'change'});
-    this.newPassword =  new FormControl('', { validators: [Validators.required],updateOn:'change' }),
-    this.confirmPassword = new FormControl('', { validators: [Validators.required,CustomPasswordValidator.MatchPassword],updateOn:'change' })
+    this.oldPassword = new FormControl('', { validators: [Validators.required,Validators.minLength(8),Validators.pattern('^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$')],updateOn:'change'});
+    this.newPassword =  new FormControl('', { validators: [Validators.required,Validators.minLength(8),Validators.pattern('^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$')],updateOn:'change' }),
+    this.confirmPassword = new FormControl('', { validators: [Validators.required,Validators.minLength(8),Validators.pattern('^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$'),CustomPasswordValidator.MatchPassword],updateOn:'change' })
   }
 
   createForm(){
@@ -44,12 +46,18 @@ export class ChangePasswordComponent implements OnInit {
     this.errorMessage="";
     this.successMessage="";
     this.formSubmitAttempt = true;
+    console.log(this.changePasswordForm.value);
     if(this.changePasswordForm.valid){
       this.formSubmitAttempt=false;
       console.log(this.changePasswordForm.value);
       this.changePasswordForm.reset();
       this.successMessage="Your changes have been successfully saved";
     }
+  }
+
+  
+  list(): void {
+    this.location.back();
   }
 
 }

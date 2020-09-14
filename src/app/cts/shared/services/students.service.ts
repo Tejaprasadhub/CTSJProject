@@ -38,14 +38,18 @@ export class StudentsService {
         }));
   }
 
-  public GetStudentProfile(pagingData) {
+  public GetStudentProfile(pagingData,studentId) {
     // this.branchesJsonData.next(this.branches);
     const headers = new HttpHeaders().set("Content-Type", "application/json");
 
-    var loginUrl: string = AppConstants.Api.AdminApp + "Students/GetStudentProfile"
+    var loginUrl: string = AppConstants.Api.AdminApp + "Students/GetStudentProfile";
+    let requestData=JSON.stringify({
+      data:pagingData,
+      stduentid:studentId
+    });
 
     return this.httpClient.post
-      (loginUrl, pagingData, { headers: headers, withCredentials: true }).pipe(
+      (loginUrl, requestData, { headers: headers, withCredentials: true }).pipe(
         map((response: any) => {
           return response;
         }));

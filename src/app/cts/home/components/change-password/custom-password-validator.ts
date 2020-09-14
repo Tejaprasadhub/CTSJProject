@@ -4,20 +4,31 @@ export class CustomPasswordValidator {
     static MatchPassword(AC:AbstractControl){
         const formGroup = AC.parent;
         if(formGroup){
-            const passwordControl = formGroup.get('newPassword');
-            const confirmPasswordControl = formGroup.get('confirmPassword');
-            debugger
-            if(passwordControl && confirmPasswordControl){
-                const password = passwordControl.value;
+            const oldPasswordControl = formGroup.get('oldPassword');
+            const newPasswordControl = formGroup.get('newPassword');
+            const confirmPasswordControl = formGroup.get('confirmPassword');            
+            // if(newPasswordControl && confirmPasswordControl && oldPasswordControl){
+            //     const newPassword = newPasswordControl.value;
+            //     const confirmPassword = confirmPasswordControl.value;                
+            //     const oldPassword = oldPasswordControl.value;                
+            //     if(newPassword === confirmPassword && oldPassword !== newPassword){                  
+            //         return {matchPassword:false}
+            //     }else{
+            //         return null;
+            //     }
+            // }
+
+            if(newPasswordControl && confirmPasswordControl){
+                const newPassword = newPasswordControl.value;
                 const confirmPassword = confirmPasswordControl.value;
-                if(password !== confirmPassword){
-                    return {matchPassword:true}
+                if(newPassword !== confirmPassword){
+                    return {matchPassword :true};
                 }else{
-                    return {matchPassword:false}
+                    return null;
                 }
             }
         }
-        return {matchPassword:false}
+        return null;
     }
 }
 

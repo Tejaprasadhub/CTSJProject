@@ -17,7 +17,7 @@ export class SettingsComponent implements OnInit {
   formSubmitAttempt: boolean = false;
   smsDiv: boolean = false;
   emailDiv: boolean = false;
-  isRequired: boolean = false;
+  isRequired: boolean = true;
 
   constructor(private fb: FormBuilder) {
     this.sms = [

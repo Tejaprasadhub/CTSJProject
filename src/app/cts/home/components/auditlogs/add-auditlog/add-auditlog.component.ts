@@ -57,7 +57,7 @@ export class AddAuditlogComponent implements OnInit {
   }
   ngOnInit(): void {
     this.route.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params => {     
-      this.tablecode = window.atob(params['type']);
+      this.tablecode = window.atob(params['code']);      
     });
    
     this.cols = [
@@ -91,7 +91,7 @@ export class AddAuditlogComponent implements OnInit {
  //Api Integration Starts from here
  onPageChange(event:LazyLoadEvent){
   let pageObject = Paginationutil.getGridFilters(event,this.advancedFilterValue);
-  pageObject.tablecode='USER';
+  pageObject.tablecode=this.tablecode;
   this.currentPage = pageObject.currentPage;
 
   let isinitialload = this.pageCount == undefined || this.pageCount == null;

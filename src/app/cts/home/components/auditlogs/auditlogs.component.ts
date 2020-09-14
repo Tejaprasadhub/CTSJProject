@@ -31,7 +31,8 @@ export class AuditlogsComponent implements OnInit {
 
   ngOnInit(): void {
     this.cols = [
-      { field: 'id', header: 'S.no' },
+      // { field: 'id', header: 'S.no' },
+      { field: 'code', header: 'Code' },
       { field: 'tablename', header: 'Audit Log Table' },
     ];
     this.loading = true;
@@ -86,7 +87,10 @@ export class AuditlogsComponent implements OnInit {
   //API Integration ends here
 
   rowExpand(event, data) {
-    this.router.navigate(['add-auditlog'], { relativeTo: this.route });
+    this.router.navigate(['add-auditlog'], { relativeTo: this.route,
+      queryParams: { 
+        code: window.btoa(event.data.code) }
+     });
   }
 
 }

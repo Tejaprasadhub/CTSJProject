@@ -74,6 +74,10 @@ export class Paginationutil {
         return AppConstants.DateTimeFormat.serversidedateformat;
     }
 
+    static getServerSideYearFormat(){
+        return AppConstants.DateTimeFormat.serversideyearformat;
+    }
+
     static getAngularDateFormat(){
         return AppConstants.DateTimeFormat.angulardateformat;
     }

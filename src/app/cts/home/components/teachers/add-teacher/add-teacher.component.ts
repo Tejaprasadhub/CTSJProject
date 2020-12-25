@@ -24,8 +24,8 @@ import { AppConstants } from 'src/app/cts/app-constants';
 export class AddTeacherComponent implements OnInit {
   branches: SelectItem[] = [];
   gender: SelectItem[] = [];
-  qualification: SelectItem[];
-  experience: SelectItem[];
+  qualification: SelectItem[] = [];
+  experience: SelectItem[] = [];
   teacherId: string;
   formType: string;
   pageTitle: string;
@@ -33,9 +33,9 @@ export class AddTeacherComponent implements OnInit {
   isDisabled: boolean = false;
   isRequired: boolean = false;
   display: boolean = false;
-  expertiseIn: SelectItem[];
-  associatedClasses: any;
-  associatedSections: SelectItem[];
+  expertiseIn: SelectItem[] = [];
+  associatedClasses: SelectItem[] = [];
+  associatedSections: SelectItem[] = [];
   private ngUnsubscribe = new Subject();
   //to create Teacher From 
   addTeacherForm: FormGroup;
@@ -73,7 +73,8 @@ export class AddTeacherComponent implements OnInit {
 
   
 
-  ngOnInit(): void {// On page load
+  ngOnInit(): void {
+    // On page load
     //to read url parameters
     this.route.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params => {
       this.teacherId = window.atob(params['id']);

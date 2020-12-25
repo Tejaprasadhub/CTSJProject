@@ -13,7 +13,8 @@ import { TopbarComponent } from '../../home/components/topbar/topbar.component';
 import { MenubarComponent } from '../../home/components/menubar/menubar.component';
 import { TilesComponent } from '../../home/components/tiles/tiles.component';
 import { StudentsComponent } from '../../home/components/students/students.component';
-// import { TeachersComponent } from '../../home/components/teachers/teachers.component';
+import { TeachersComponent } from '../../home/components/teachers/teachers.component';
+
 import { UsersComponent } from '../../home/components/users/users.component';
 import { ExamsComponent } from '../../home/components/exams/exams.component';
 import { ClassesComponent } from '../../home/components/classes/classes.component';
@@ -26,7 +27,7 @@ import { StudenteditComponent } from '../../home/components/students/studentedit
 import { StudentreportsComponent } from '../../home/components/students/studentreports/studentreports.component';
 import { StudentmarksComponent } from '../../home/components/students/studentmarks/studentmarks.component';
 import { StudentmoreComponent } from '../../home/components/students/studentmore/studentmore.component';
-// import { AddTeacherComponent } from '../../home/components/teachers/add-teacher/add-teacher.component';
+import { AddTeacherComponent } from '../../home/components/teachers/add-teacher/add-teacher.component';
 import { AddUserComponent } from '../../home/components/users/add-user/add-user.component';
 import { ChangePasswordComponent } from '../../home/components/change-password/change-password.component';
 import { SectionsComponent } from '../../home/components/sections/sections.component';
@@ -62,7 +63,7 @@ import { ErrorComponent } from '../components/error/error.component';
     MenubarComponent,
     TilesComponent,
     StudentsComponent,
-    // TeachersComponent,
+    TeachersComponent,
     UsersComponent,
     ExamsComponent,
     ClassesComponent,
@@ -72,7 +73,7 @@ import { ErrorComponent } from '../components/error/error.component';
     StudentreportsComponent,
     StudentmarksComponent,
     StudentmoreComponent,
-    // AddTeacherComponent,
+    AddTeacherComponent,
     AddUserComponent,
     ChangePasswordComponent,
     SectionsComponent,

@@ -64,9 +64,16 @@ const homeRoutes: Routes = [
       },
       {
         path: 'teachers',       
-        loadChildren: () => import('../components/teachers/teachers.module').then(m => m.TeachersModule),
-        // component: TeachersComponent,
-        // data: { title: 'Teachers List' }
+        // loadChildren: () => import('../components/teachers/teachers.module').then(m => m.TeachersModule),
+        component: TeachersComponent,
+        canActivate:[AuthenticationGuardService,AuthorizationGuard],
+        data: { title: 'Teachers List' }
+      },
+      {
+        path: 'teachers/add-teacher',       
+        component: AddTeacherComponent,
+        canActivate:[AuthenticationGuardService,AuthorizationGuard],
+        data: { title: 'Teachers List' }
       },
       {
         path: 'students/add-student',

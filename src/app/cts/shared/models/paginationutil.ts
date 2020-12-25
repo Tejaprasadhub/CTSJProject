@@ -30,8 +30,15 @@ export class Paginationutil {
        
 
         let columnLevelFilter = Object.keys(Table.filters).map((key) => {
+            if(key != "dob")    {     
             let comparison = `LIKE '%${Table.filters[key].value}%'`;
             return `(${key} ${comparison})`
+            }
+            else{
+                let comparison = `< '${Table.filters[key].value}'`;
+                return `(${key} ${comparison})`
+            }
+           
         }).join(' AND ')
 
         
@@ -80,5 +87,9 @@ export class Paginationutil {
 
     static getAngularDateFormat(){
         return AppConstants.DateTimeFormat.angulardateformat;
+    }
+
+    static getFilterDateFormat(){
+        return AppConstants.DateTimeFormat.filterdateformat;
     }
 }

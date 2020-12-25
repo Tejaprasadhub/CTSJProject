@@ -26,13 +26,11 @@
                     <span>Qualification</span><br>
                     <p-multiSelect [options]="qualifications" (onChange)="multiselectSearch($event,'qualification_id')"
                         formControlName="tQualification" placeholder="Select Qualifications" class="w-100">
-
-
                     </p-multiSelect>
                 </div>
                 <div class="col-md-3">
                     <span>Date Of Birth</span><br>
-                    <p-calendar placeholder="Select Date" formControlName="tDateOfBirth"
+                    <p-calendar #td placeholder="Select Date" formControlName="tDateOfBirth" (onSelect)="dt.filter(getFilterFormat(td.value),'dob','')"
                         [inputStyle]="{'width':'100% !important'}" [showIcon]="true"></p-calendar>
                 </div>
                 <div class="col-md-3">

@@ -31,7 +31,8 @@ export class SubjectsComponent implements OnInit {
   position: string;
   filtersForm: FormGroup;
   toBeDeletedId:any;
-
+  status: SelectItem[] = [];
+  usertypes: any[];
   //pagination and api integration starts from here
   numberOfPages:number =10;
   totalcount:number=0;
@@ -42,6 +43,16 @@ export class SubjectsComponent implements OnInit {
 
   constructor(private SubjectsService: SubjectsService, private router: Router,private route:ActivatedRoute,private fb: FormBuilder) {
     this.subjects = [];
+    this.status = [
+      { label: 'Active', value: 'AC' },
+      { label: 'InActive', value: 'NA' }
+    ];
+    this.usertypes = [
+      { label: 'Admin', value: 'ADMN' },
+      { label: 'DataEntryOperator', value: 'DEOP' },
+      { label: 'Teacher', value: 'TCHR' },
+      { label: 'Parent', value: 'PART' }
+    ];
   }
 
   public ngOnInit() {
@@ -152,6 +163,9 @@ viewSubject(id):void{
     this.filtersForm = this.fb.group({
       'tcode': new FormControl(''),
       'tname': new FormControl(''),
+      'tcreateddate': new FormControl(''),    
+      'tusertype': new FormControl(''),     
+      'tstatus': new FormControl('') 
     });
   }
   filterSubmit(): void {
@@ -168,5 +182,8 @@ viewSubject(id):void{
    }
    checkPermissions(permissionValue){
     return  AuthorizationGuard.checkPermission(permissionValue);
+   }
+   getFilterFormat(createddate):string{
+    return moment(createddate).format(Paginationutil.getFilterDateFormat())
    }
 }

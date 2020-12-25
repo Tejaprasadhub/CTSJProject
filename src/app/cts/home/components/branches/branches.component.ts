@@ -27,7 +27,8 @@ export class BranchesComponent implements OnInit {
   errorMessage: string = "";
   successMessage: string = "";
   toBeDeletedId:any;
-
+  usertypes: any[];
+  status: SelectItem[] = [];
   //pagination and api integration starts from here
   numberOfPages:number =10;
   totalcount:number=0;
@@ -42,7 +43,16 @@ export class BranchesComponent implements OnInit {
 
   constructor(private BranchesService: BranchesService, private router: Router, private route: ActivatedRoute,private fb: FormBuilder) {
     this.branches = [];
-   
+    this.usertypes = [
+      { label: 'Admin', value: 'ADMN' },
+      { label: 'DataEntryOperator', value: 'DEOP' },
+      { label: 'Teacher', value: 'TCHR' },
+      { label: 'Parent', value: 'PART' }
+    ];
+    this.status = [
+      { label: 'Active', value: 'AC' },
+      { label: 'InActive', value: 'NA' }
+    ];
    }
 
   ngOnInit(): void {
@@ -148,7 +158,10 @@ export class BranchesComponent implements OnInit {
    createFilterForm() {
     this.filtersForm = this.fb.group({
       'ttitle': new FormControl(''),
-      'tcode': new FormControl('')     
+      'tcode': new FormControl(''),
+      'tcreateddate': new FormControl(''),    
+      'tusertype': new FormControl(''),     
+      'tstatus': new FormControl('')         
     });
   }
   //Filter Submit method
@@ -168,5 +181,7 @@ export class BranchesComponent implements OnInit {
   checkPermissions(permissionValue){
     return  AuthorizationGuard.checkPermission(permissionValue);
    }
- 
+   getFilterFormat(createddate):string{
+    return moment(createddate).format(Paginationutil.getFilterDateFormat())
+   }
 }

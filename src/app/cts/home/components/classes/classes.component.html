@@ -28,6 +28,22 @@
                     (onChange)="dt.filter(ns.value,'noofsections','')"
                         placeholder="Select No of Sections"></p-dropdown>
                 </div>
+                <div class="col-md-3">
+                    <span>Created On</span><br>
+                    <p-calendar #td placeholder="Select Date" formControlName="tcreateddate" (onSelect)="dt.filter(getFilterFormat(td.value),'dob','')"
+                        [inputStyle]="{'width':'100% !important'}" [showIcon]="true"></p-calendar>
+                </div>
+                <div class="col-md-3">
+                  <span>User Type</span><br>
+                  <p-dropdown [options]="usertypes" class="w-100" formControlName="tusertype" placeholder="Select User Type" 
+                      ></p-dropdown>
+              </div>
+              <div class="col-md-3">
+                <span>Status</span><br>
+                <p-dropdown [options]="status" class="w-100" formControlName="tstatus" placeholder="Select Status" 
+                    ></p-dropdown>
+            </div>
+                <div class="col-md-3"></div>
                 <div class="col-md-3"></div>
                 <div class="col-md-3 text-right search-buttons">
                     <button pButton type="submit" icon="pi pi-search" label="Search"

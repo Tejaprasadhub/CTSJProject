@@ -31,7 +31,8 @@ export class ParentsComponent implements OnInit {
   toBeDeletedId:any;
   errorMessage:string="";
   successMessage:string="";
-
+  status: SelectItem[] = [];
+  usertypes: any[];
   //pagination and api integration starts from here
   numberOfPages:number =10;
   totalcount:number=0;
@@ -42,6 +43,16 @@ export class ParentsComponent implements OnInit {
 
   constructor(private ParentsService: ParentsService, private router: Router, private route: ActivatedRoute,private fb: FormBuilder) {
     this.parents = [];
+    this.status = [
+      { label: 'Active', value: 'AC' },
+      { label: 'InActive', value: 'NA' }
+    ];
+    this.usertypes = [
+      { label: 'Admin', value: 'ADMN' },
+      { label: 'DataEntryOperator', value: 'DEOP' },
+      { label: 'Teacher', value: 'TCHR' },
+      { label: 'Parent', value: 'PART' }
+    ];
   }
 
   public ngOnInit() {
@@ -155,7 +166,10 @@ loadGrids(pagingData){
       'tlname': new FormControl(''),
       'tmobile': new FormControl(''),
       'tgender': new FormControl(''),
-      'temail': new FormControl('')
+      'temail': new FormControl(''),
+      'tcreateddate': new FormControl(''),    
+      'tusertype': new FormControl(''),     
+      'tstatus': new FormControl('') 
     });
   }
 
@@ -175,6 +189,9 @@ getFormat(createddate):string{
 
  checkPermissions(permissionValue){
   return  AuthorizationGuard.checkPermission(permissionValue);
+ }
+ getFilterFormat(createddate):string{
+  return moment(createddate).format(Paginationutil.getFilterDateFormat())
  }
 }
 

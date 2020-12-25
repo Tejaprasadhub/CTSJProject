@@ -30,6 +30,8 @@ export class ClassesComponent implements OnInit {
   sections: SelectItem[] = [];
   toBeDeletedId:any;
   errorMessage: string = "";
+  status: SelectItem[] = [];
+  usertypes: any[];
   successMessage: string = "";
   //pagination and api integration starts from here
   numberOfPages:number =10;
@@ -44,6 +46,16 @@ export class ClassesComponent implements OnInit {
     this.sections = [
       { label: '1-section', value: '1' },
       { label: '2-sections', value: '2' }
+    ];
+    this.status = [
+      { label: 'Active', value: 'AC' },
+      { label: 'InActive', value: 'NA' }
+    ];
+    this.usertypes = [
+      { label: 'Admin', value: 'ADMN' },
+      { label: 'DataEntryOperator', value: 'DEOP' },
+      { label: 'Teacher', value: 'TCHR' },
+      { label: 'Parent', value: 'PART' }
     ];
   }
 
@@ -152,7 +164,10 @@ loadGrids(pagingData){
    createFilterForm() {
     this.filtersForm = this.fb.group({
       'tclass': new FormControl(''),
-      'tsection': new FormControl('')
+      'tsection': new FormControl(''),
+      'tcreateddate': new FormControl(''),    
+      'tusertype': new FormControl(''),     
+      'tstatus': new FormControl('') 
     });
   }
 
@@ -172,6 +187,9 @@ getFormat(createddate):string{
 
  checkPermissions(permissionValue){
   return  AuthorizationGuard.checkPermission(permissionValue);
+ }
+ getFilterFormat(createddate):string{
+  return moment(createddate).format(Paginationutil.getFilterDateFormat())
  }
 }
 

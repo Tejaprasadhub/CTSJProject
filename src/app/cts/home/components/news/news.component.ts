@@ -22,6 +22,8 @@ export class NewsComponent implements OnInit {
   news: News[];
   totalRecords: number;
   cols: any[];
+  status: SelectItem[] = [];
+  usertypes: any[];
   @ViewChild('myFiltersDiv') myFiltersDiv: ElementRef;
   loading: boolean;
   display: boolean = false;
@@ -39,11 +41,22 @@ export class NewsComponent implements OnInit {
   advancedFilterValue: string = "";
   currentPage: number = 1;
   pageCount: number;
+
   constructor(private NewsService: NewsService, private router: Router, private route: ActivatedRoute, private fb: FormBuilder) {
     this.news = [];
     this.branchids = [
       { label: 'skota', value: '1' },
       { label: 'boddam', value: '2' }
+    ];
+    this.status = [
+      { label: 'Active', value: 'AC' },
+      { label: 'InActive', value: 'NA' }
+    ];
+    this.usertypes = [
+      { label: 'Admin', value: 'ADMN' },
+      { label: 'DataEntryOperator', value: 'DEOP' },
+      { label: 'Teacher', value: 'TCHR' },
+      { label: 'Parent', value: 'PART' }
     ];
   }
 
@@ -154,7 +167,10 @@ export class NewsComponent implements OnInit {
   createFilterForm() {
     this.filtersForm = this.fb.group({
       'ttitle': new FormControl(''),
-      'tbranchid': new FormControl('')
+      'tbranchid': new FormControl(''),
+      'tcreateddate': new FormControl(''),    
+      'tusertype': new FormControl(''),     
+      'tstatus': new FormControl('') 
     });
   }
 
@@ -173,6 +189,10 @@ getFormat(createddate):string{
  }
  checkPermissions(permissionValue){
   return  AuthorizationGuard.checkPermission(permissionValue);
+ }
+
+ getFilterFormat(createddate):string{
+  return moment(createddate).format(Paginationutil.getFilterDateFormat())
  }
 }
 

@@ -12,6 +12,7 @@ import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
 import * as moment from 'moment';
 import { AppConstants } from 'src/app/cts/app-constants';
 import { AuthorizationGuard } from 'src/app/core/security/authorization-guard';
+import { DropdownService } from 'src/app/cts/shared/services/dropdown.service';
 
 enum UserTypes {
   'PART' = "Parent",
@@ -49,8 +50,9 @@ export class UsersComponent implements OnInit {
   advancedFilterValue:string ="";
   currentPage:number = 1;
   pageCount:number;
+  branches: SelectItem[] = [];
 
-  constructor(private UsersService: UsersService, private router: Router,private route:ActivatedRoute, private fb: FormBuilder) {
+  constructor(private UsersService: UsersService,private dropdownService: DropdownService, private router: Router,private route:ActivatedRoute, private fb: FormBuilder) {
     this.usertypes = [
       { label: 'Admin', value: 'ADMN' },
       { label: 'DataEntryOperator', value: 'DEOP' },
@@ -61,7 +63,16 @@ export class UsersComponent implements OnInit {
       { label: 'Active', value: 'AC' },
       { label: 'In Active', value: 'NA' },
     ];
-    this.users = []
+    this.users = [];
+      //Get Dropdowns API call
+      var dropdowns = ["branches"];
+      this.dropdownService.getDropdowns(dropdowns)
+      .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+        if (result.success) {     
+         this.branches = result.data.branches;        
+        }      
+      });
+
   }
 
   toggleClass($event: any) {
@@ -170,7 +181,10 @@ viewUser(id):void{
     this.filtersForm = this.fb.group({
       'tusertype': new FormControl(''),
       'tuserName': new FormControl(''),
-      'tuserstatus':new FormControl('')     
+      'tuserstatus':new FormControl(''),
+      'tbranch':new FormControl(''),
+      'tcreateddate':new FormControl('')
+
     });
   }
   filterSubmit(): void {
@@ -187,5 +201,10 @@ getFormat(createddate):string{
  }
  checkPermissions(permissionValue){
   return  AuthorizationGuard.checkPermission(permissionValue);
+ }
+
+   //to get date format
+getFilterFormat(createddate):string{
+  return moment(createddate).format(Paginationutil.getFilterDateFormat())
  }
 }

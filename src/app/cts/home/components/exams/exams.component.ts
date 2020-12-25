@@ -10,6 +10,9 @@ import { Paginationutil } from 'src/app/cts/shared/models/paginationutil';
 import * as moment from 'moment';
 import { AppConstants } from 'src/app/cts/app-constants';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { multiselectObject } from 'src/app/cts/shared/models/multi-select-object';
+import { Table } from 'primeng/table';
+import { DropdownService } from 'src/app/cts/shared/services/dropdown.service';
 
 
 @Component({
@@ -34,6 +37,7 @@ export class ExamsComponent implements OnInit {
   private ngUnsubscribe = new Subject();
   datasource: Exams[];
   exams: any[];
+  classes: any[];
   totalRecords: number;
   cols: any[];
   @ViewChild('myFiltersDiv') myFiltersDiv: ElementRef;
@@ -46,7 +50,7 @@ export class ExamsComponent implements OnInit {
   toBeDeletedId: any;
   ewscols: any[];
   examwisesubjects: any[];
-
+  usertypes: any[];
   //pagination and api integration starts from here
   numberOfPages: number = 10;
   totalcount: number = 0;
@@ -54,11 +58,38 @@ export class ExamsComponent implements OnInit {
   advancedFilterValue: string = "";
   currentPage: number = 1;
   pageCount: number;
+  multiSelectFilterValue: string = "";
+  qualArray: Array<multiselectObject> = [];
+  expArray: Array<multiselectObject> = [];
+  expeArray: Array<multiselectObject> = [];
+  classArray: Array<multiselectObject> = [];
+  secArray: Array<multiselectObject> = [];
+  
+  qualMultiFilterValue:string ="";
+  expMultiFilterValue:string="";
+  expeMultiFilterValue:string="";
+  classMultiFilterValue:string="";
+  secMultiFilterValue:string="";
 
+  @ViewChild(Table, { static: false }) DataTable: Table;
 
-  constructor(private ExamsService: ExamsService, private router: Router, private route: ActivatedRoute, private fb: FormBuilder) {
+  constructor(private ExamsService: ExamsService,private dropdownService: DropdownService, private router: Router, private route: ActivatedRoute, private fb: FormBuilder) {
     this.exams = [];
-
+    this.usertypes = [
+      { label: 'Admin', value: 'ADMN' },
+      { label: 'DataEntryOperator', value: 'DEOP' },
+      { label: 'Teacher', value: 'TCHR' },
+      { label: 'Parent', value: 'PART' }
+    ];
+    var dropdowns = ["classes"];
+    this.dropdownService.getDropdowns(dropdowns)
+      .pipe(takeUntil(this.ngUnsubscribe)).subscribe(result => {
+        if (result.success) {
+          
+          this.classes = result.data.classes;
+         
+        }
+      });
   }
 
   public ngOnInit() {
@@ -178,7 +209,138 @@ export class ExamsComponent implements OnInit {
     this.filtersForm = this.fb.group({
       'ttitle': new FormControl(''),
       'tyear': new FormControl(''),
+      'tClasses': new FormControl(''),
+      'tcreateddate': new FormControl(''),
+      'tcreatedby': new FormControl(''),
     });
+  }
+
+  
+  multiselectSearch(event, from) {
+    //creating new object   
+    let customObj = new multiselectObject();
+    customObj.key = from;
+    customObj.value = event.itemValue;
+
+    if (from === "qualification_id") {
+      // if object is exists in array then remove object from else push object into array
+      var find = false;
+      for (let item of this.qualArray) {
+        if (item.value === customObj.value && item.key === customObj.key) {
+          find = true;
+        }
+      }
+      if (!find) {
+        this.qualArray.push(customObj);
+      } else {
+        this.qualArray = this.qualArray.filter(obj => obj.value !== customObj.value)
+      }
+
+      // to create fileter stirng for multiselect
+      this.qualMultiFilterValue = this.qualArray.map(object => {
+        let comparison = `'${object.value}'`;
+        return `(${object.key}=${comparison})`
+      }).join(' OR ');
+
+    }
+    else if (from === "experience") {
+      // if object is exists in array then remove object from else push object into array
+      var find = false;
+      for (let item of this.expArray) {
+        if (item.value === customObj.value && item.key === customObj.key) {
+          find = true;
+        }
+      }
+      if (!find) {
+        this.expArray.push(customObj);
+      } else {
+        this.expArray = this.expArray.filter(obj => obj.value !== customObj.value)
+      }
+
+      // to create fileter stirng for multiselect
+      this.expMultiFilterValue = this.expArray.map(object => {
+        let comparison = `'${object.value}'`;
+        return `(${object.key}=${comparison})`
+      }).join(' OR ');
+
+    }
+
+    else if (from === "subject_id") {
+      // if object is exists in array then remove object from else push object into array
+      var find = false;
+      for (let item of this.expeArray) {
+        if (item.value === customObj.value && item.key === customObj.key) {
+          find = true;
+        }
+      }
+      if (!find) {
+        this.expeArray.push(customObj);
+      } else {
+        this.expeArray = this.expeArray.filter(obj => obj.value !== customObj.value)
+      }
+
+      // to create fileter stirng for multiselect
+      this.expeMultiFilterValue = this.expeArray.map(object => {
+        let comparison = `'${object.value}'`;
+        return `(${object.key}=${comparison})`
+      }).join(' OR ');
+      
+    }
+
+    else if (from === "class_id") {
+      // if object is exists in array then remove object from else push object into array
+      var find = false;
+      for (let item of this.classArray) {
+        if (item.value === customObj.value && item.key === customObj.key) {
+          find = true;
+        }
+      }
+      if (!find) {
+        this.classArray.push(customObj);
+      } else {
+        this.classArray = this.classArray.filter(obj => obj.value !== customObj.value)
+      }
+
+      // to create fileter stirng for multiselect
+      this.classMultiFilterValue = this.classArray.map(object => {
+        let comparison = `'${object.value}'`;
+        return `(${object.key}=${comparison})`
+      }).join(' OR ');
+      
+    }
+
+    else if (from === "section_id") {
+      // if object is exists in array then remove object from else push object into array
+      var find = false;
+      for (let item of this.secArray) {
+        if (item.value === customObj.value && item.key === customObj.key) {
+          find = true;
+        }
+      }
+      if (!find) {
+        this.secArray.push(customObj);
+      } else {
+        this.secArray = this.secArray.filter(obj => obj.value !== customObj.value)
+      }
+
+      // to create fileter stirng for multiselect
+      this.secMultiFilterValue = this.secArray.map(object => {
+        let comparison = `'${object.value}'`;
+        return `(${object.key}=${comparison})`
+      }).join(' OR ');
+      
+    }
+
+    this.multiSelectFilterValue = (this.qualMultiFilterValue == "" ? '(qualification_id > 0 ) AND ' : '('+this.qualMultiFilterValue +') AND ')   + 
+                                  (this.expMultiFilterValue == "" ? '(experience > 0 ) AND ' : '('+this.expMultiFilterValue +') AND ')   + 
+                                  (this.expeMultiFilterValue == "" ? '(subject_id > 0 ) AND ' : '('+this.expeMultiFilterValue +') AND ')   + 
+                                  (this.classMultiFilterValue== "" ? '(class_id > 0 ) AND ' : '('+this.classMultiFilterValue +') AND ')   + 
+                                  (this.secMultiFilterValue == "" ? '(section_id > 0 ) ' : '('+this.secMultiFilterValue+')')  
+    
+    //calling get method with multiselect filters
+    let totalFilter = Paginationutil.getGridFilters(this.DataTable, this.multiSelectFilterValue)
+    this.loadGrids(JSON.stringify(totalFilter));
+
   }
   filterSubmit(): void {
     console.log(this.filtersForm.value);
@@ -192,4 +354,7 @@ export class ExamsComponent implements OnInit {
   getFormat(createddate): string {
     return moment(createddate).format(Paginationutil.getDefaultFormat())
   }
+  getFilterFormat(createddate):string{
+    return moment(createddate).format(Paginationutil.getFilterDateFormat())
+   }
 }

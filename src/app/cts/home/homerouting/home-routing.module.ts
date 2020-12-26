@@ -40,6 +40,7 @@ import { AddParentComponent } from '../components/parents/add-parent/add-parent.
 import { ParentsComponent } from '../components/parents/parents.component';
 import { AuthorizationGuard } from 'src/app/core/security/authorization-guard';
 import { ErrorComponent } from '../components/error/error.component';
+import { AccessDeniedComponent } from '../components/access-denied/access-denied.component';
 
 
 
@@ -260,6 +261,10 @@ const homeRoutes: Routes = [
       {
         path:'app-error',
         component:ErrorComponent
+      },
+      {
+        path:'access-denied',
+        component:AccessDeniedComponent
       }
     ]
   } 

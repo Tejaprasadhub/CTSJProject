@@ -27,7 +27,9 @@ export class AuthorizationGuard  implements CanActivate, CanActivateChild,CanLoa
                     return true;
                 }else{
                     if(state.url != '/admin/dashboard')
-                    this.loginService.logout();
+                    // this.loginService.logout();
+                    this.router.navigate(['/admin/access-denied']);     
+
                     else
                     this.permissions = result.featureOptions;
                     for(let permission of this.permissions){

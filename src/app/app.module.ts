@@ -33,6 +33,7 @@ import { AddQualificationComponent } from './cts/home/components/qualifications/
 import { ParentsComponent } from './cts/home/components/parents/parents.component';
 import { AddParentComponent } from './cts/home/components/parents/add-parent/add-parent.component';
 import { AuthorizationGuard } from './core/security/authorization-guard';
+import { AccessDeniedComponent } from './cts/home/components/access-denied/access-denied.component';
 
 const SessionTimeoutServiceProvider={
   provide:SessionTimeoutService,
@@ -74,7 +75,8 @@ const AuthenticatedHttpInterceptorServiceProvider={
     QualificationsComponent,
     AddQualificationComponent,
     ParentsComponent,
-    AddParentComponent
+    AddParentComponent,
+    AccessDeniedComponent
 
   ],
   imports: [

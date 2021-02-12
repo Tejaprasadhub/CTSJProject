@@ -11,4 +11,7 @@ export class LocalstoragetokenService implements TokenProvider {
   getUsername(): string {
     return JSON.parse(sessionStorage.getItem('currentUser')).UserName
   }
+  getUserId(): string {
+    return JSON.parse(sessionStorage.getItem('currentUser')).userId
+  }
 }

@@ -30,7 +30,7 @@ export class LoginService {
       if(token){
         //set token property
         LoginService.Token = token;
-        var userInformationString = JSON.stringify({UserName:loginUserData.userName,token:token});
+        var userInformationString = JSON.stringify({UserName:loginUserData.userName,token:token,userId:response.userId});
 
         //store username and jwt token in local storage to keep user logged in between page refreshes
         sessionStorage.setItem('currentUser',userInformationString);

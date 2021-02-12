@@ -21,4 +21,17 @@ export class DropdownService {
           return response;
         }));
   }
+
+  public getMenuOptions() {
+    // this.branchesJsonData.next(this.branches);
+    const headers = new HttpHeaders().set("Content-Type", "application/json");
+
+    var Url: string = AppConstants.Api.AdminApp + "Dropdown/GetMenuOptions"
+
+    return this.httpClient.post
+      (Url, "", { headers: headers, withCredentials: true }).pipe(
+        map((response: any) => {
+          return response;
+        }));
+  }
 }

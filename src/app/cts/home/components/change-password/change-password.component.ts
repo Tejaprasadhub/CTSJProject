@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { CustomPasswordValidator } from './custom-password-validator';
+import { ConfirmPasswordValidator } from './custom-password-validator';
 
 @Component({
   selector: 'app-change-password',
@@ -16,7 +16,6 @@ export class ChangePasswordComponent implements OnInit {
   errorMessage:string="";
   successMessage:string="";
   isRequired:boolean=false;
-  matchPassword:boolean=false;
   oldPassword:  FormControl;
   newPassword: FormControl;
   confirmPassword: FormControl;
@@ -24,33 +23,31 @@ export class ChangePasswordComponent implements OnInit {
   constructor(private fb: FormBuilder, private router: Router, private location: Location) { }
 
   ngOnInit(): void {
-    this.createFormControls();
     this.createForm();
   }
 
-  createFormControls(){
-    this.oldPassword = new FormControl('', { validators: [Validators.required,Validators.minLength(8),Validators.pattern('^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$')],updateOn:'change'});
-    this.newPassword =  new FormControl('', { validators: [Validators.required,Validators.minLength(8),Validators.pattern('^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$')],updateOn:'change' }),
-    this.confirmPassword = new FormControl('', { validators: [Validators.required,Validators.minLength(8),Validators.pattern('^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$'),CustomPasswordValidator.MatchPassword],updateOn:'change' })
-  }
-
   createForm(){
-    this.changePasswordForm = new FormGroup({
-      oldPassword:this.oldPassword,
-      newPassword:this.newPassword,
-      confirmPassword:this.confirmPassword
-    });
+    this.changePasswordForm = this.fb.group(
+      {
+        oldPassword: ["",{validators:[Validators.required,Validators.minLength(8),Validators.pattern('^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$')]}],
+        newPassword: ["",{validators:[Validators.required,Validators.minLength(8),Validators.pattern('^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$')]}],
+        confirmPassword: ["",{validators:[Validators.required,Validators.minLength(8),Validators.pattern('^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$')]}]
+      },
+      {
+        validator: ConfirmPasswordValidator("newPassword", "confirmPassword","oldPassword")
+      }      
+    );
+    this.changePasswordForm.controls["oldPassword"].setValue("Optum789@");
   }
 
   changePwdSubmit(): void {
     this.errorMessage="";
     this.successMessage="";
     this.formSubmitAttempt = true;
-    console.log(this.changePasswordForm.value);
     if(this.changePasswordForm.valid){
       this.formSubmitAttempt=false;
       console.log(this.changePasswordForm.value);
-      this.changePasswordForm.reset();
+      // this.changePasswordForm.reset();
       this.successMessage="Your changes have been successfully saved";
     }
   }

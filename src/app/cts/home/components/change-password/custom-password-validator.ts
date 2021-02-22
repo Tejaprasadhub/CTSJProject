@@ -1,36 +1,35 @@
-import { AbstractControl } from '@angular/forms';
+import { AbstractControl, FormGroup } from '@angular/forms';
 
-export class CustomPasswordValidator {
-    static MatchPassword(AC:AbstractControl){
-        const formGroup = AC.parent;
-        if(formGroup){
-            const oldPasswordControl = formGroup.get('oldPassword');
-            const newPasswordControl = formGroup.get('newPassword');
-            const confirmPasswordControl = formGroup.get('confirmPassword');            
-            // if(newPasswordControl && confirmPasswordControl && oldPasswordControl){
-            //     const newPassword = newPasswordControl.value;
-            //     const confirmPassword = confirmPasswordControl.value;                
-            //     const oldPassword = oldPasswordControl.value;                
-            //     if(newPassword === confirmPassword && oldPassword !== newPassword){                  
-            //         return {matchPassword:false}
-            //     }else{
-            //         return null;
-            //     }
-            // }
+export function ConfirmPasswordValidator(controlName: string, matchingControlName: string,previousControlName: string) {
+    return (formGroup: FormGroup) => {
+      let control = formGroup.controls[controlName];
+      let matchingControl = formGroup.controls[matchingControlName]
+      let previousControl = formGroup.controls[previousControlName]
+      if (
+        matchingControl.errors &&
+        !matchingControl.errors.confirmPasswordValidator
+      ) {
+        return;
+      }
+      if (control.value !== matchingControl.value) {
+        matchingControl.setErrors({ confirmPasswordValidator: true });
+      } else {
+        matchingControl.setErrors(null);
+      }
+      if (
+        control.errors &&
+        !control.errors.samePasswordValidator
+      ) {
+        return;
+      }
+      if (control.value === previousControl.value) {
+        control.setErrors({ samePasswordValidator: true });
+      } else {
+        control.setErrors(null);
+      }
 
-            if(newPasswordControl && confirmPasswordControl){
-                const newPassword = newPasswordControl.value;
-                const confirmPassword = confirmPasswordControl.value;
-                if(newPassword !== confirmPassword){
-                    return {matchPassword :true};
-                }else{
-                    return null;
-                }
-            }
-        }
-        return null;
-    }
-}
+    };
+  }
 
 export class customLessThanCurrentDateValidator{
     static ValidDate(AC:AbstractControl){

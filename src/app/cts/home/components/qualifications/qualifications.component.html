@@ -104,8 +104,10 @@
                             </div>                        </div>
                     </td>
                     <td>
+                        <div class="d-flex">
                         <i class="pi pi-pencil" *ngIf="checkPermissions('EDIT')" (click)="editQualification(rowData.id)"></i>&nbsp;
                         <i class="pi pi-trash"  *ngIf="checkPermissions('DELETE')" (click)="deleteQualification(rowData.id)"></i>
+                    </div>
                     </td>
                 </tr>
             </ng-template>
